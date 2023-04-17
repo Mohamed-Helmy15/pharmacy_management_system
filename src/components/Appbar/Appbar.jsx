@@ -76,10 +76,10 @@ const Appbar = () => {
     axios
       .get(`http://localhost:1234/api/v1/users/${id}`, config)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
         if (
           err.response.data.payload.img !== undefined &&
           err.response.data.payload.img !== null

@@ -2,6 +2,7 @@
 * {
   box-sizing: border-box;
 }
+
 .page {
   min-width: calc(100% - 260px);
   min-height: calc(100vh - 64px);
@@ -100,7 +101,9 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 .searchWrapper {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
+
 .search {
   outline: none;
   padding: 7px;
@@ -110,8 +113,23 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
   font-size: 16px;
 }
 
+.search-input {
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 300px;
+  margin-right: 10px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #66afe9;
+  box-shadow: 0 0 5px #66afe9;
+}
+
 .MuiBox-root.css-100452t {
-  width: 500px;
+  width: 700px;
   padding: 20px;
   border-radius: 10px;
 }
@@ -119,4 +137,12 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 .MuiFormControl-root.MuiTextField-root.css-1u3bzj6-MuiFormControl-root-MuiTextField-root,
 .MuiFormControl-root.MuiFormControl-fullWidth.MuiTextField-root.css-wb57ya-MuiFormControl-root-MuiTextField-root {
   margin: 0 0 13px 0;
+}
+
+.cat-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 20px;
+  margin-bottom: 1em;
 }

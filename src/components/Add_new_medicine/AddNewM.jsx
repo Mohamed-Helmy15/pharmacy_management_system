@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import App from "../../App";
+import App, { config } from "../../App";
 import Search from "../../materials/Search";
+import axios from "axios";
 
 const AddNewM = () => {
   const [search, setSearch] = useState("");
@@ -11,6 +12,7 @@ const AddNewM = () => {
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
+
   return (
     <App>
       <div className="header">

@@ -17,7 +17,13 @@ const style = {
 
 const PopUp = (props) => {
   return (
-    <Modal open={props.openModal} closeAfterTransition>
+    <Modal
+      onClose={() => {
+        props.handleCloseModal();
+      }}
+      open={props.openModal}
+      closeAfterTransition
+    >
       <Fade in={props.openModal}>
         <Box sx={style}>
           <CancelIcon

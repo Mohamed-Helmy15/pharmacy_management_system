@@ -5,7 +5,7 @@ const Search = (props) => {
   return (
     <div className="searchWrapper">
       <input
-        className="search"
+        className="search-input"
         type="text"
         name="category"
         id="category"
@@ -15,7 +15,7 @@ const Search = (props) => {
       />
       <SearchIcon
         style={{
-          transform: "translateX(-30px)",
+          transform: "translateX(-40px)",
           color: "#0f467e",
         }}
       />

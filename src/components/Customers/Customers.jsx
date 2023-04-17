@@ -75,54 +75,49 @@ const Customers = () => {
   return (
     <>
       <App>
-        <div className="home-content">
-          {/* <MainSidebar setSideRequest={setPutRequest} /> */}
-          <div className="page">
-            <div className="header">
-              <h3 style={{ margin: 0 }}>Customers</h3>
-              <Search
-                search={search}
-                handleSearch={handleSearch}
-                placeholder={"Search the Last Name"}
-              />
-              <div>
-                <button
-                  className="get"
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
-                  Create new Cutomers
-                </button>
-                <CustomerCom
-                  decide={"create"}
-                  open={open}
-                  setOpen={setOpen}
-                  setPutRequest={setPutRequest}
-                  setPostRequest={setPostRequest}
-                  addressRequest={addressRequest}
-                  setAddressRequest={setAddressRequest}
-                  address={address}
-                  putRequest={putRequest}
-                />
-              </div>
-            </div>
-            <Tables
-              columns={columns}
-              dataRow={dataRow}
-              page={page}
-              rowsPerPage={rowsPerPage}
-              handleChangePage={handleChangePage}
-              handleChangeRowsPerPage={handleChangeRowsPerPage}
-              section={"customers"}
+        <div className="header">
+          <h3 style={{ margin: 0 }}>Customers</h3>
+          <Search
+            search={search}
+            handleSearch={handleSearch}
+            placeholder={"Search the Last Name"}
+          />
+          <div>
+            <button
+              className="get"
+              onClick={() => {
+                handleOpen();
+              }}
+            >
+              Create new Cutomers
+            </button>
+            <CustomerCom
+              decide={"create"}
+              open={open}
+              setOpen={setOpen}
               setPutRequest={setPutRequest}
-              deleteRequest={deleteRequest}
-              setdeleteRequest={setdeleteRequest}
-              search={search}
-              keySearch={"name"}
+              setPostRequest={setPostRequest}
+              addressRequest={addressRequest}
+              setAddressRequest={setAddressRequest}
+              address={address}
+              putRequest={putRequest}
             />
           </div>
         </div>
+        <Tables
+          columns={columns}
+          dataRow={dataRow}
+          page={page}
+          rowsPerPage={rowsPerPage}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
+          section={"customers"}
+          setPutRequest={setPutRequest}
+          deleteRequest={deleteRequest}
+          setdeleteRequest={setdeleteRequest}
+          search={search}
+          keySearch={"name"}
+        />
       </App>
     </>
   );

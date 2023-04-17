@@ -101,7 +101,7 @@ const BranchCom = (props) => {
               .catch((err) => err);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => err);
     } else {
       let branch = {};
       let address = {};
@@ -130,10 +130,9 @@ const BranchCom = (props) => {
       axios
         .get(`http://localhost:1234/api/v1/pharmacies/${props.id}`, config)
         .then((res) => {
-          console.log(res.data.payload.address.id);
+          console.log("res", res.data.payload.address.id);
         })
         .catch((err) => {
-          console.log(err);
           axios
             .put(
               `http://localhost:1234/api/v1/addresses/${err.response.data.payload.address.id}`,

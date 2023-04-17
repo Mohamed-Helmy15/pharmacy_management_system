@@ -17,6 +17,7 @@ import CatCom from "../components/Categories/CatCom";
 import UserCom from "./../components/Users/UserCom";
 import CustomerCom from "../components/Customers/CustomerCom.jsx";
 import BranchCom from "./../components/Branches/BranchCom";
+import CategoryDetails from "./CategoryDetails";
 import swal from "sweetalert";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -46,6 +47,8 @@ const Tables = (props) => {
   const [address, setAddress] = useState([]);
   const [addressRequest, setAddressRequest] = useState(false);
   const [manager, setManager] = useState([]);
+  const [medicines, setMedicines] = useState([]);
+  const [medId, setMedId] = useState("");
 
   const handleNotClose = (event, reason) => {
     setnotifDelete(null);
@@ -109,18 +112,23 @@ const Tables = (props) => {
         config
       )
       .then((res) => {
-        console.log("users", res.data.payload);
-
         setManager(res.data.payload);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => err);
+    axios
+      .get("http://localhost:1234/api/v1/medicines/?pharmacy=1", config)
+      .then((res) => setMedicines(res.data.payload));
   }, [addressRequest]);
 
   const handleShow = (row) => {
+    setMedId(row);
+    medicines.filter((m) => (m.category.id === row ? m : null));
+
     axios
       .get(`http://localhost:1234/api/v1/${props.section}/${row}`, config)
       .then((res) => {
         setInfoShow(res.response.data.payload);
+        console.log("res", res.response.data.payload);
       })
       .catch((err) => {
         if (
@@ -172,9 +180,9 @@ const Tables = (props) => {
             err.response.data.payload.updatedAt.split("T").join("At ")
           );
         }
-
         setInfoShow(err.response.data.payload);
       });
+
     handleShowOpen();
   };
 
@@ -196,11 +204,14 @@ const Tables = (props) => {
             props.setdeleteRequest(row);
             setStateNotification(true);
             handleToggleNotDelete();
+            swal("Deleted Successfully!", {
+              icon: "success",
+            });
           })
-          .catch((err) => setStateNotification(false));
-        swal("Deleted Successfully!", {
-          icon: "success",
-        });
+          .catch((err) => {
+            setStateNotification(false);
+            swal("", "the delete operation hasn't been completed!", "info");
+          });
       } else {
         swal("", "the delete operation hasn't been completed!", "info");
       }
@@ -237,7 +248,7 @@ const Tables = (props) => {
                   return el[props.keySearch].includes(props.search) ? el : null;
                 })
                 .map((row, i) => {
-                  console.log(row.id);
+                  // console.log(row.id);
                   return (
                     <TableRow key={row.id} hover role="checkbox" tabIndex={-1}>
                       {props.columns.map((column, i) => {
@@ -325,20 +336,35 @@ const Tables = (props) => {
       {/* show all section */}
       <PopUp openModal={openShowModal} handleCloseModal={handleCloseModal}>
         {props.section === "categories" ? (
-          <div style={{ textAlign: "center" }}>
-            <h3>{infoShow.name}</h3>
-            <p>
-              Created By: <b>{infoShow.createdBy}</b>
-            </p>
-            <p>
-              Created At: <b>{createTime}</b>
-            </p>
-            <p>
-              Updated By: <b>{infoShow.updatedBy}</b>
-            </p>
-            <p>
-              Last Update at: <b>{updateTime}</b>
-            </p>
+          <div
+            style={{ textAlign: "center", overflow: "auto", maxHeight: "80vh" }}
+          >
+            <h3
+              onClick={() => {
+                console.log(medicines);
+              }}
+            >
+              {infoShow.name}
+            </h3>
+            <div className="cat-info">
+              <p>
+                Created By: <b>{infoShow.createdBy}</b>
+              </p>
+              <p>
+                Created At: <b>{createTime}</b>
+              </p>
+              <p>
+                Updated By: <b>{infoShow.updatedBy}</b>
+              </p>
+              <p>
+                Last Update at: <b>{updateTime}</b>
+              </p>
+            </div>
+            <CategoryDetails
+              medicines={medicines.filter((m) =>
+                m.category.id === medId ? m : null
+              )}
+            />
           </div>
         ) : props.section === "users" ? (
           <div style={{ textAlign: "center" }}>

@@ -17,7 +17,7 @@ export const sideRequestContext = React.createContext();
 function App(props) {
   const [sideRequest, setSideRequest] = useState(false);
   useEffect(() => {
-    console.log(sideRequest);
+    // console.log(sideRequest);
   }, [sideRequest]);
   return (
     <sideRequestContext.Provider value={{ sideRequest, setSideRequest }}>

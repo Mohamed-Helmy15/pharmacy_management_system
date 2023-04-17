@@ -52,6 +52,12 @@ const Users = () => {
 
   useEffect(() => {
     axios
+      .get("http://localhost:1234/api/v1/users/current-user/pharmacies", config)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.log("err", err));
+    axios
       .get(
         `http://localhost:1234/api/v1/users?page=${page}&size=${rowsPerPage}&sort=username`,
         config
