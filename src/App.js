@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Appbar from "./components/Appbar/Appbar";
 import MainSidebar from "./components/Sidebar/Sidebar";
 export const config = {
@@ -15,10 +15,8 @@ export const configMultiPart = {
 };
 export const sideRequestContext = React.createContext();
 function App(props) {
-  const [sideRequest, setSideRequest] = useState(false);
-  useEffect(() => {
-    // console.log(sideRequest);
-  }, [sideRequest]);
+  const [sideRequest, setSideRequest] = useState([]);
+
   return (
     <sideRequestContext.Provider value={{ sideRequest, setSideRequest }}>
       <Appbar />
