@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Search from "./Search";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { config } from "./../App";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 130 },
@@ -34,17 +35,16 @@ const columns = [
 ];
 
 export default function CategoryDetails(props) {
-  const navigate = useNavigate();
+  const [count, setCount] = useState("");
   const rows = props.medicines;
-  const [selectedRows, setSelectedRows] = React.useState([]);
   const [searchText, setSearchText] = React.useState("");
 
-  const handleSelectionModelChange = (selectionModel) => {
-    const selectedRowObjects = rows.filter((row) =>
-      selectionModel.includes(row.id)
-    );
-    setSelectedRows(selectedRowObjects);
-  };
+  // const handleSelectionModelChange = (selectionModel) => {
+  //   const selectedRowObjects = rows.filter((row) =>
+  //     selectionModel.includes(row.id)
+  //   );
+  //   setSelectedRows(selectedRowObjects);
+  // };
 
   return (
     <div style={{ height: 400, width: "100%" }}>
@@ -62,20 +62,45 @@ export default function CategoryDetails(props) {
         columns={columns}
         pageSize={7}
         rowsPerPageOptions={[1, 2, 3]}
+        localeText={{
+          noRowsLabel: `${
+            window.localStorage.getItem("branch") === "undefined"
+              ? "Please Select The Branch"
+              : "No Data Available"
+          }`,
+        }}
+        onStateChange={(params) => {
+          if (params.editRows["1"]) {
+            setCount(params.editRows["1"]["count"].value);
+          }
+          // console.log(params.editRows["1"].count.value);
+        }}
+        onCellEditStop={(params) => {
+          let updatedCount = {
+            pharmacy: 1,
+            medicine: 1,
+            count,
+          };
+          axios
+            .post(
+              "http://localhost:1234/api/v1/medicines/update-count",
+              updatedCount,
+              config
+            )
+            .then((res) => props.setCount(count))
+            .catch((err) => console.log(err));
+        }}
+
         // checkboxSelection
-        onRowSelectionModelChange={handleSelectionModelChange}
+        // onRowSelectionModelChange={handleSelectionModelChange}
       />
-      {selectedRows.length > 0 ? (
-        <button
-          className="get"
-          style={{ marginTop: "10px" }}
-          onClick={() => {
-            navigate("/bills", { state: { selectedRows } });
-          }}
-        >
-          Confirm
-        </button>
-      ) : null}
+      <div
+        onClick={() => {
+          console.log(count);
+        }}
+      >
+        sdkfasdkd
+      </div>
     </div>
   );
 }

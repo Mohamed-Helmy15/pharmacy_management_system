@@ -49,6 +49,7 @@ const Tables = (props) => {
   const [manager, setManager] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [medId, setMedId] = useState("");
+  const [count, setCount] = useState("");
 
   const handleNotClose = (event, reason) => {
     setnotifDelete(null);
@@ -116,9 +117,16 @@ const Tables = (props) => {
       })
       .catch((err) => err);
     axios
-      .get("http://localhost:1234/api/v1/medicines/?pharmacy=1", config)
-      .then((res) => setMedicines(res.data.payload));
-  }, [addressRequest]);
+      .get(
+        `http://localhost:1234/api/v1/medicines/?pharmacy=${window.localStorage.getItem(
+          "branch"
+        )}`,
+        config
+      )
+      .then((res) => {
+        setMedicines(res.data.payload);
+      });
+  }, [addressRequest, count, window.localStorage.getItem("branch")]);
 
   const handleShow = (row) => {
     setMedId(row);
@@ -361,6 +369,7 @@ const Tables = (props) => {
               </p>
             </div>
             <CategoryDetails
+              setCount={setCount}
               medicines={medicines.filter((m) =>
                 m.category.id === medId ? m : null
               )}

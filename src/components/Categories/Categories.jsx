@@ -6,6 +6,8 @@ import Tables from "../../materials/Table";
 import Search from "../../materials/Search";
 import CatCom from "./CatCom";
 import App, { config } from "../../App";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 
 export const style = {
   position: "absolute",
@@ -18,6 +20,16 @@ export const style = {
 };
 
 const Categories = () => {
+  const [pharmacies, setPharmacies] = useState([]);
+  const [pharmacySelected, setPharmacySelected] = useState("");
+  const [open, setOpen] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [postRequest, setpostRequest] = useState("");
+  const [putRequest, setPutRequest] = useState(0);
+  const [deleteRequest, setdeleteRequest] = useState(0);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const minWidth = 100;
   const columns = [
     { id: "name", label: "Category name", minWidth, align: "center" },
@@ -29,14 +41,9 @@ const Categories = () => {
       align: "center",
     },
   ];
-  const [open, setOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [postRequest, setpostRequest] = useState("");
-  const [putRequest, setPutRequest] = useState(0);
-  const [deleteRequest, setdeleteRequest] = useState(0);
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  window.localStorage.setItem("branch", pharmacySelected.id);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -59,6 +66,12 @@ const Categories = () => {
       )
       .then((response) => {
         setCategories(response.data.payload);
+      })
+      .catch((err) => err);
+    axios
+      .get(`http://localhost:1234/api/v1/pharmacies`, config)
+      .then((response) => {
+        setPharmacies(response.data.payload);
       })
       .catch((err) => err);
   }, [postRequest, deleteRequest, putRequest]);
@@ -104,6 +117,20 @@ const Categories = () => {
             keySearch={"name"}
           />
         </div>
+        <Autocomplete
+          options={pharmacies.map((pharmacy) => ({
+            id: pharmacy.id,
+            label: pharmacy.name,
+          }))}
+          renderInput={(params) => <TextField {...params} label="Pharmacy" />}
+          value={pharmacySelected}
+          onChange={(e, value) => {
+            setPharmacySelected(value);
+            console.log(pharmacySelected);
+          }}
+          sx={{ width: "40%", position: "absolute", bottom: 0, right: 10 }}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+        />
       </App>
     </>
   );
