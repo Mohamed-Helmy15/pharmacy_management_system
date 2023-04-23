@@ -66,7 +66,7 @@ export default function CategoryDetails(props) {
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[5, 8]}
         localeText={{
           noRowsLabel: `${
             window.localStorage.getItem("branch") === "undefined" ||

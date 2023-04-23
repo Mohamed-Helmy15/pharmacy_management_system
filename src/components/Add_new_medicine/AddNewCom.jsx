@@ -23,6 +23,7 @@ const AddNewCom = (props) => {
   const [error, setError] = useState(false);
   const [notification, setNotification] = useState(null);
   const [stateNotification, setStateNotification] = useState(false);
+
   const handleClose = () => {
     props.setOpen(false);
     emptyFields();
@@ -44,24 +45,24 @@ const AddNewCom = (props) => {
     if (props.decide === "create") {
       let errors = {};
 
-      // if (!values.marketName) {
-      //   errors.marketName = "Market name is required";
-      // }
-      // if (!values.scientificName) {
-      //   errors.scientificName = "Scientific name is required";
-      // }
-      // if (!values.price) {
-      //   errors.price = "Price is required";
-      // }
-      // if (supplierValue === null) {
-      //   errors.supplier = "supplier is required";
-      // }
-      // if (categoryValue === null) {
-      //   errors.category = "Category is required";
-      // }
-      // if (typeValue === null) {
-      //   errors.type = "Type is required";
-      // }
+      if (!values.marketName) {
+        errors.marketName = "Market name is required";
+      }
+      if (!values.scientificName) {
+        errors.scientificName = "Scientific name is required";
+      }
+      if (!values.price) {
+        errors.price = "Price is required";
+      }
+      if (supplierValue === null) {
+        errors.supplier = "supplier is required";
+      }
+      if (categoryValue === null) {
+        errors.category = "Category is required";
+      }
+      if (typeValue === null) {
+        errors.type = "Type is required";
+      }
       return errors;
     }
   };
@@ -80,7 +81,6 @@ const AddNewCom = (props) => {
 
   const onSubmit = (values) => {
     if (props.decide === "create") {
-      console.log(values);
       const formData = new FormData();
       formData.append("marketName", values.marketName);
       formData.append("scientificName", values.scientificName);
@@ -310,11 +310,10 @@ const AddNewCom = (props) => {
                   value={typeValue}
                   onChange={(e, value) => {
                     settypeValue(value);
+                    console.log(value);
                   }}
                   sx={{ width: "100%" }}
-                  isOptionEqualToValue={(option, value) =>
-                    option.id === value.id
-                  }
+                  isOptionEqualToValue={(option, value) => option === value}
                   renderInput={(params) => (
                     <TextField
                       onBlur={() => {
@@ -431,7 +430,7 @@ const AddNewCom = (props) => {
               settypeValue(value);
             }}
             sx={{ width: "100%" }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
+            isOptionEqualToValue={(option, value) => option === value}
           />
           <TextField
             type="file"

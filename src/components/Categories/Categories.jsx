@@ -6,8 +6,7 @@ import Tables from "../../materials/Table";
 import Search from "../../materials/Search";
 import CatCom from "./CatCom";
 import App, { config } from "../../App";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
+
 import SelectBranches from "../../materials/SelectBranches";
 
 export const style = {
@@ -21,8 +20,7 @@ export const style = {
 };
 
 const Categories = () => {
-  const [pharmacies, setPharmacies] = useState([]);
-  const [pharmacySelected, setPharmacySelected] = useState("");
+  const [pharmacySelected, setPharmacySelected] = useState(null);
   const pharmacySelectedRef = useRef(pharmacySelected);
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -66,12 +64,6 @@ const Categories = () => {
       )
       .then((response) => {
         setCategories(response.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get(`http://localhost:1234/api/v1/pharmacies`, config)
-      .then((response) => {
-        setPharmacies(response.data.payload);
       })
       .catch((err) => err);
   }, [postRequest, deleteRequest, putRequest]);

@@ -6,18 +6,19 @@ import { config } from "./../App";
 
 const SelectBranches = (props) => {
   const [pharmacies, setPharmacies] = useState([]);
-  //   const [pharmacySelected, setPharmacySelected] = useState("");
+  const [loading, setLoading] = useState(true);
   const pharmacySelectedRefInCat = useRef(props.value);
   useEffect(() => {
     axios
       .get(`http://localhost:1234/api/v1/pharmacies`, config)
       .then((response) => {
         setPharmacies(response.data.payload);
+        setLoading(false);
       })
       .catch((err) => err);
   }, []);
 
-  return (
+  return loading === false ? (
     <div>
       <Autocomplete
         options={pharmacies.map((pharmacy) => ({
@@ -40,7 +41,7 @@ const SelectBranches = (props) => {
         isOptionEqualToValue={(option, value) => option.id === value.id}
       />
     </div>
-  );
+  ) : null;
 };
 
 export default SelectBranches;

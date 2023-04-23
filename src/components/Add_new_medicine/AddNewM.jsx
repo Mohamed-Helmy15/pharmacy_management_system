@@ -4,173 +4,37 @@ import App, { config } from "../../App";
 import Search from "../../materials/Search";
 import axios from "axios";
 import AddNewCom from "./AddNewCom";
-import Tables from "./../../materials/Table";
 import SelectBranches from "./../../materials/SelectBranches";
 import { DataGrid } from "@mui/x-data-grid";
-
-// const AddNewM = () => {
-//   const minWidth = 100;
-
-//   const columns = [
-//     {
-//       id: "marketName",
-//       label: "Market Name",
-//       minWidth,
-//       align: "center",
-//     },
-//     {
-//       id: "type",
-//       label: "Type",
-//       minWidth,
-//       align: "center",
-//     },
-//     {
-//       id: "price",
-//       label: "Price",
-//       minWidth,
-//       align: "center",
-//     },
-//     {
-//       id: "actions",
-//       label: "Actions",
-//       minWidth: minWidth + 50,
-//       align: "center",
-//     },
-//   ];
-
-//   const [search, setSearch] = useState("");
-//   const [categories, setCategories] = useState([]);
-//   const [types, setTypes] = useState([]);
-//   const [suppliers, setSuppliers] = useState([]);
-//   const [open, setOpen] = useState(false);
-//   const [putRequest, setPutRequest] = useState("");
-//   const [dataRow, setDataRow] = useState([]);
-//   const [postRequest, setPostRequest] = useState("");
-//   const [deleteRequest, setdeleteRequest] = useState(0);
-
-//   const handleOpen = () => setOpen(true);
-
-//   const handleSearch = (e) => {
-//     setSearch(e.target.value);
-//   };
-
-//   const [page, setPage] = useState(0);
-//   const [rowsPerPage, setRowsPerPage] = useState(10);
-
-//   const handleChangePage = (event, newPage) => {
-//     setPage(newPage);
-//   };
-
-//   const handleChangeRowsPerPage = (event) => {
-//     setRowsPerPage(+event.target.value);
-//     setPage(0);
-//   };
-
-//   useEffect(() => {
-//     axios
-//       .get("http://localhost:1234/api/v1/categories", config)
-//       .then((res) => {
-//         setCategories(res.data.payload);
-//       })
-//       .catch((err) => err);
-//     axios
-//       .get("http://localhost:1234/api/v1/medicines/types", config)
-//       .then((res) => {
-//         setTypes(res.data.payload);
-//       })
-//       .catch((err) => err);
-//     axios
-//       .get("http://localhost:1234/api/v1/suppliers", config)
-//       .then((res) => {
-//         setSuppliers(res.data.payload);
-//       })
-//       .catch((err) => err);
-
-//     axios
-//       .get(
-//         `http://localhost:1234/api/v1/medicines?page=${page}&size=${rowsPerPage}&sort=price&pharmacy=${window.localStorage.getItem(
-//           "thisBranch"
-//         )}`,
-//         config
-//       )
-//       .then((res) => {
-//         setDataRow(res.data.payload);
-//       })
-//       .catch((err) => err);
-//   }, [deleteRequest, putRequest, postRequest]);
-
-//   return (
-//     <App>
-//       <div className="header">
-//         <h3 style={{ margin: 0 }}>Medicines</h3>
-//         <Search
-//           search={search}
-//           handleSearch={handleSearch}
-//           placeholder={"Search the medicines name"}
-//         />
-//         <div>
-//           <button className="get" onClick={handleOpen}>
-//             Create new Medicines
-//           </button>
-//           <AddNewCom
-//             decide={"create"}
-//             open={open}
-//             setOpen={setOpen}
-//             categories={categories}
-//             types={types}
-//             supplires={suppliers}
-//             setPostRequest={setPostRequest}
-//             setPutRequest={setPutRequest}
-//           />
-//         </div>
-//       </div>
-//       <Tables
-//         columns={columns}
-//         dataRow={dataRow}
-//         page={page}
-//         rowsPerPage={rowsPerPage}
-//         handleChangePage={handleChangePage}
-//         handleChangeRowsPerPage={handleChangeRowsPerPage}
-//         section={"medicines"}
-//         setPutRequest={setPutRequest}
-//         deleteRequest={deleteRequest}
-//         setdeleteRequest={setdeleteRequest}
-//         search={search}
-//         keySearch={"marketName"}
-//       />
-//     </App>
-//   );
-// };
-
-// export default AddNewM;
-
+import styles from "./AddNewM.module.css";
+import Notification from "./../../materials/Notification";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "marketName", headerName: "market name", width: 130 },
-  { field: "scientificName", headerName: "scientific name", width: 130 },
+  { field: "marketName", headerName: "market name", width: 190 },
+  { field: "scientificName", headerName: "scientific name", width: 190 },
   {
     field: "count",
     headerName: "Count",
     type: "number",
-    width: 90,
+    width: 150,
   },
   {
     field: "price",
     headerName: "Price",
     type: "number",
-    width: 90,
+    width: 150,
   },
   {
     field: "expiration",
     headerName: "Expiration",
     type: "number",
-    width: 130,
+    width: 190,
   },
   {
     field: "type",
     headerName: "Type",
     type: "number",
-    width: 90,
+    width: 150,
   },
 ];
 
@@ -182,9 +46,17 @@ const AddNewM = () => {
   const [open, setOpen] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [dataRow, setDataRow] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [postRequest, setPostRequest] = useState("");
-  const [deleteRequest, setdeleteRequest] = useState(0);
-  const [pharmacySelected, setPharmacySelected] = useState("");
+  const [deleteRequest, setdeleteRequest] = useState("");
+  const [pharmacySelected, setPharmacySelected] = useState(null);
+  const [notifDelete, setnotifDelete] = useState(null);
+  const [state, setState] = useState("");
+
+  const handleNotClose = (event, reason) => {
+    setnotifDelete(null);
+  };
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -212,7 +84,7 @@ const AddNewM = () => {
 
     axios
       .get(
-        `http://localhost:1234/api/v1/medicines?&sort=price&pharmacy=${window.localStorage.getItem(
+        `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
           "thisBranch"
         )}`,
         config
@@ -223,13 +95,35 @@ const AddNewM = () => {
       .catch((err) => err);
   }, [deleteRequest, putRequest, postRequest]);
 
-  // const handleSelectionModelChange = (selectionModel) => {
-  //   const selectedRowObjects = rows.filter((row) =>
-  //     selectionModel.includes(row.id)
-  //   );
-  //   setSelectedRows(selectedRowObjects);
-  // };
+  const handleSelectionModelChange = (selectionModel) => {
+    const selectedRowObjects = dataRow.filter((row) =>
+      selectionModel.includes(row.id)
+    );
+    setSelectedRows(selectedRowObjects);
+  };
 
+  const handleEdit = (row) => {
+    console.log(row);
+  };
+  const handleDelete = (rows) => {
+    rows.map((row) => {
+      axios
+        .delete(`http://localhost:1234/api/v1/medicines/${row.id}`, config)
+        .then((res) => {
+          setdeleteRequest(res);
+          setState(res.data.success);
+          setnotifDelete(true);
+        })
+        .catch((err) => {
+          setdeleteRequest(err);
+          setState(err.data.success);
+        });
+      return true;
+    });
+  };
+  const handleConfirm = (id) => {
+    console.log(id);
+  };
   return (
     <App>
       <SelectBranches
@@ -273,7 +167,7 @@ const AddNewM = () => {
             },
           },
         }}
-        pageSizeOptions={[5]}
+        pageSizeOptions={[5, 8]}
         localeText={{
           noRowsLabel: `${
             window.localStorage.getItem("branch") === "undefined" ||
@@ -282,31 +176,53 @@ const AddNewM = () => {
               : "No Data Available"
           }`,
         }}
-        // onStateChange={(params) => {
-        //   if (params.editRows["1"]) {
-        //     setCount(params.editRows["1"]["count"].value);
-        //   }
-        //   // console.log(params.editRows["1"].count.value);
-        // }}
-        // onCellEditStop={(params) => {
-        //   let updatedCount = {
-        //     pharmacy: 1,
-        //     medicine: 1,
-        //     count,
-        //   };
-        //   axios
-        //     .post(
-        //       "http://localhost:1234/api/v1/medicines/update-count",
-        //       updatedCount,
-        //       config
-        //     )
-        //     .then((res) => props.setCount(count))
-        //     .catch((err) => console.log(err));
-        // }}
-
         checkboxSelection
-        // onRowSelectionModelChange={handleSelectionModelChange}
+        onRowSelectionModelChange={handleSelectionModelChange}
       />
+      <AddNewCom
+        decide={"create"}
+        open={open}
+        setOpen={setOpen}
+        categories={categories}
+        types={types}
+        supplires={suppliers}
+        setPostRequest={setPostRequest}
+        setPutRequest={setPutRequest}
+      />
+      {selectedRows.length > 0 ? (
+        <div className={styles.buttons}>
+          {selectedRows.length === 1 ? (
+            <button className="get" onClick={() => handleOpen()}>
+              Edit
+            </button>
+          ) : null}
+          <button className="get" onClick={() => handleDelete(selectedRows)}>
+            Delete
+          </button>
+
+          <button className="get" onClick={() => handleConfirm(selectedRows)}>
+            Confirm
+          </button>
+        </div>
+      ) : null}
+
+      {state === true ? (
+        <Notification
+          auto={6000} // auto hide time in ms
+          case="success"
+          successfulMessage={`the medicine has been successfully deleted`}
+          notification={notifDelete} // add state
+          handleNotClose={handleNotClose} // on close function
+        />
+      ) : (
+        <Notification
+          auto={6000}
+          case="error"
+          unsuccessfulMessage={`the medicine has not been successfully deleted`}
+          notification={notifDelete}
+          handleNotClose={handleNotClose}
+        />
+      )}
     </App>
   );
 };
