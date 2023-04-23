@@ -59,8 +59,14 @@ export default function CategoryDetails(props) {
           row.marketName.toLowerCase().includes(searchText.toLowerCase())
         )}
         columns={columns}
-        pageSize={7}
-        rowsPerPageOptions={[25]}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 5,
+            },
+          },
+        }}
+        pageSizeOptions={[5]}
         localeText={{
           noRowsLabel: `${
             window.localStorage.getItem("branch") === "undefined" ||

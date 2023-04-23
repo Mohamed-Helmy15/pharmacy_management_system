@@ -18,24 +18,28 @@ const SelectBranches = (props) => {
   }, []);
 
   return (
-    <Autocomplete
-      options={pharmacies.map((pharmacy) => ({
-        id: pharmacy.id,
-        label: pharmacy.name,
-      }))}
-      renderInput={(params) => <TextField {...params} label="Pharmacy" />}
-      value={props.value}
-      onChange={(e, value) => {
-        props.setValue(value);
-        pharmacySelectedRefInCat.current = value;
-        window.localStorage.setItem(
-          props.storage,
-          pharmacySelectedRefInCat.current.id
-        );
-      }}
-      sx={{ width: "40%", position: "absolute", bottom: 0, right: 10 }}
-      isOptionEqualToValue={(option, value) => option.id === value.id}
-    />
+    <div>
+      <Autocomplete
+        options={pharmacies.map((pharmacy) => ({
+          id: pharmacy.id,
+          label: pharmacy.name,
+        }))}
+        renderInput={(params) => <TextField {...params} label="Pharmacy" />}
+        value={props.value}
+        onChange={(e, value) => {
+          props.setValue(value);
+          pharmacySelectedRefInCat.current = value;
+          window.localStorage.setItem(
+            props.storage,
+            pharmacySelectedRefInCat.current.id
+          );
+        }}
+        sx={{
+          width: "100%",
+        }}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+      />
+    </div>
   );
 };
 

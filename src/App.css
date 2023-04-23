@@ -161,3 +161,7 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
   width: 3px;
   background-color: #0f467e;
 }
+
+.MuiDataGrid-root.MuiDataGrid-root--densityStandard.MuiDataGrid-withBorderColor.css-1usso8h-MuiDataGrid-root {
+  height: 480px;
+}

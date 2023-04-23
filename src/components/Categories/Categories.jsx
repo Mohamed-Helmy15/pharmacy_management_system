@@ -81,6 +81,11 @@ const Categories = () => {
   return (
     <>
       <App>
+        <SelectBranches
+          value={pharmacySelected}
+          setValue={setPharmacySelected}
+          storage={"branch"}
+        />
         <div className="header">
           <h3 style={{ margin: 0 }}>Categories</h3>
           <Search
@@ -119,11 +124,6 @@ const Categories = () => {
             keySearch={"name"}
           />
         </div>
-        <SelectBranches
-          value={pharmacySelected}
-          setValue={setPharmacySelected}
-          storage={"branch"}
-        />
       </App>
     </>
   );
