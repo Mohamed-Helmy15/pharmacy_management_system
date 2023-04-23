@@ -85,7 +85,9 @@ const AddNewM = () => {
 
     axios
       .get(
-        `http://localhost:1234/api/v1/medicines?page=${page}&size=${rowsPerPage}&sort=price&pharmacy=1`,
+        `http://localhost:1234/api/v1/medicines?page=${page}&size=${rowsPerPage}&sort=price&pharmacy=${window.localStorage.getItem(
+          "thisBranch"
+        )}`,
         config
       )
       .then((res) => {

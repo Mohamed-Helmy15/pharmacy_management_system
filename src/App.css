@@ -141,9 +141,23 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 }
 
 .cat-info {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0 20px;
   margin-bottom: 1em;
+  text-align: left;
+}
+
+.cat-info p {
+  position: relative;
+  background: #edf4fc;
+  padding: 12px 15px;
+  margin: 4px 0;
+}
+
+.cat-info p::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #0f467e;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { config } from "../App.js";
 import Paper from "@mui/material/Paper";
@@ -136,7 +137,6 @@ const Tables = (props) => {
       .get(`http://localhost:1234/api/v1/${props.section}/${row}`, config)
       .then((res) => {
         setInfoShow(res.response.data.payload);
-        console.log("res", res.response.data.payload);
       })
       .catch((err) => {
         if (
@@ -389,125 +389,131 @@ const Tables = (props) => {
             <h3>
               {infoShow.username === null ? "Not Available" : infoShow.username}
             </h3>
-            <p>
-              Position: <b>{role}</b>
-            </p>
-            <p>
-              Email:{" "}
-              <b>
-                {infoShow.email === null ? "Not Available" : infoShow.email}
-              </b>
-            </p>
-            <p>
-              Phone:{" "}
-              <b>
-                {infoShow.phone === null ? "Not Available" : infoShow.phone}
-              </b>
-            </p>
-            <p>
-              Pharmacy:{" "}
-              <b>{infoShow.pharmacy === null ? "Not Available" : pharmacy}</b>
-            </p>
-            <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
-            </p>
-            <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
-            </p>
-            <p>
-              Last Update at:{" "}
-              <b>
-                {infoShow.updatedAt === null ? "Not Available" : updateTime}
-              </b>
-            </p>
-            <p>
-              Updated By:{" "}
-              <b>
-                {infoShow.updatedBy === null
-                  ? "Not Available"
-                  : infoShow.updatedBy}
-              </b>
-            </p>
+            <div className="cat-info">
+              <p>
+                Position: <b>{role}</b>
+              </p>
+              <p>
+                Email:{" "}
+                <b>
+                  {infoShow.email === null ? "Not Available" : infoShow.email}
+                </b>
+              </p>
+              <p>
+                Phone:{" "}
+                <b>
+                  {infoShow.phone === null ? "Not Available" : infoShow.phone}
+                </b>
+              </p>
+              <p>
+                Pharmacy:{" "}
+                <b>{infoShow.pharmacy === null ? "Not Available" : pharmacy}</b>
+              </p>
+              <p>
+                Created At:{" "}
+                <b>
+                  {infoShow.createdAt === null ? "Not Available" : createTime}
+                </b>
+              </p>
+              <p>
+                Created By:{" "}
+                <b>
+                  {infoShow.createdBy === null
+                    ? "Not Available"
+                    : infoShow.createdBy}
+                </b>
+              </p>
+              <p>
+                Last Update at:{" "}
+                <b>
+                  {infoShow.updatedAt === null ? "Not Available" : updateTime}
+                </b>
+              </p>
+              <p>
+                Updated By:{" "}
+                <b>
+                  {infoShow.updatedBy === null
+                    ? "Not Available"
+                    : infoShow.updatedBy}
+                </b>
+              </p>
+            </div>
           </div>
         ) : props.section === "customers" ? (
           <div style={{ textAlign: "center" }}>
             <h3>
               {infoShow.fname} {infoShow.lname}
             </h3>
-            <p>
-              Address:
-              <b>{infoAddress}</b>
-            </p>
-            <p>
-              Email:{" "}
-              <b>
-                {infoShow.email === null ? "Not Available" : infoShow.email}
-              </b>
-            </p>
-            <p>
-              Phone:{" "}
-              <b>
-                {infoShow.phone === null ? "Not Available" : infoShow.phone}
-              </b>
-            </p>
-            <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
-            </p>
-            <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
-            </p>
-            <p>
-              Last Update at:{" "}
-              <b>
-                {infoShow.updatedAt === null ? "Not Available" : updateTime}
-              </b>
-            </p>
-            <p>
-              Updated By:{" "}
-              <b>
-                {infoShow.updatedBy === null
-                  ? "Not Available"
-                  : infoShow.updatedBy}
-              </b>
-            </p>
+            <div className="cat-info">
+              <p>
+                Address:
+                <b>{infoAddress}</b>
+              </p>
+              <p>
+                Email:{" "}
+                <b>
+                  {infoShow.email === null ? "Not Available" : infoShow.email}
+                </b>
+              </p>
+              <p>
+                Phone:{" "}
+                <b>
+                  {infoShow.phone === null ? "Not Available" : infoShow.phone}
+                </b>
+              </p>
+              <p>
+                Created At:{" "}
+                <b>
+                  {infoShow.createdAt === null ? "Not Available" : createTime}
+                </b>
+              </p>
+              <p>
+                Created By:{" "}
+                <b>
+                  {infoShow.createdBy === null
+                    ? "Not Available"
+                    : infoShow.createdBy}
+                </b>
+              </p>
+              <p>
+                Last Update at:{" "}
+                <b>
+                  {infoShow.updatedAt === null ? "Not Available" : updateTime}
+                </b>
+              </p>
+              <p>
+                Updated By:{" "}
+                <b>
+                  {infoShow.updatedBy === null
+                    ? "Not Available"
+                    : infoShow.updatedBy}
+                </b>
+              </p>
+            </div>
           </div>
         ) : props.section === "pharmacies" ? (
           <div style={{ textAlign: "center" }}>
             <h3>{infoShow.name}</h3>
-            <p>
-              Manager : <b>{branchManager}</b>
-            </p>
-            <p>
-              Address : <b>{infoAddress}</b>
-            </p>
-            <p>
-              Created By: <b>{infoShow.createdBy}</b>
-            </p>
-            <p>
-              Created At: <b>{createTime}</b>
-            </p>
-            <p>
-              Updated By: <b>{infoShow.updatedBy}</b>
-            </p>
-            <p>
-              Last Update at: <b>{updateTime}</b>
-            </p>
+            <div className="cat-info">
+              <p>
+                Manager : <b>{branchManager}</b>
+              </p>
+              <p>
+                Address : <b>{infoAddress}</b>
+              </p>
+              <p>
+                Created By: <b>{infoShow.createdBy}</b>
+              </p>
+              <p>
+                Created At: <b>{createTime}</b>
+              </p>
+              <p>
+                Updated By: <b>{infoShow.updatedBy}</b>
+              </p>
+              <p>
+                Last Update at: <b>{updateTime}</b>
+              </p>
+            </div>
           </div>
         ) : null}
       </PopUp>

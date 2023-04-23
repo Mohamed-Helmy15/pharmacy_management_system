@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import Search from "./Search";
-import axios from "axios";
-import { config } from "./../App";
+// import axios from "axios";
+// import { config } from "./../App";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 130 },
@@ -12,7 +12,6 @@ const columns = [
     headerName: "Count",
     type: "number",
     width: 90,
-    editable: true,
   },
   {
     field: "price",
@@ -24,7 +23,7 @@ const columns = [
     field: "expiration",
     headerName: "Expiration",
     type: "number",
-    width: 90,
+    width: 130,
   },
   {
     field: "type",
@@ -35,7 +34,7 @@ const columns = [
 ];
 
 export default function CategoryDetails(props) {
-  const [count, setCount] = useState("");
+  // const [count, setCount] = useState("");
   const rows = props.medicines;
   const [searchText, setSearchText] = React.useState("");
 
@@ -61,46 +60,40 @@ export default function CategoryDetails(props) {
         )}
         columns={columns}
         pageSize={7}
-        rowsPerPageOptions={[1, 2, 3]}
+        rowsPerPageOptions={[25]}
         localeText={{
           noRowsLabel: `${
-            window.localStorage.getItem("branch") === "undefined"
+            window.localStorage.getItem("branch") === "undefined" ||
+            !window.localStorage.getItem("branch")
               ? "Please Select The Branch"
               : "No Data Available"
           }`,
         }}
-        onStateChange={(params) => {
-          if (params.editRows["1"]) {
-            setCount(params.editRows["1"]["count"].value);
-          }
-          // console.log(params.editRows["1"].count.value);
-        }}
-        onCellEditStop={(params) => {
-          let updatedCount = {
-            pharmacy: 1,
-            medicine: 1,
-            count,
-          };
-          axios
-            .post(
-              "http://localhost:1234/api/v1/medicines/update-count",
-              updatedCount,
-              config
-            )
-            .then((res) => props.setCount(count))
-            .catch((err) => console.log(err));
-        }}
+        // onStateChange={(params) => {
+        //   if (params.editRows["1"]) {
+        //     setCount(params.editRows["1"]["count"].value);
+        //   }
+        //   // console.log(params.editRows["1"].count.value);
+        // }}
+        // onCellEditStop={(params) => {
+        //   let updatedCount = {
+        //     pharmacy: 1,
+        //     medicine: 1,
+        //     count,
+        //   };
+        //   axios
+        //     .post(
+        //       "http://localhost:1234/api/v1/medicines/update-count",
+        //       updatedCount,
+        //       config
+        //     )
+        //     .then((res) => props.setCount(count))
+        //     .catch((err) => console.log(err));
+        // }}
 
         // checkboxSelection
         // onRowSelectionModelChange={handleSelectionModelChange}
       />
-      <div
-        onClick={() => {
-          console.log(count);
-        }}
-      >
-        sdkfasdkd
-      </div>
     </div>
   );
 }

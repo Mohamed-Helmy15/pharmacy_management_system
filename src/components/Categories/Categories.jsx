@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styles from "./Categories.module.css";
 import axios from "axios";
 import Tables from "../../materials/Table";
@@ -8,6 +8,7 @@ import CatCom from "./CatCom";
 import App, { config } from "../../App";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import SelectBranches from "../../materials/SelectBranches";
 
 export const style = {
   position: "absolute",
@@ -22,6 +23,7 @@ export const style = {
 const Categories = () => {
   const [pharmacies, setPharmacies] = useState([]);
   const [pharmacySelected, setPharmacySelected] = useState("");
+  const pharmacySelectedRef = useRef(pharmacySelected);
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [postRequest, setpostRequest] = useState("");
@@ -41,8 +43,6 @@ const Categories = () => {
       align: "center",
     },
   ];
-
-  window.localStorage.setItem("branch", pharmacySelected.id);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -75,6 +75,8 @@ const Categories = () => {
       })
       .catch((err) => err);
   }, [postRequest, deleteRequest, putRequest]);
+
+  console.log(pharmacySelectedRef);
 
   return (
     <>
@@ -117,19 +119,10 @@ const Categories = () => {
             keySearch={"name"}
           />
         </div>
-        <Autocomplete
-          options={pharmacies.map((pharmacy) => ({
-            id: pharmacy.id,
-            label: pharmacy.name,
-          }))}
-          renderInput={(params) => <TextField {...params} label="Pharmacy" />}
+        <SelectBranches
           value={pharmacySelected}
-          onChange={(e, value) => {
-            setPharmacySelected(value);
-            console.log(pharmacySelected);
-          }}
-          sx={{ width: "40%", position: "absolute", bottom: 0, right: 10 }}
-          isOptionEqualToValue={(option, value) => option.id === value.id}
+          setValue={setPharmacySelected}
+          storage={"branch"}
         />
       </App>
     </>
