@@ -105,9 +105,6 @@ const AddNewCom = (props) => {
           if (res.data.success === true) {
             props.setPostRequest(formData);
             setStateNotification(true);
-            if (props.setSideRequest) {
-              props.setSideRequest(true);
-            }
             setNotification(true);
             handleClose();
             emptyFields();
@@ -120,47 +117,49 @@ const AddNewCom = (props) => {
           setNotification(true);
         });
     } else {
-      // const formData = new FormData();
-      // if (values.marketName !== "") {
-      //   formData.append("marketName", values.marketName);
-      // }
-      // if (values.scientificName !== "") {
-      //   formData.append("scientificName", values.scientificName);
-      // }
-      // if (values.supplier !== "") {
-      //   formData.append("supplier", supplierValue.id);
-      // }
-      // if (values.description !== "") {
-      //   formData.append("description", values.description);
-      // }
-      // if (categoryValue !== null) {
-      //   formData.append("category", categoryValue.id);
-      // }
-      // if (values.price !== "") {
-      //   formData.append("price", values.price);
-      // }
-      // if (typeValue !== null) {
-      //   formData.append("pharmacy", typeValue);
-      // }
-      // if (image !== null) {
-      //   formData.append("img", image, image.name);
-      // }
-      // axios
-      //   .put(
-      //     `http://localhost:1234/api/v1/users/${props.id}`,
-      //     formData,
-      //     configMultiPart
-      //   )
-      //   .then((res) => {
-      //     if (res.data.success === true) {
-      //       props.setPutRequest(values);
-      //       emptyFields();
-      //       handleClose();
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     return err;
-      //   });
+      const formData = new FormData();
+      if (values.marketName !== "") {
+        formData.append("marketName", values.marketName);
+      }
+      if (values.scientificName !== "") {
+        formData.append("scientificName", values.scientificName);
+      }
+      if (values.supplier !== "") {
+        formData.append("supplier", supplierValue.id);
+      }
+      if (values.description !== "") {
+        formData.append("description", values.description);
+      }
+      if (categoryValue !== null) {
+        formData.append("category", categoryValue.id);
+      }
+      if (values.price !== "") {
+        formData.append("price", values.price);
+      }
+      if (typeValue !== null) {
+        formData.append("pharmacy", typeValue);
+      }
+      if (image !== null) {
+        formData.append("img", image, image.name);
+      }
+      axios
+        .put(
+          `http://localhost:1234/api/v1/medicines/${props.id}`,
+          formData,
+          configMultiPart
+        )
+        .then((res) => {
+          if (res.data.success === true) {
+            props.setPutRequest(values);
+            setStateNotification(true);
+            setNotification(true);
+            emptyFields();
+            handleClose();
+          }
+        })
+        .catch((err) => {
+          return err;
+        });
     }
   };
   const medicineFormik = useFormik({
@@ -356,104 +355,108 @@ const AddNewCom = (props) => {
           </PopUp>
         </>
       ) : (
-        <form onSubmit={medicineFormik.handleSubmit}>
-          <TextField
-            type="text"
-            id="marketName"
-            name="marketName"
-            variant="standard"
-            {...medicineFormik.getFieldProps("marketName")}
-            label="Market Name"
-            style={{ width: "100%" }}
-          />
-          <TextField
-            type="text"
-            name="scientificName"
-            id="scientificName"
-            variant="standard"
-            {...medicineFormik.getFieldProps("scientificName")}
-            label="Scientific Name"
-            style={{ width: "100%" }}
-          />
-          <TextField
-            type="text"
-            name="price"
-            id="price"
-            variant="standard"
-            {...medicineFormik.getFieldProps("price")}
-            label="Price"
-            style={{ width: "100%" }}
-          />
-          <Autocomplete
-            options={props.supplires.map((supplier) => ({
-              id: supplier.id,
-              label: supplier.name,
-            }))}
-            value={supplierValue}
-            onChange={(e, value) => {
-              setSupplierValue(value);
-            }}
-            sx={{ width: "100%" }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => (
-              <TextField {...params} label="Suppliers" />
-            )}
-          />
-          <TextField
-            type="text"
-            name="description"
-            id="description"
-            variant="standard"
-            {...medicineFormik.getFieldProps("description")}
-            label="Description"
-            style={{ width: "100%" }}
-          />
+        <PopUp openModal={props.open} handleCloseModal={handleClose}>
+          <form onSubmit={medicineFormik.handleSubmit}>
+            <TextField
+              type="text"
+              id="marketName"
+              name="marketName"
+              variant="standard"
+              {...medicineFormik.getFieldProps("marketName")}
+              label="Market Name"
+              style={{ width: "100%" }}
+            />
+            <TextField
+              type="text"
+              name="scientificName"
+              id="scientificName"
+              variant="standard"
+              {...medicineFormik.getFieldProps("scientificName")}
+              label="Scientific Name"
+              style={{ width: "100%" }}
+            />
+            <TextField
+              type="text"
+              name="price"
+              id="price"
+              variant="standard"
+              {...medicineFormik.getFieldProps("price")}
+              label="Price"
+              style={{ width: "100%" }}
+            />
+            <Autocomplete
+              options={props.supplires.map((supplier) => ({
+                id: supplier.id,
+                label: supplier.name,
+              }))}
+              value={supplierValue}
+              onChange={(e, value) => {
+                setSupplierValue(value);
+              }}
+              sx={{ width: "100%" }}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <TextField {...params} label="Suppliers" />
+              )}
+            />
+            <TextField
+              type="text"
+              name="description"
+              id="description"
+              variant="standard"
+              {...medicineFormik.getFieldProps("description")}
+              label="Description"
+              style={{ width: "100%" }}
+            />
 
-          <Autocomplete
-            options={props.categories.map((category) => ({
-              id: category.id,
-              label: category.name,
-            }))}
-            value={categoryValue}
-            onChange={(e, value) => {
-              setcategoryValue(value);
-            }}
-            sx={{ width: "100%" }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            renderInput={(params) => <TextField {...params} label="Category" />}
-          />
-          <Autocomplete
-            options={props.types}
-            renderInput={(params) => <TextField {...params} label="Types" />}
-            value={typeValue}
-            onChange={(e, value) => {
-              settypeValue(value);
-            }}
-            sx={{ width: "100%" }}
-            isOptionEqualToValue={(option, value) => option === value}
-          />
-          <TextField
-            type="file"
-            name="img"
-            id="img"
-            variant="standard"
-            label="image"
-            onChange={(e) => {
-              setImage(e.target.files[0]);
-            }}
-            style={{ width: "100%" }}
-          />
-          <button
-            type="submit"
-            style={{
-              display: "block",
-              margin: "10px auto 0",
-            }}
-            className="get"
-          >
-            Submit
-          </button>
-        </form>
+            <Autocomplete
+              options={props.categories.map((category) => ({
+                id: category.id,
+                label: category.name,
+              }))}
+              value={categoryValue}
+              onChange={(e, value) => {
+                setcategoryValue(value);
+              }}
+              sx={{ width: "100%" }}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              renderInput={(params) => (
+                <TextField {...params} label="Category" />
+              )}
+            />
+            <Autocomplete
+              options={props.types}
+              renderInput={(params) => <TextField {...params} label="Types" />}
+              value={typeValue}
+              onChange={(e, value) => {
+                settypeValue(value);
+              }}
+              sx={{ width: "100%" }}
+              isOptionEqualToValue={(option, value) => option === value}
+            />
+            <TextField
+              type="file"
+              name="img"
+              id="img"
+              variant="standard"
+              label="image"
+              onChange={(e) => {
+                setImage(e.target.files[0]);
+              }}
+              style={{ width: "100%" }}
+            />
+            <button
+              type="submit"
+              style={{
+                display: "block",
+                margin: "10px auto 0",
+              }}
+              className="get"
+            >
+              Submit
+            </button>
+          </form>
+        </PopUp>
       )}
       {stateNotification === true ? (
         <Notification

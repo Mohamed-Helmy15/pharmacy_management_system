@@ -16,6 +16,7 @@ const columns = [
     field: "count",
     headerName: "Count",
     type: "number",
+    editable: true,
     width: 150,
   },
   {
@@ -44,6 +45,7 @@ const AddNewM = () => {
   const [types, setTypes] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [dataRow, setDataRow] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -52,6 +54,8 @@ const AddNewM = () => {
   const [pharmacySelected, setPharmacySelected] = useState(null);
   const [notifDelete, setnotifDelete] = useState(null);
   const [state, setState] = useState("");
+  const [id, setId] = useState("");
+  const [count, setCount] = useState("");
 
   const handleNotClose = (event, reason) => {
     setnotifDelete(null);
@@ -61,6 +65,7 @@ const AddNewM = () => {
     setSearch(e.target.value);
   };
   const handleOpen = () => setOpen(true);
+  const handleOpenEdit = () => setOpenEdit(true);
 
   useEffect(() => {
     axios
@@ -93,17 +98,20 @@ const AddNewM = () => {
         setDataRow(res.data.payload);
       })
       .catch((err) => err);
-  }, [deleteRequest, putRequest, postRequest]);
+  }, [deleteRequest, putRequest, postRequest, pharmacySelected]);
 
   const handleSelectionModelChange = (selectionModel) => {
     const selectedRowObjects = dataRow.filter((row) =>
       selectionModel.includes(row.id)
     );
     setSelectedRows(selectedRowObjects);
+    if (selectedRowObjects.length > 0) {
+      setId(selectedRowObjects[0].id);
+    }
   };
 
-  const handleEdit = (row) => {
-    console.log(row);
+  const handleEdit = () => {
+    handleOpenEdit();
   };
   const handleDelete = (rows) => {
     rows.map((row) => {
@@ -178,11 +186,32 @@ const AddNewM = () => {
         }}
         checkboxSelection
         onRowSelectionModelChange={handleSelectionModelChange}
+        onStateChange={(params) => {
+          if (params.editRows[`${id}`]) {
+            setCount(params.editRows[`${id}`].count.value);
+          }
+        }}
+        onCellEditStop={(params) => {
+          let updatedCount = {
+            pharmacy: window.localStorage.getItem("thisBranch"),
+            medicine: id,
+            count,
+          };
+          axios
+            .post(
+              "http://localhost:1234/api/v1/medicines/update-count",
+              updatedCount,
+              config
+            )
+            .then((res) => setPutRequest(res))
+            .catch((err) => err);
+        }}
       />
       <AddNewCom
-        decide={"create"}
-        open={open}
-        setOpen={setOpen}
+        decide={"edit"}
+        open={openEdit}
+        setOpen={setOpenEdit}
+        id={id}
         categories={categories}
         types={types}
         supplires={suppliers}
@@ -192,7 +221,7 @@ const AddNewM = () => {
       {selectedRows.length > 0 ? (
         <div className={styles.buttons}>
           {selectedRows.length === 1 ? (
-            <button className="get" onClick={() => handleOpen()}>
+            <button className="get" onClick={handleEdit}>
               Edit
             </button>
           ) : null}

@@ -165,3 +165,25 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 .MuiDataGrid-root.MuiDataGrid-root--densityStandard.MuiDataGrid-withBorderColor.css-1usso8h-MuiDataGrid-root {
   height: 480px;
 }
+
+.MuiDataGrid-columnHeadersInner.MuiDataGrid-columnHeadersInner--scrollable.css-gl260s-MuiDataGrid-columnHeadersInner,
+.MuiDataGrid-columnHeaders.MuiDataGrid-withBorderColor.css-1iyq7zh-MuiDataGrid-columnHeaders {
+  background-color: #0f467e;
+  color: white;
+}
+
+.MuiDataGrid-columnHeadersInner.MuiDataGrid-columnHeadersInner--scrollable.css-gl260s-MuiDataGrid-columnHeadersInner
+  button,
+.MuiDataGrid-columnHeaders.MuiDataGrid-withBorderColor.css-1iyq7zh-MuiDataGrid-columnHeaders
+  button,
+.MuiDataGrid-columnHeadersInner.MuiDataGrid-columnHeadersInner--scrollable.css-gl260s-MuiDataGrid-columnHeadersInner
+  svg,
+.MuiDataGrid-columnHeaders.MuiDataGrid-withBorderColor.css-1iyq7zh-MuiDataGrid-columnHeaders
+  svg {
+  color: white;
+}
+
+.MuiDataGrid-virtualScroller.css-axafay-MuiDataGrid-virtualScroller,
+.MuiDataGrid-footerContainer.MuiDataGrid-withBorderColor.css-wop1k0-MuiDataGrid-footerContainer {
+  background-color: white;
+}
