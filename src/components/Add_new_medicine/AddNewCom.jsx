@@ -176,7 +176,7 @@ const AddNewCom = (props) => {
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Create a New medicine
             </Typography>
-            <div>
+            <div className="pop">
               <form onSubmit={medicineFormik.handleSubmit}>
                 <TextField
                   type="text"

@@ -219,7 +219,7 @@ const UserCom = (props) => {
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Create a New User
             </Typography>
-            <div>
+            <div className="pop">
               <form onSubmit={userFormik.handleSubmit}>
                 <TextField
                   type="text"

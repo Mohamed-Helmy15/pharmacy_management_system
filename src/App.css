@@ -131,7 +131,9 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 
 .MuiBox-root.css-100452t {
   width: 700px;
+  max-height: 700px;
   padding: 20px;
+  padding-right: 10px;
   border-radius: 10px;
 }
 
@@ -186,4 +188,23 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 .MuiDataGrid-virtualScroller.css-axafay-MuiDataGrid-virtualScroller,
 .MuiDataGrid-footerContainer.MuiDataGrid-withBorderColor.css-wop1k0-MuiDataGrid-footerContainer {
   background-color: white;
+}
+
+.med-cont {
+  background-color: #ddd;
+  padding: 8px 10px;
+  border-radius: 7px;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  padding: 10px 0;
+}
+
+.pop {
+  height: 580px;
+  overflow: auto;
 }

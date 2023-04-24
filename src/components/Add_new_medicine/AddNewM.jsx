@@ -8,6 +8,11 @@ import SelectBranches from "./../../materials/SelectBranches";
 import { DataGrid } from "@mui/x-data-grid";
 import styles from "./AddNewM.module.css";
 import Notification from "./../../materials/Notification";
+import PopUp from "../../materials/PopUp";
+import CountButton from "../../materials/CountButton";
+import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
+
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
@@ -46,6 +51,7 @@ const AddNewM = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
+  const [openConfirm, setOpenConfirm] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [dataRow, setDataRow] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -56,6 +62,9 @@ const AddNewM = () => {
   const [state, setState] = useState("");
   const [id, setId] = useState("");
   const [count, setCount] = useState("");
+  const [customers, setCustomers] = useState([]);
+  const [customerValue, setCustomerValue] = useState(null);
+  const [quant, setQuant] = useState(0);
 
   const handleNotClose = (event, reason) => {
     setnotifDelete(null);
@@ -65,7 +74,12 @@ const AddNewM = () => {
     setSearch(e.target.value);
   };
   const handleOpen = () => setOpen(true);
+  const handleOpenConfirm = () => setOpenConfirm(true);
   const handleOpenEdit = () => setOpenEdit(true);
+
+  const handleClose = () => {
+    setOpenConfirm(false);
+  };
 
   useEffect(() => {
     axios
@@ -84,6 +98,13 @@ const AddNewM = () => {
       .get("http://localhost:1234/api/v1/suppliers", config)
       .then((res) => {
         setSuppliers(res.data.payload);
+      })
+      .catch((err) => err);
+
+    axios
+      .get("http://localhost:1234/api/v1/customers", config)
+      .then((res) => {
+        setCustomers(res.data.payload);
       })
       .catch((err) => err);
 
@@ -129,9 +150,7 @@ const AddNewM = () => {
       return true;
     });
   };
-  const handleConfirm = (id) => {
-    console.log(id);
-  };
+
   return (
     <App>
       <SelectBranches
@@ -218,6 +237,96 @@ const AddNewM = () => {
         setPostRequest={setPostRequest}
         setPutRequest={setPutRequest}
       />
+      <PopUp openModal={openConfirm} handleCloseModal={handleClose}>
+        <div className="pop wrap">
+          <Autocomplete
+            options={customers.map((customer) => ({
+              id: customer.id,
+              label: customer.name,
+            }))}
+            renderInput={(params) => (
+              <TextField {...params} label="Customers" />
+            )}
+            value={customerValue}
+            onChange={(e, value) => {
+              setCustomerValue(value);
+            }}
+            sx={{ width: "100%" }}
+            isOptionEqualToValue={(option, value) => option.id === value.id}
+          />
+          {selectedRows.map((row, i) => {
+            let data = {};
+            return (
+              <div className="med-cont" key={row.id}>
+                <p onClick={() => console.log(data)}>
+                  Medicine Name: {row.marketName}
+                </p>
+                <p>total price: {row.price}</p>
+                <input
+                  type="number"
+                  min="0"
+                  max={row.count}
+                  defaultValue="0"
+                  onChange={(event) => {
+                    data.customer = customerValue.id;
+                    data.pharmacy = parseInt(
+                      window.localStorage.getItem("thisBranch")
+                    );
+                    data.medicines = selectedRows.map((row, index) => {
+                      return {
+                        medicine: row.id,
+                        conut: i === index ? event.target.value : null,
+                      };
+                    });
+                  }}
+                />
+                {/* <CountButton
+                  // count={quant}
+                  // setCount={setQuant}
+                  limit={row.count}
+                  price={row.price}
+                /> */}
+              </div>
+            );
+          })}
+          <button
+            className="get"
+            onClick={() => {
+              // axios
+              //   .post(
+              //     "http://localhost:1234/api/v1/transactions/create",
+              //     {
+              //       customer: customerValue.id,
+              //       pharmacy: parseInt(
+              //         window.localStorage.getItem("thisBranch")
+              //       ),
+              //       medicines: [
+              //         { medicine: 14, count: 1 },
+              //         { medicine: 18, count: 1 },
+              //       ],
+              //     },
+              //     config
+              //   )
+              //   .then((res) => console.log(res))
+              //   .catch((err) => console.log(err));
+              console
+                .log
+
+                //   {
+                //   customer: customerValue.id,
+                //   pharmacy: parseInt(window.localStorage.getItem("thisBranch")),
+                //   medicines: [
+                //     { medicine: 14, count: 1 },
+                //     { medicine: 18, count: 1 },
+                //   ],
+                // }
+                ();
+            }}
+          >
+            Submit the Bill
+          </button>
+        </div>
+      </PopUp>
       {selectedRows.length > 0 ? (
         <div className={styles.buttons}>
           {selectedRows.length === 1 ? (
@@ -229,7 +338,7 @@ const AddNewM = () => {
             Delete
           </button>
 
-          <button className="get" onClick={() => handleConfirm(selectedRows)}>
+          <button className="get" onClick={() => handleOpenConfirm()}>
             Confirm
           </button>
         </div>
