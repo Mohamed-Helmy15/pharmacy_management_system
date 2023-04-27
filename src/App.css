@@ -1,7 +1,6 @@
 /* global style */
 * {
   box-sizing: border-box;
-padding:0;
 }
 
 .page {
@@ -206,6 +205,15 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 }
 
 .pop {
-  height: 580px;
+  max-height: 580px;
   overflow: auto;
+}
+
+.buttons {
+  width: fit-content;
+  margin: 10px auto;
+}
+
+.buttons button:not(:last-child) {
+  margin-right: 8px;
 }

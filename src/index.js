@@ -16,6 +16,7 @@ import Forgot from "./components/Forgot_Password/Forgot";
 import Reset from "./components/Reset_Password/Reset";
 import Customers from "./components/Customers/Customers";
 import Categories from "./components/Categories/Categories";
+import Suppliers from "./components/Suppliers/Suppliers";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -71,12 +72,19 @@ const router = createBrowserRouter([
       </RequireAuth>
     ),
   },
-
   {
     path: "/profile",
     element: (
       <RequireAuth loginPath="/">
         <Profile />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/suppliers",
+    element: (
+      <RequireAuth loginPath="/">
+        <Suppliers />
       </RequireAuth>
     ),
   },

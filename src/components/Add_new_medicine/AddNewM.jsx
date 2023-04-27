@@ -7,12 +7,12 @@ import AddNewCom from "./AddNewCom";
 import SelectBranches from "./../../materials/SelectBranches";
 import { DataGrid } from "@mui/x-data-grid";
 import styles from "./AddNewM.module.css";
-import Notification from "./../../materials/Notification";
 import PopUp from "../../materials/PopUp";
 import CountButton from "../../materials/CountButton";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-
+import FormatCurrency from "../../FormatCurrency";
+import swal from "sweetalert";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
@@ -58,27 +58,63 @@ const AddNewM = () => {
   const [postRequest, setPostRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState("");
   const [pharmacySelected, setPharmacySelected] = useState(null);
-  const [notifDelete, setnotifDelete] = useState(null);
-  const [state, setState] = useState("");
   const [id, setId] = useState("");
   const [count, setCount] = useState("");
   const [customers, setCustomers] = useState([]);
   const [customerValue, setCustomerValue] = useState(null);
-  const [quant, setQuant] = useState(0);
-
-  const handleNotClose = (event, reason) => {
-    setnotifDelete(null);
-  };
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
   const handleOpen = () => setOpen(true);
-  const handleOpenConfirm = () => setOpenConfirm(true);
+
+  const handleOpenConfirm = () => {
+    setOpenConfirm(true);
+  };
+
   const handleOpenEdit = () => setOpenEdit(true);
 
   const handleClose = () => {
     setOpenConfirm(false);
+  };
+
+  const handleSelectionModelChange = (selectionModel) => {
+    const selectedRowObjects = dataRow.filter((row) =>
+      selectionModel.includes(row.id)
+    );
+    setSelectedRows(selectedRowObjects);
+    if (selectedRowObjects.length > 0) {
+      setId(selectedRowObjects[0].id);
+    }
+  };
+
+  const handleDelete = (rows) => {
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover it",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        rows.map((row) => {
+          axios
+            .delete(`http://localhost:1234/api/v1/medicines/${row.id}`, config)
+            .then((res) => {
+              setdeleteRequest(res);
+              swal("Deleted Successfully!", {
+                icon: "success",
+              });
+            })
+            .catch((err) => {
+              swal("", "the delete operation hasn't been completed!", "info");
+            });
+          return true;
+        });
+      } else {
+        swal("", "the delete operation hasn't been completed!", "info");
+      }
+    });
   };
 
   useEffect(() => {
@@ -121,36 +157,6 @@ const AddNewM = () => {
       .catch((err) => err);
   }, [deleteRequest, putRequest, postRequest, pharmacySelected]);
 
-  const handleSelectionModelChange = (selectionModel) => {
-    const selectedRowObjects = dataRow.filter((row) =>
-      selectionModel.includes(row.id)
-    );
-    setSelectedRows(selectedRowObjects);
-    if (selectedRowObjects.length > 0) {
-      setId(selectedRowObjects[0].id);
-    }
-  };
-
-  const handleEdit = () => {
-    handleOpenEdit();
-  };
-  const handleDelete = (rows) => {
-    rows.map((row) => {
-      axios
-        .delete(`http://localhost:1234/api/v1/medicines/${row.id}`, config)
-        .then((res) => {
-          setdeleteRequest(res);
-          setState(res.data.success);
-          setnotifDelete(true);
-        })
-        .catch((err) => {
-          setdeleteRequest(err);
-          setState(err.data.success);
-        });
-      return true;
-    });
-  };
-
   return (
     <App>
       <SelectBranches
@@ -183,9 +189,19 @@ const AddNewM = () => {
       </div>
 
       <DataGrid
-        rows={dataRow.filter((row) =>
-          row.marketName.toLowerCase().includes(search.toLowerCase())
-        )}
+        rows={dataRow
+          .filter((row) =>
+            row.marketName.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((row) => ({
+            id: row.id,
+            marketName: row.marketName,
+            scientificName: row.scientificName,
+            count: row.count,
+            price: FormatCurrency(row.price),
+            expiration: row.expiration,
+            type: row.type,
+          }))}
         columns={columns}
         initialState={{
           pagination: {
@@ -255,72 +271,30 @@ const AddNewM = () => {
             isOptionEqualToValue={(option, value) => option.id === value.id}
           />
           {selectedRows.map((row, i) => {
-            let data = {};
             return (
-              <div className="med-cont" key={row.id}>
-                <p onClick={() => console.log(data)}>
-                  Medicine Name: {row.marketName}
-                </p>
-                <p>total price: {row.price}</p>
-                <input
-                  type="number"
-                  min="0"
-                  max={row.count}
-                  defaultValue="0"
-                  onChange={(event) => {
-                    data.customer = customerValue.id;
-                    data.pharmacy = parseInt(
-                      window.localStorage.getItem("thisBranch")
-                    );
-                    data.medicines = selectedRows.map((row, index) => {
-                      return {
-                        medicine: row.id,
-                        conut: i === index ? event.target.value : null,
-                      };
-                    });
-                  }}
-                />
-                {/* <CountButton
-                  // count={quant}
-                  // setCount={setQuant}
-                  limit={row.count}
+              <div key={row.id}>
+                <CountButton
+                  id={row.id}
+                  marketName={row.marketName}
                   price={row.price}
-                /> */}
+                  limit={row.count}
+                />
               </div>
             );
           })}
           <button
             className="get"
             onClick={() => {
-              // axios
-              //   .post(
-              //     "http://localhost:1234/api/v1/transactions/create",
-              //     {
-              //       customer: customerValue.id,
-              //       pharmacy: parseInt(
-              //         window.localStorage.getItem("thisBranch")
-              //       ),
-              //       medicines: [
-              //         { medicine: 14, count: 1 },
-              //         { medicine: 18, count: 1 },
-              //       ],
-              //     },
-              //     config
-              //   )
-              //   .then((res) => console.log(res))
-              //   .catch((err) => console.log(err));
-              console
-                .log
-
-                //   {
-                //   customer: customerValue.id,
-                //   pharmacy: parseInt(window.localStorage.getItem("thisBranch")),
-                //   medicines: [
-                //     { medicine: 14, count: 1 },
-                //     { medicine: 18, count: 1 },
-                //   ],
-                // }
-                ();
+              console.log({
+                pharmacy: 1,
+                customer: 1,
+                medicines: [
+                  {
+                    medicine: 1,
+                    count: 3,
+                  },
+                ],
+              });
             }}
           >
             Submit the Bill
@@ -330,7 +304,7 @@ const AddNewM = () => {
       {selectedRows.length > 0 ? (
         <div className={styles.buttons}>
           {selectedRows.length === 1 ? (
-            <button className="get" onClick={handleEdit}>
+            <button className="get" onClick={handleOpenEdit}>
               Edit
             </button>
           ) : null}
@@ -343,24 +317,6 @@ const AddNewM = () => {
           </button>
         </div>
       ) : null}
-
-      {state === true ? (
-        <Notification
-          auto={6000} // auto hide time in ms
-          case="success"
-          successfulMessage={`the medicine has been successfully deleted`}
-          notification={notifDelete} // add state
-          handleNotClose={handleNotClose} // on close function
-        />
-      ) : (
-        <Notification
-          auto={6000}
-          case="error"
-          unsuccessfulMessage={`the medicine has not been successfully deleted`}
-          notification={notifDelete}
-          handleNotClose={handleNotClose}
-        />
-      )}
     </App>
   );
 };

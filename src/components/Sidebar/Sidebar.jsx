@@ -7,6 +7,7 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import MedicationLiquidIcon from "@mui/icons-material/MedicationLiquid";
 import DeviceHubIcon from "@mui/icons-material/DeviceHub";
 import ReceiptIcon from "@mui/icons-material/Receipt";
+import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useSignOut } from "react-auth-kit";
 
@@ -17,6 +18,7 @@ export const items = [
   "Medicines",
   "Branches",
   "Bills",
+  "suppliers",
   "Logout",
 ];
 
@@ -77,6 +79,13 @@ const MainSidebar = (props) => {
             className={styles.menuitem}
           >
             Bills
+          </MenuItem>
+          <MenuItem
+            icon={<AddBusinessIcon />}
+            component={<Link to={"/suppliers"} />}
+            className={styles.menuitem}
+          >
+            Suppliers
           </MenuItem>
 
           <MenuItem

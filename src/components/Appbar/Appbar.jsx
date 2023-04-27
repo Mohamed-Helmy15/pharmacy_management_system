@@ -35,6 +35,7 @@ const Appbar = () => {
     "Medicines",
     "Branches",
     "Bills",
+    "suppliers",
     "",
   ];
 
