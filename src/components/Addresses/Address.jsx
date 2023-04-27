@@ -3,61 +3,34 @@ import App, { config } from "../../App";
 import Search from "./../../materials/Search";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
-import SupplierCom from "./SupplierCom";
+import AddressCom from "./AddressCom";
 import swal from "sweetalert";
 import PopUp from "./../../materials/PopUp";
 
 const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "name", headerName: "Name", width: 150 },
-  { field: "email", headerName: "Email", width: 230 },
-  {
-    field: "address",
-    headerName: "Address",
-    width: 200,
-  },
+  { field: "id", headerName: "ID", width: 170 },
+  { field: "Address", headerName: "Address", width: 390 },
 ];
 
-const Suppliers = () => {
+const Address = () => {
   const [search, setSearch] = useState("");
-  const [suppliers, setSuppliers] = useState([]);
-  const [infoShow, setinfoShow] = useState([]);
-  const [addreShow, setAddreShow] = useState({});
-  const [phones, setPhones] = useState([]);
-  const [address, setAddress] = useState([]);
-  const [createTime, setCreateTime] = useState("");
-  const [updateTime, setUpdateTime] = useState("");
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [id, setId] = useState("");
   const [open, setOpen] = useState(false);
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [putRequest, setPutRequest] = useState("");
+  const [dataRow, setDataRow] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [id, setId] = useState("");
   const [postRequest, setPostRequest] = useState("");
+  const [putRequest, setPutRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState("");
+  const [infoShow, setinfoShow] = useState([]);
+  const [createTime, setCreateTime] = useState("");
+  const [updateTime, setUpdateTime] = useState("");
 
   const handleOpen = () => setOpen(true);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
-  };
-
-  const handleOpenShow = (id) => {
-    setOpenShow(true);
-    axios
-      .get(`http://localhost:1234/api/v1/suppliers/${id}`, config)
-      .then((res) => console.log(res))
-      .catch((err) => {
-        setinfoShow(err.response.data.payload);
-        setAddreShow(err.response.data.payload.address);
-        setPhones(err.response.data.payload.phones);
-        setCreateTime(
-          err.response.data.payload.createdAt.split("T").join(" At ")
-        );
-        setUpdateTime(
-          err.response.data.payload.updatedAt.split("T").join(" At ")
-        );
-      });
   };
 
   const handleDelete = (rows) => {
@@ -71,7 +44,7 @@ const Suppliers = () => {
       if (willDelete) {
         rows.map((row) => {
           axios
-            .delete(`http://localhost:1234/api/v1/suppliers/${row.id}`, config)
+            .delete(`http://localhost:1234/api/v1/addresses/${row.id}`, config)
             .then((res) => {
               setdeleteRequest(res);
               swal("Deleted Successfully!", {
@@ -90,6 +63,22 @@ const Suppliers = () => {
     });
   };
 
+  const handleOpenShow = (id) => {
+    axios
+      .get(`http://localhost:1234/api/v1/addresses/${id}`, config)
+      .then((res) => res)
+      .catch((err) => {
+        setOpenShow(true);
+        setinfoShow(err.response.data.payload);
+        setCreateTime(
+          err.response.data.payload.createdAt.split("T").join(" At ")
+        );
+        setUpdateTime(
+          err.response.data.payload.updatedAt.split("T").join(" At ")
+        );
+      });
+  };
+
   const handleCloseShow = () => {
     setOpenShow(false);
   };
@@ -99,7 +88,7 @@ const Suppliers = () => {
   };
 
   const handleSelectionModelChange = (selectionModel) => {
-    const selectedRowObjects = suppliers.filter((row) =>
+    const selectedRowObjects = dataRow.filter((row) =>
       selectionModel.includes(row.id)
     );
     setSelectedRows(selectedRowObjects);
@@ -110,46 +99,47 @@ const Suppliers = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:1234/api/v1/suppliers`, config)
+      .get("http://localhost:1234/api/v1/addresses", config)
       .then((res) => {
-        setSuppliers(res.data.payload);
+        setDataRow(res.data.payload);
       })
       .catch((err) => err);
-    //
-
-    axios
-      .get(`http://localhost:1234/api/v1/addresses`, config)
-      .then((res) => setAddress(res.data.payload))
-      .catch((err) => err);
-  }, [putRequest, postRequest, deleteRequest]);
+  }, [postRequest, putRequest, deleteRequest]);
 
   return (
     <App>
       <div className="header">
-        <h3 style={{ margin: 0 }}>Suppliers</h3>
+        <h3 style={{ margin: 0 }}>Address</h3>
         <Search
           search={search}
           handleSearch={handleSearch}
-          placeholder={"Search the suppliers name"}
+          placeholder={"Search the address"}
         />
         <div>
           <button className="get" onClick={handleOpen}>
-            Create new Suppliers
+            Create new Address
           </button>
-          <SupplierCom
+          <AddressCom
             decide={"create"}
             open={open}
             setOpen={setOpen}
-            address={address}
             setPostRequest={setPostRequest}
             setPutRequest={setPutRequest}
           />
         </div>
       </div>
+
       <DataGrid
-        rows={suppliers.filter((row) =>
-          row.name.toLowerCase().includes(search.toLowerCase())
-        )}
+        rows={dataRow
+          .filter((row) =>
+            row.town.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((row) => ({
+            id: row.id,
+            Address: `${row.governorate} - ${row.city} - ${row.town} ${
+              row.street !== null ? "- " + row.street : ""
+            }`,
+          }))}
         columns={columns}
         initialState={{
           pagination: {
@@ -160,9 +150,7 @@ const Suppliers = () => {
         }}
         pageSizeOptions={[5, 8]}
         localeText={{
-          noRowsLabel: `
-              : "No Data Available"
-          `,
+          noRowsLabel: `${"No Data Available"}`,
         }}
         checkboxSelection
         onRowSelectionModelChange={handleSelectionModelChange}
@@ -199,31 +187,15 @@ const Suppliers = () => {
           </button>
         </div>
       ) : null}
+
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }}>
-          <h3>{infoShow.name}</h3>
           <div className="cat-info">
             <p>
               Address:
               <b>
-                {addreShow.governorate} - {addreShow.city} - {addreShow.town}
-                {` ${addreShow.street !== null ? `-${addreShow.street}` : ""}`}
-              </b>
-            </p>
-            <p>
-              Email:{" "}
-              <b>
-                {infoShow.email === null ? "Not Available" : infoShow.email}
-              </b>
-            </p>
-            <p>
-              Phones:{" "}
-              <b>
-                {phones.length === 0
-                  ? "Not Available"
-                  : phones.map((phone, i) => {
-                      return phones.length !== i + 1 ? `${phone} - ` : phone;
-                    })}
+                {infoShow.governorate} - {infoShow.city} - {infoShow.town}
+                {` ${infoShow.street !== null ? `-${infoShow.street}` : ""}`}
               </b>
             </p>
             <p>
@@ -257,12 +229,12 @@ const Suppliers = () => {
           </div>
         </div>
       </PopUp>
-      <SupplierCom
+
+      <AddressCom
         decide={"edit"}
-        id={id}
         open={openEdit}
+        id={id}
         setOpen={setOpenEdit}
-        address={address}
         setPostRequest={setPostRequest}
         setPutRequest={setPutRequest}
       />
@@ -270,4 +242,4 @@ const Suppliers = () => {
   );
 };
 
-export default Suppliers;
+export default Address;

@@ -20,10 +20,10 @@ const CustomerCom = (props) => {
   const [addressCustomer, setAddressCustomer] = useState(false);
   const [addressValue, setAddressValue] = useState(null);
   const [governerate, setGovernerate] = useState(null);
-  const [city, setCity] = useState(null);
-  const [error, setError] = useState(false);
   const [govError, setGovError] = useState(false);
+  const [city, setCity] = useState(null);
   const [cityError, setCityError] = useState(false);
+  const [error, setError] = useState(false);
   const [stateNotification, setStateNotification] = useState(false);
 
   const handleNotClose = (event, reason) => {

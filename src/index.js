@@ -17,6 +17,7 @@ import Reset from "./components/Reset_Password/Reset";
 import Customers from "./components/Customers/Customers";
 import Categories from "./components/Categories/Categories";
 import Suppliers from "./components/Suppliers/Suppliers";
+import Address from "./components/Addresses/Address";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -53,6 +54,14 @@ const router = createBrowserRouter([
     element: (
       <RequireAuth loginPath="/">
         <Branches />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/addresses",
+    element: (
+      <RequireAuth loginPath="/">
+        <Address />
       </RequireAuth>
     ),
   },

@@ -9,6 +9,7 @@ import DeviceHubIcon from "@mui/icons-material/DeviceHub";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LogoutIcon from "@mui/icons-material/Logout";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useSignOut } from "react-auth-kit";
 
 export const items = [
@@ -17,6 +18,7 @@ export const items = [
   "Customers",
   "Medicines",
   "Branches",
+  "Addresses",
   "Bills",
   "suppliers",
   "Logout",
@@ -71,6 +73,13 @@ const MainSidebar = (props) => {
             className={styles.menuitem}
           >
             Branches
+          </MenuItem>
+          <MenuItem
+            icon={<LocationOnIcon />}
+            component={<Link to={"/Addresses"} />}
+            className={styles.menuitem}
+          >
+            Addresses
           </MenuItem>
 
           <MenuItem
