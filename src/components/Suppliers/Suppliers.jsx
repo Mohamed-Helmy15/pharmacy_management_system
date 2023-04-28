@@ -10,7 +10,7 @@ import PopUp from "./../../materials/PopUp";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "name", headerName: "Name", width: 150 },
-  { field: "email", headerName: "Email", width: 230 },
+  { field: "email", headerName: "Email", width: 330 },
   {
     field: "address",
     headerName: "Address",

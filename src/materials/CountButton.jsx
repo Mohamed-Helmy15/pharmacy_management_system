@@ -2,10 +2,8 @@ import React, { useState } from "react";
 
 function CountButton(props) {
   const [count, setCount] = useState(0);
-  const [obj, setObj] = useState({
-    medicines: [{ medicine: "", count: "" }],
-  });
-  const [final, setFinal] = useState([obj]);
+  const [obj, setObj] = useState();
+  const [final, setFinal] = useState();
 
   const handleIncrement = () => {
     if (count < props.limit) {
@@ -29,13 +27,7 @@ function CountButton(props) {
       <div className="quantity-counter">
         <div className="inputs">
           <p>Medicine Name: {props.marketName}</p>
-          <p
-            onClick={() => {
-              console.log(final);
-            }}
-          >
-            Price: {props.price}
-          </p>
+          <p>Price: {props.price}</p>
           <p>Available: {props.limit}</p>
           <p>Quantity: {count}</p>
           <p>total price: {props.price * count}</p>
@@ -69,13 +61,10 @@ function CountButton(props) {
           <button
             className="get"
             onClick={() => {
-              if (true) {
-                setObj({
-                  ...obj,
-                  medicines: [{ medicine: props.marketName, count: count }],
-                });
-              }
-              setFinal([...final, obj]);
+              setObj((pre) => [
+                { ...pre },
+                { medicine: props.marketName, count },
+              ]);
             }}
           >
             submit

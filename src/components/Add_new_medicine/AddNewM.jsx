@@ -51,7 +51,7 @@ const AddNewM = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [openConfirm, setOpenConfirm] = useState(false);
+  // const [openConfirm, setOpenConfirm] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [dataRow, setDataRow] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -63,20 +63,15 @@ const AddNewM = () => {
   const [customers, setCustomers] = useState([]);
   const [customerValue, setCustomerValue] = useState(null);
 
+  const [Quant, setQuant] = useState("");
+  const [obj, setObj] = useState([]);
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
   const handleOpen = () => setOpen(true);
 
-  const handleOpenConfirm = () => {
-    setOpenConfirm(true);
-  };
-
   const handleOpenEdit = () => setOpenEdit(true);
-
-  const handleClose = () => {
-    setOpenConfirm(false);
-  };
 
   const handleSelectionModelChange = (selectionModel) => {
     const selectedRowObjects = dataRow.filter((row) =>
@@ -171,6 +166,7 @@ const AddNewM = () => {
           handleSearch={handleSearch}
           placeholder={"Search the medicines name"}
         />
+
         <div>
           <button className="get" onClick={handleOpen}>
             Create new Medicines
@@ -187,7 +183,36 @@ const AddNewM = () => {
           />
         </div>
       </div>
-
+      {selectedRows.length === 1 ? (
+        <div
+          style={{
+            margin: "auto",
+            width: "fit-content",
+            marginBottom: "10px",
+          }}
+        >
+          <input
+            className="search-input"
+            type="number"
+            placeholder="choose quantity of the selected medicine"
+            name="count"
+            id="count"
+            value={Quant}
+            onChange={(e) => {
+              setQuant(e.target.value);
+            }}
+          />
+          <button
+            className="get"
+            onClick={() => {
+              setObj((prevObj) => [...prevObj, { medicine: id, count: Quant }]);
+              setQuant(0);
+            }}
+          >
+            Add The Medicine
+          </button>
+        </div>
+      ) : null}
       <DataGrid
         rows={dataRow
           .filter((row) =>
@@ -253,66 +278,30 @@ const AddNewM = () => {
         setPostRequest={setPostRequest}
         setPutRequest={setPutRequest}
       />
-      <PopUp openModal={openConfirm} handleCloseModal={handleClose}>
-        <div className="pop wrap">
-          <Autocomplete
-            options={customers.map((customer) => ({
-              id: customer.id,
-              label: customer.name,
-            }))}
-            renderInput={(params) => (
-              <TextField {...params} label="Customers" />
-            )}
-            value={customerValue}
-            onChange={(e, value) => {
-              setCustomerValue(value);
-            }}
-            sx={{ width: "100%" }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-          />
-          {selectedRows.map((row, i) => {
-            return (
-              <div key={row.id}>
-                <CountButton
-                  id={row.id}
-                  marketName={row.marketName}
-                  price={row.price}
-                  limit={row.count}
-                />
-              </div>
-            );
-          })}
-          <button
-            className="get"
-            onClick={() => {
-              console.log({
-                pharmacy: 1,
-                customer: 1,
-                medicines: [
-                  {
-                    medicine: 1,
-                    count: 3,
-                  },
-                ],
-              });
-            }}
-          >
-            Submit the Bill
-          </button>
-        </div>
-      </PopUp>
+
       {selectedRows.length > 0 ? (
         <div className={styles.buttons}>
           {selectedRows.length === 1 ? (
-            <button className="get" onClick={handleOpenEdit}>
-              Edit
-            </button>
+            <>
+              <button className="get" onClick={handleOpenEdit}>
+                Edit
+              </button>
+            </>
           ) : null}
           <button className="get" onClick={() => handleDelete(selectedRows)}>
             Delete
           </button>
 
-          <button className="get" onClick={() => handleOpenConfirm()}>
+          <button
+            className="get"
+            onClick={() => {
+              console.log({
+                customer: 1,
+                pharmacy: 1,
+                obj,
+              });
+            }}
+          >
             Confirm
           </button>
         </div>

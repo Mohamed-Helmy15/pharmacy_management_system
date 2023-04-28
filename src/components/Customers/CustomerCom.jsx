@@ -279,6 +279,7 @@ const CustomerCom = (props) => {
                       <Autocomplete
                         style={{
                           width: "68%",
+                          flex: 1,
                         }}
                         options={props.address.map((address) => ({
                           id: address.id,
