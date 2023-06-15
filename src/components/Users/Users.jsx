@@ -52,7 +52,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:1234/api/v1/users/current-user/pharmacies", config)
+      .get("http://localhost:1234/api/v1/users/pharmacies", config)
       .then((res) => {
         console.log(res);
       })

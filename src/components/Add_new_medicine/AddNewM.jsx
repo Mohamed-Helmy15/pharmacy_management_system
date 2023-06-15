@@ -62,7 +62,6 @@ const AddNewM = () => {
   const [count, setCount] = useState("");
   const [customers, setCustomers] = useState([]);
   const [customerValue, setCustomerValue] = useState(null);
-
   const [Quant, setQuant] = useState("");
   const [obj, setObj] = useState([]);
 
@@ -183,36 +182,7 @@ const AddNewM = () => {
           />
         </div>
       </div>
-      {selectedRows.length === 1 ? (
-        <div
-          style={{
-            margin: "auto",
-            width: "fit-content",
-            marginBottom: "10px",
-          }}
-        >
-          <input
-            className="search-input"
-            type="number"
-            placeholder="choose quantity of the selected medicine"
-            name="count"
-            id="count"
-            value={Quant}
-            onChange={(e) => {
-              setQuant(e.target.value);
-            }}
-          />
-          <button
-            className="get"
-            onClick={() => {
-              setObj((prevObj) => [...prevObj, { medicine: id, count: Quant }]);
-              setQuant(0);
-            }}
-          >
-            Add The Medicine
-          </button>
-        </div>
-      ) : null}
+
       <DataGrid
         rows={dataRow
           .filter((row) =>
@@ -267,6 +237,38 @@ const AddNewM = () => {
             .catch((err) => err);
         }}
       />
+      {selectedRows.length === 1 ? (
+        <div
+          style={{
+            margin: "10px auto",
+            width: "fit-content",
+          }}
+        >
+          <input
+            className="search-input"
+            type="number"
+            placeholder="choose quantity of the selected medicine"
+            name="count"
+            id="count"
+            value={Quant}
+            onChange={(e) => {
+              setQuant(e.target.value);
+            }}
+          />
+          <button
+            className="get"
+            style={{
+              marginLeft: "5px",
+            }}
+            onClick={() => {
+              setObj((prevObj) => [...prevObj, { medicine: id, count: Quant }]);
+              setQuant("");
+            }}
+          >
+            Add The Medicine
+          </button>
+        </div>
+      ) : null}
       <AddNewCom
         decide={"edit"}
         open={openEdit}
@@ -295,11 +297,29 @@ const AddNewM = () => {
           <button
             className="get"
             onClick={() => {
-              console.log({
-                customer: 1,
-                pharmacy: 1,
-                obj,
-              });
+              axios
+                .post(
+                  "http://localhost:1234/api/v1/transactions/create",
+                  {
+                    customer: 1,
+                    pharmacy: 1,
+                    medicines: obj,
+                  },
+                  config
+                )
+                .then((res) => {
+                  setPostRequest(res);
+
+                  swal("The bill has been completed successfully!", {
+                    icon: "success",
+                  });
+                })
+                .catch((err) => {
+                  swal("Please choose the quantity of medicine", {
+                    icon: "error",
+                  });
+                  return err;
+                });
             }}
           >
             Confirm

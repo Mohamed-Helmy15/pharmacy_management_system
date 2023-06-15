@@ -1,7 +1,10 @@
 import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Appbar from "./components/Appbar/Appbar";
 import MainSidebar from "./components/Sidebar/Sidebar";
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+
 export const config = {
   headers: {
     Authorization: `Bearer ${window.localStorage.getItem("tokens")}`,
@@ -16,6 +19,23 @@ export const configMultiPart = {
 export const sideRequestContext = React.createContext();
 function App(props) {
   const [sideRequest, setSideRequest] = useState([]);
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://localhost:1234/api/v1/users?page=1&size=1&sort=username`,
+  //       config
+  //     )
+  //     .then((res) =>
+  //       console.log(
+  //         res.data.payload.filter(
+  //           (user) => user.username === window.localStorage.getItem("user")
+  //         )[0].role
+  //       )
+  //     )
+  //     .catch((err) => console.log(err));
+  //   console.log(jwt_decode(window.localStorage.getItem("tokens")));
+  // }, []);
 
   return (
     <sideRequestContext.Provider value={{ sideRequest, setSideRequest }}>

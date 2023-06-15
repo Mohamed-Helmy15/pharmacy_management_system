@@ -120,7 +120,7 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
   border-radius: 5px;
   font-size: 16px;
   width: 300px;
-  margin-right: 10px;
+  /* margin: 10px 10px 0 0; */
 }
 
 .search-input:focus {
@@ -165,7 +165,7 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 }
 
 .MuiDataGrid-root.MuiDataGrid-root--densityStandard.MuiDataGrid-withBorderColor.css-1usso8h-MuiDataGrid-root {
-  height: 480px;
+  height: 430px;
 }
 
 .MuiDataGrid-columnHeadersInner.MuiDataGrid-columnHeadersInner--scrollable.css-gl260s-MuiDataGrid-columnHeadersInner,
@@ -216,4 +216,23 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 
 .buttons button:not(:last-child) {
   margin-right: 8px;
+}
+
+.med {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.css-15v22id-MuiAccordionDetails-root {
+  padding: 8px 0px 16px !important;
+}
+
+h4 {
+  margin: 0;
+}
+
+div#panel1a-header,
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiAccordion-root.MuiAccordion-rounded.Mui-expanded.MuiAccordion-gutters.css-1elwnq4-MuiPaper-root-MuiAccordion-root {
+  background: #c4e0ff;
 }

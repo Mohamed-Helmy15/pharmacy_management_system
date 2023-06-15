@@ -222,7 +222,7 @@ const AddressCom = (props) => {
                 marginBottom: "10px",
               }}
             >
-              Add a New Address
+              Edit the Address
             </Typography>
             <div>
               <form onSubmit={addressFormik.handleSubmit}>
