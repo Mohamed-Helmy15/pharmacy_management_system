@@ -8,14 +8,9 @@ import PopUp from "../../materials/PopUp";
 import Notification from "../../materials/Notification";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
-/* 
-******** props ********
- decide - setpostRequest - postRequest - open - setOpen -setSideRequest(only in sidebar)
- id(in edit) - setPutRequest(only in edit) - handleCloseModal
- */
 
 const CatCom = (props) => {
-  // *********************create(page - sidebar)*********************
+  // *********************create*********************
   const [inputAdd, setInputAdd] = useState("");
   const [errorRequest, setErrorRequest] = useState("");
   const [addNotification, setNotification] = useState(null);

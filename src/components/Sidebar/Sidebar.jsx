@@ -21,6 +21,7 @@ export const items = [
   "Addresses",
   "Bills",
   "suppliers",
+  "roles",
   "Logout",
 ];
 
@@ -95,6 +96,13 @@ const MainSidebar = (props) => {
             className={styles.menuitem}
           >
             Suppliers
+          </MenuItem>
+          <MenuItem
+            icon={<AddBusinessIcon />}
+            component={<Link to={"/roles"} />}
+            className={styles.menuitem}
+          >
+            Roles
           </MenuItem>
 
           <MenuItem

@@ -1,56 +1,67 @@
 import React, { useState, useEffect } from "react";
-import App, { config } from "../../App";
+import App from "../../App";
 import Search from "./../../materials/Search";
-import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
-import SupplierCom from "./SupplierCom";
+import { config } from "./../../App";
+import axios from "axios";
 import swal from "sweetalert";
+import RolesCom from "./RolesCom";
 import PopUp from "./../../materials/PopUp";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+const Roles = () => {
+  const columns = [
+    { field: "id", headerName: "ID", width: 170 },
+    { field: "name", headerName: "Name", width: 170 },
+    { field: "createdAt", headerName: "Created At", width: 170 },
+  ];
 
-const columns = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "name", headerName: "Name", width: 150 },
-  { field: "email", headerName: "Email", width: 330 },
-  {
-    field: "address",
-    headerName: "Address",
-    width: 200,
-  },
-];
-
-const Suppliers = () => {
   const [search, setSearch] = useState("");
-  const [suppliers, setSuppliers] = useState([]);
-  const [addreShow, setAddreShow] = useState({});
-  const [phones, setPhones] = useState([]);
-  const [address, setAddress] = useState([]);
-  const [infoShow, setinfoShow] = useState([]);
-  const [createTime, setCreateTime] = useState("");
-  const [updateTime, setUpdateTime] = useState("");
+  const [open, setOpen] = useState(false);
+  const [roles, setRoles] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [id, setId] = useState("");
-  const [open, setOpen] = useState(false);
-  const [openShow, setOpenShow] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [postRequest, setPostRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState("");
+  const [openShow, setOpenShow] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [infoShow, setinfoShow] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [createTime, setCreateTime] = useState("");
+  const [updateTime, setUpdateTime] = useState("");
 
   const handleOpen = () => setOpen(true);
 
-  const handleOpenEdit = () => {
-    setOpenEdit(true);
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
+  const handleCloseShow = () => {
+    setOpenShow(false);
+  };
+
+  const handleSelectionModelChange = (selectionModel) => {
+    const selectedRowObjects = roles.filter((row) =>
+      selectionModel.includes(row.id)
+    );
+    setSelectedRows(selectedRowObjects);
+    if (selectedRowObjects.length > 0) {
+      setId(selectedRowObjects[0].id);
+    }
   };
 
   const handleOpenShow = (id) => {
     setOpenShow(true);
     axios
-      .get(`http://localhost:1234/api/v1/suppliers/${id}`, config)
-      .then((res) => console.log(res))
+      .get(`http://localhost:1234/api/v1/roles/${id}`, config)
+      .then((res) => res)
       .catch((err) => {
+        console.log(err);
         setinfoShow(err.response.data.payload);
-        setAddreShow(err.response.data.payload.address);
-        setPhones(err.response.data.payload.phones);
+        setUsers(err.response.data.payload.users);
         setCreateTime(
           err.response.data.payload.createdAt.split("T").join(" At ")
         );
@@ -58,6 +69,10 @@ const Suppliers = () => {
           err.response.data.payload.updatedAt.split("T").join(" At ")
         );
       });
+  };
+
+  const handleOpenEdit = () => {
+    setOpenEdit(true);
   };
 
   const handleDelete = (rows) => {
@@ -71,7 +86,7 @@ const Suppliers = () => {
       if (willDelete) {
         rows.map((row) => {
           axios
-            .delete(`http://localhost:1234/api/v1/suppliers/${row.id}`, config)
+            .delete(`http://localhost:1234/api/v1/roles/${row.id}`, config)
             .then((res) => {
               setdeleteRequest(res);
               swal("Deleted Successfully!", {
@@ -90,64 +105,43 @@ const Suppliers = () => {
     });
   };
 
-  const handleCloseShow = () => {
-    setOpenShow(false);
-  };
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleSelectionModelChange = (selectionModel) => {
-    const selectedRowObjects = suppliers.filter((row) =>
-      selectionModel.includes(row.id)
-    );
-    setSelectedRows(selectedRowObjects);
-    if (selectedRowObjects.length > 0) {
-      setId(selectedRowObjects[0].id);
-    }
-  };
-
   useEffect(() => {
     axios
-      .get(`http://localhost:1234/api/v1/suppliers`, config)
+      .get(
+        `http://localhost:1234/api/v1/roles?page=0&&size=10&&sort=priority`,
+        config
+      )
       .then((res) => {
-        setSuppliers(res.data.payload);
+        console.log(res.data.payload);
+        setRoles(res.data.payload);
       })
       .catch((err) => err);
-    //
-
-    axios
-      .get(`http://localhost:1234/api/v1/addresses`, config)
-      .then((res) => setAddress(res.data.payload))
-      .catch((err) => err);
-  }, [putRequest, postRequest, deleteRequest]);
+  }, [postRequest, putRequest, deleteRequest]);
 
   return (
     <App>
       <div className="header">
-        <h3 style={{ margin: 0 }}>Suppliers</h3>
+        <h3 style={{ margin: 0 }}>Roles</h3>
         <Search
           search={search}
           handleSearch={handleSearch}
-          placeholder={"Search the suppliers name"}
+          placeholder={"Search the Roles name"}
         />
         <div>
           <button className="get" onClick={handleOpen}>
-            Create new Suppliers
+            Create new Role
           </button>
-          <SupplierCom
+          <RolesCom
             decide={"create"}
             open={open}
             setOpen={setOpen}
-            address={address}
             setPostRequest={setPostRequest}
             setPutRequest={setPutRequest}
           />
         </div>
       </div>
       <DataGrid
-        rows={suppliers.filter((row) =>
+        rows={roles.filter((row) =>
           row.name.toLowerCase().includes(search.toLowerCase())
         )}
         columns={columns}
@@ -203,29 +197,37 @@ const Suppliers = () => {
         <div style={{ textAlign: "center" }}>
           <h3>{infoShow.name}</h3>
           <div className="cat-info">
-            <p>
-              Address:
-              <b>
-                {addreShow.governorate} - {addreShow.city} - {addreShow.town}
-                {` ${addreShow.street !== null ? `-${addreShow.street}` : ""}`}
-              </b>
-            </p>
-            <p>
-              Email:{" "}
-              <b>
-                {infoShow.email === null ? "Not Available" : infoShow.email}
-              </b>
-            </p>
-            <p>
-              Phones:{" "}
-              <b>
-                {phones.length === 0
-                  ? "Not Available"
-                  : phones.map((phone, i) => {
-                      return phones.length !== i + 1 ? `${phone} - ` : phone;
-                    })}
-              </b>
-            </p>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <h3>Users</h3>
+              </AccordionSummary>
+              <AccordionDetails>
+                {users.length > 0 ? (
+                  users.map((user, i) => {
+                    return (
+                      <p
+                        key={user.id}
+                        className="med"
+                        style={{ fontWeight: "bold" }}
+                      >
+                        <span>
+                          {i + 1} : {user.name}
+                        </span>
+                      </p>
+                    );
+                  })
+                ) : (
+                  <p className="med" style={{ fontWeight: "bold" }}>
+                    {" "}
+                    No users for this Role{" "}
+                  </p>
+                )}
+              </AccordionDetails>
+            </Accordion>
             <p>
               Created At:{" "}
               <b>
@@ -257,12 +259,11 @@ const Suppliers = () => {
           </div>
         </div>
       </PopUp>
-      <SupplierCom
+      <RolesCom
         decide={"edit"}
         id={id}
         open={openEdit}
         setOpen={setOpenEdit}
-        address={address}
         setPostRequest={setPostRequest}
         setPutRequest={setPutRequest}
       />
@@ -270,4 +271,4 @@ const Suppliers = () => {
   );
 };
 
-export default Suppliers;
+export default Roles;

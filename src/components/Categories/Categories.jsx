@@ -86,9 +86,12 @@ const Categories = () => {
             placeholder={"Search the category name"}
           />
           <div>
-            <button className="get" onClick={handleOpen}>
-              Create new Categories
-            </button>
+            {sessionStorage.getItem("role") === "ceo" ||
+            sessionStorage.getItem("role") === "branch manager" ? (
+              <button className="get" onClick={handleOpen}>
+                Create new Categories
+              </button>
+            ) : null}
 
             <CatCom
               decide={"create"}

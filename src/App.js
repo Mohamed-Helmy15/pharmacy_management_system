@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import Appbar from "./components/Appbar/Appbar";
 import MainSidebar from "./components/Sidebar/Sidebar";
-import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 export const config = {
@@ -18,8 +17,6 @@ export const configMultiPart = {
 };
 export const Role = React.createContext();
 function App(props) {
-  const [name, setName] = useState("");
-
   useEffect(() => {
     axios
       .get(
