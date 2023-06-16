@@ -27,7 +27,7 @@ function App(props) {
         config
       )
       .then((res) =>
-        localStorage.setItem(
+        sessionStorage.setItem(
           "role",
           res.data.payload.filter(
             (user) => user.username === window.localStorage.getItem("user")
@@ -38,13 +38,13 @@ function App(props) {
   }, []);
 
   return (
-    <Role.Provider value={{ name }}>
+    <>
       <Appbar />
       <div className="home-content">
         <MainSidebar />
         <div className="page">{props.children}</div>
       </div>
-    </Role.Provider>
+    </>
   );
 }
 
