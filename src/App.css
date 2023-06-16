@@ -13,7 +13,9 @@
 .css-f779bt-MuiStack-root {
   width: 0 !important;
 }
-button.get {
+button.get,
+p.get {
+  text-align: center;
   outline: none;
   padding: 10px;
   cursor: pointer;

@@ -158,6 +158,25 @@ const AddNewM = () => {
         setValue={setPharmacySelected}
         storage={"thisBranch"}
       />
+
+      <div>
+        <Autocomplete
+          options={customers.map((customer) => ({
+            id: customer.id,
+            label: customer.name,
+          }))}
+          renderInput={(params) => <TextField {...params} label="Customers" />}
+          value={customerValue}
+          onChange={(e, value) => {
+            setCustomerValue(value);
+          }}
+          sx={{
+            width: "100%",
+          }}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+        />
+      </div>
+
       <div className="header">
         <h3 style={{ margin: 0 }}>Medicines</h3>
         <Search
@@ -297,12 +316,15 @@ const AddNewM = () => {
           <button
             className="get"
             onClick={() => {
+              console.log(obj);
               axios
                 .post(
                   "http://localhost:1234/api/v1/transactions/create",
                   {
-                    customer: 1,
-                    pharmacy: 1,
+                    customer: customerValue && customerValue.id,
+                    pharmacy: parseInt(
+                      window.localStorage.getItem("thisBranch")
+                    ),
                     medicines: obj,
                   },
                   config
@@ -315,9 +337,16 @@ const AddNewM = () => {
                   });
                 })
                 .catch((err) => {
-                  swal("Please choose the quantity of medicine", {
-                    icon: "error",
-                  });
+                  console.log(err);
+                  if (!customerValue) {
+                    swal("Please choose the Customer", {
+                      icon: "error",
+                    });
+                  } else {
+                    swal("Please choose the quantity of medicine", {
+                      icon: "error",
+                    });
+                  }
                   return err;
                 });
             }}

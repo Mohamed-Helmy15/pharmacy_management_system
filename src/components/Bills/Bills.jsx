@@ -32,7 +32,7 @@ const Bills = () => {
   const [pharmacies, setPharmacies] = useState([]);
   const [pharmaciesVal, setPharmaciesVal] = useState(null);
   const [meds, setMeds] = useState([]);
-  const [medsVal, setMedsVal] = useState(null);
+  const [medsVal, setMedsVal] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
   const [infoShow, setinfoShow] = useState([]);
   const [medicines, setMedicines] = useState([]);
@@ -54,7 +54,7 @@ const Bills = () => {
   const emptyFields = () => {
     setCustomersVal(null);
     setPharmaciesVal(null);
-    setMedsVal(null);
+    setMedsVal("");
   };
 
   const handleClose = () => {
@@ -70,8 +70,9 @@ const Bills = () => {
 
   const billValidate = () => {
     let errors = {};
-    if (customersVal === null) {
+    if (!customersVal) {
       errors.customer = "customer is required";
+      setCustomerError(true);
     }
     return errors;
   };
@@ -83,14 +84,17 @@ const Bills = () => {
       data.pharmacy = pharmaciesVal.id;
     }
     if (medsVal !== null) {
-      data.medicines = medsVal.id;
+      data.medicines = obj;
     }
 
     axios
       .put(`http://localhost:1234/api/v1/transactions/${id}`, data, config)
       .then((res) => {
-        console.log(res);
         setPutRequest(res);
+        handleClose();
+        swal("The bill has been edited successfully!", {
+          icon: "success",
+        });
       })
       .catch((err) => console.log(err));
   };
@@ -172,7 +176,10 @@ const Bills = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:1234/api/v1/transactions/", config)
+      .get(
+        `http://localhost:1234/api/v1/transactions?page=0&&size=100&&sort=id`,
+        config
+      )
       .then((res) => setDataRow(res.data.payload))
       .catch((err) => err);
     axios
@@ -224,7 +231,7 @@ const Bills = () => {
             },
           },
         }}
-        pageSizeOptions={[5, 8]}
+        pageSizeOptions={[5, 10, 20]}
         localeText={{
           noRowsLabel: `${"No Data Available"}`,
         }}
@@ -360,6 +367,7 @@ const Bills = () => {
                 id: customer.id,
                 label: customer.name,
               }))}
+              {...billFormik.getFieldProps("customer")}
               renderInput={(params) => (
                 <TextField
                   onBlur={() => {
@@ -397,67 +405,85 @@ const Bills = () => {
               sx={{ width: "100%" }}
               isOptionEqualToValue={(option, value) => option.id === value.id}
             />
-            <Autocomplete
-              options={meds.map((medicine) => ({
-                id: medicine.id,
-                label: medicine.marketName,
-              }))}
-              renderInput={(params) => (
-                <TextField {...params} label="Medicines" />
-              )}
-              value={medsVal}
-              onChange={(e, value) => {
-                setMedsVal(value);
-              }}
-              sx={{ width: "100%" }}
-              isOptionEqualToValue={(option, value) => option.id === value.id}
-            />
 
             <div
               style={{
-                margin: "10px auto",
-                width: "fit-content",
+                padding: "10px",
+                border: "1px solid #0f467e",
+                borderRadius: "5px",
+                marginBottom: "10px",
               }}
             >
-              <input
-                className="search-input"
-                type="number"
-                placeholder="choose quantity of the selected medicine"
-                name="count"
-                id="count"
-                value={Quant}
-                onChange={(e) => {
-                  setQuant(e.target.value);
+              <Autocomplete
+                multiple
+                id="tags-standard"
+                options={meds.map((medicine) => ({
+                  id: medicine.id,
+                  title: medicine.marketName,
+                }))}
+                getOptionLabel={(option) => option.title}
+                defaultValue={[]}
+                onChange={(e, newValue) => {
+                  setMedsVal(newValue.map((value) => value.id));
                 }}
+                sx={{ width: "100%" }}
+                isOptionEqualToValue={(option, value) => option.id === value.id}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="standard"
+                    label="Mediciens"
+                    placeholder="Mediciens"
+                  />
+                )}
               />
-              <button
-                className="get"
+
+              <div
                 style={{
-                  marginLeft: "5px",
-                }}
-                onClick={() => {
-                  setObj((prevObj) => [
-                    ...prevObj,
-                    { medicine: medsVal.id, count: Quant },
-                  ]);
-                  setQuant("");
+                  margin: "10px auto",
+                  width: "fit-content",
                 }}
               >
-                Add The Medicine
-              </button>
-            </div>
+                <input
+                  className="search-input"
+                  type="number"
+                  placeholder="choose quantity of the selected medicine"
+                  name="count"
+                  id="count"
+                  value={Quant}
+                  onChange={(e) => {
+                    setQuant(e.target.value);
+                  }}
+                />
+                <p
+                  className="get"
+                  style={{
+                    marginLeft: "5px",
+                  }}
+                  onClick={() => {
+                    setObj((prevObj) => [
+                      ...prevObj,
+                      { medicine: medsVal.slice(-1)[0], count: Quant },
+                    ]);
+                    setQuant("");
+                  }}
+                >
+                  Add The Medicine
+                </p>
 
-            <button
-              onClick={() => {
-                console.log(obj);
-              }}
-              style={{
-                display: "block",
-              }}
-              className="get"
-            >
-              Submit
-            </button>
+                <p
+                  style={{
+                    display: "block",
+                  }}
+                  onClick={() => {
+                    console.log(obj);
+                  }}
+                  className="get"
+                >
+                  Submit
+                </p>
+              </div>
+            </div>
             <div
               style={{
                 display: "flex",

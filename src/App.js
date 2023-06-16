@@ -16,35 +16,35 @@ export const configMultiPart = {
     Authorization: `Bearer ${window.localStorage.getItem("tokens")}`,
   },
 };
-export const sideRequestContext = React.createContext();
+export const Role = React.createContext();
 function App(props) {
-  const [sideRequest, setSideRequest] = useState([]);
+  const [name, setName] = useState("");
 
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `http://localhost:1234/api/v1/users?page=1&size=1&sort=username`,
-  //       config
-  //     )
-  //     .then((res) =>
-  //       console.log(
-  //         res.data.payload.filter(
-  //           (user) => user.username === window.localStorage.getItem("user")
-  //         )[0].role
-  //       )
-  //     )
-  //     .catch((err) => console.log(err));
-  //   console.log(jwt_decode(window.localStorage.getItem("tokens")));
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:1234/api/v1/users?page=1&size=1&sort=username`,
+        config
+      )
+      .then((res) =>
+        localStorage.setItem(
+          "role",
+          res.data.payload.filter(
+            (user) => user.username === window.localStorage.getItem("user")
+          )[0].role
+        )
+      )
+      .catch((err) => err);
+  }, []);
 
   return (
-    <sideRequestContext.Provider value={{ sideRequest, setSideRequest }}>
+    <Role.Provider value={{ name }}>
       <Appbar />
       <div className="home-content">
         <MainSidebar />
         <div className="page">{props.children}</div>
       </div>
-    </sideRequestContext.Provider>
+    </Role.Provider>
   );
 }
 

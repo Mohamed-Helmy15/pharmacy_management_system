@@ -13,6 +13,7 @@ const SelectBranches = (props) => {
       .get(`http://localhost:1234/api/v1/pharmacies`, config)
       .then((response) => {
         setPharmacies(response.data.payload);
+
         setLoading(false);
       })
       .catch((err) => err);
