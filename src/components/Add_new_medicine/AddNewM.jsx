@@ -264,6 +264,7 @@ const AddNewM = () => {
           <input
             className="search-input"
             type="number"
+            min={0}
             placeholder="choose quantity of the selected medicine"
             name="count"
             id="count"

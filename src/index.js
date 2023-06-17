@@ -19,6 +19,7 @@ import Categories from "./components/Categories/Categories";
 import Suppliers from "./components/Suppliers/Suppliers";
 import Address from "./components/Addresses/Address";
 import Roles from "./components/Roles/Roles";
+import Authority from "./components/Authority/Authority";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
@@ -103,6 +104,14 @@ const router = createBrowserRouter([
     element: (
       <RequireAuth loginPath="/">
         <Roles />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/authority",
+    element: (
+      <RequireAuth loginPath="/">
+        <Authority />
       </RequireAuth>
     ),
   },

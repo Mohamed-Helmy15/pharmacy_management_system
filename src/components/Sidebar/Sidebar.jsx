@@ -11,6 +11,8 @@ import AddBusinessIcon from "@mui/icons-material/AddBusiness";
 import LogoutIcon from "@mui/icons-material/Logout";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useSignOut } from "react-auth-kit";
+import { SiAuth0 } from "react-icons/si";
+import { FaCriticalRole } from "react-icons/fa";
 
 export const items = [
   "Categories",
@@ -22,6 +24,7 @@ export const items = [
   "Bills",
   "suppliers",
   "roles",
+  "authority",
   "Logout",
 ];
 
@@ -98,11 +101,18 @@ const MainSidebar = (props) => {
             Suppliers
           </MenuItem>
           <MenuItem
-            icon={<AddBusinessIcon />}
+            icon={<FaCriticalRole />}
             component={<Link to={"/roles"} />}
             className={styles.menuitem}
           >
             Roles
+          </MenuItem>
+          <MenuItem
+            icon={<SiAuth0 />}
+            component={<Link to={"/authority"} />}
+            className={styles.menuitem}
+          >
+            Authority
           </MenuItem>
 
           <MenuItem

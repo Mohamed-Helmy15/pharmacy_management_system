@@ -2,9 +2,9 @@ import React from "react";
 import PopUp from "./../../materials/PopUp";
 import { Typography } from "@mui/material";
 import { TextField } from "@mui/material";
+import { config } from "../../App";
 import { useFormik } from "formik";
 import axios from "axios";
-import { config } from "../../App";
 import swal from "sweetalert";
 
 const RolesCom = (props) => {
@@ -73,67 +73,63 @@ const RolesCom = (props) => {
   });
 
   return (
-    <>
-      <PopUp openModal={props.open} handleCloseModal={handleClose}>
-        <Typography id="transition-modal-title" variant="h6" component="h2">
-          Create a New Role
-        </Typography>
-        <div className="pop">
-          <form onSubmit={rolesFormik.handleSubmit}>
-            <TextField
-              type="text"
-              id="name"
-              name="name"
-              variant="standard"
-              {...rolesFormik.getFieldProps("name")}
-              label="Supplier Name"
-              style={{ width: "100%" }}
-              error={
-                rolesFormik.touched.name && rolesFormik.errors.name
-                  ? true
-                  : false
-              }
-              helperText={
-                rolesFormik.touched.name &&
-                rolesFormik.errors.name &&
-                rolesFormik.errors.name
-              }
-            />
-            <TextField
-              type="number"
-              inputProps={{ min: 0 }}
-              id="priority"
-              name="priority"
-              variant="standard"
-              {...rolesFormik.getFieldProps("priority")}
-              label="Supplier priority"
-              style={{ width: "100%" }}
-              error={
-                rolesFormik.touched.priority && rolesFormik.errors.priority
-                  ? true
-                  : false
-              }
-              helperText={
-                rolesFormik.touched.priority &&
-                rolesFormik.errors.priority &&
-                rolesFormik.errors.priority
-              }
-            />
+    <PopUp openModal={props.open} handleCloseModal={handleClose}>
+      <Typography id="transition-modal-title" variant="h6" component="h2">
+        Create a New Role
+      </Typography>
+      <div className="pop">
+        <form onSubmit={rolesFormik.handleSubmit}>
+          <TextField
+            type="text"
+            id="name"
+            name="name"
+            variant="standard"
+            {...rolesFormik.getFieldProps("name")}
+            label="Supplier Name"
+            style={{ width: "100%" }}
+            error={
+              rolesFormik.touched.name && rolesFormik.errors.name ? true : false
+            }
+            helperText={
+              rolesFormik.touched.name &&
+              rolesFormik.errors.name &&
+              rolesFormik.errors.name
+            }
+          />
+          <TextField
+            type="number"
+            inputProps={{ min: 0 }}
+            id="priority"
+            name="priority"
+            variant="standard"
+            {...rolesFormik.getFieldProps("priority")}
+            label="Supplier priority"
+            style={{ width: "100%" }}
+            error={
+              rolesFormik.touched.priority && rolesFormik.errors.priority
+                ? true
+                : false
+            }
+            helperText={
+              rolesFormik.touched.priority &&
+              rolesFormik.errors.priority &&
+              rolesFormik.errors.priority
+            }
+          />
 
-            <button
-              type="submit"
-              style={{
-                display: "block",
-                margin: "10px auto 0",
-              }}
-              className="get"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </PopUp>
-    </>
+          <button
+            type="submit"
+            style={{
+              display: "block",
+              margin: "10px auto 0",
+            }}
+            className="get"
+          >
+            Submit
+          </button>
+        </form>
+      </div>
+    </PopUp>
   );
 };
 

@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import App from "../../App";
+import App, { config } from "../../App";
 import Search from "./../../materials/Search";
+import AuthorityCom from "./AuthorityCom";
 import { DataGrid } from "@mui/x-data-grid";
-import { config } from "./../../App";
 import axios from "axios";
 import swal from "sweetalert";
-import RolesCom from "./RolesCom";
 import PopUp from "./../../materials/PopUp";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-const Roles = () => {
+
+const Authority = () => {
   const columns = [
     { field: "id", headerName: "ID", width: 170 },
     { field: "name", headerName: "Name", width: 170 },
@@ -20,31 +16,20 @@ const Roles = () => {
 
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [roles, setRoles] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [id, setId] = useState("");
   const [putRequest, setPutRequest] = useState("");
   const [postRequest, setPostRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState("");
+  const [authority, setAuthority] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [id, setId] = useState("");
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [infoShow, setinfoShow] = useState([]);
   const [createTime, setCreateTime] = useState("");
   const [updateTime, setUpdateTime] = useState("");
-  const [users, setUsers] = useState([]);
-
-  const handleOpen = () => setOpen(true);
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
-
-  const handleCloseShow = () => {
-    setOpenShow(false);
-  };
 
   const handleSelectionModelChange = (selectionModel) => {
-    const selectedRowObjects = roles.filter((row) =>
+    const selectedRowObjects = authority.filter((row) =>
       selectionModel.includes(row.id)
     );
     setSelectedRows(selectedRowObjects);
@@ -53,15 +38,24 @@ const Roles = () => {
     }
   };
 
+  const handleOpen = () => setOpen(true);
+
+  const handleCloseShow = () => {
+    setOpenShow(false);
+  };
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+
   const handleOpenShow = (id) => {
     setOpenShow(true);
     axios
-      .get(`http://localhost:1234/api/v1/roles/${id}`, config)
+      .get(`http://localhost:1234/api/v1/authorities/${id}`, config)
       .then((res) => res)
       .catch((err) => {
         console.log(err);
         setinfoShow(err.response.data.payload);
-        setUsers(err.response.data.payload.users);
         setCreateTime(
           err.response.data.payload.createdAt.split("T").join(" At ")
         );
@@ -86,7 +80,10 @@ const Roles = () => {
       if (willDelete) {
         rows.map((row) => {
           axios
-            .delete(`http://localhost:1234/api/v1/roles/${row.id}`, config)
+            .delete(
+              `http://localhost:1234/api/v1/authorities/${row.id}`,
+              config
+            )
             .then((res) => {
               setdeleteRequest(res);
               swal("Deleted Successfully!", {
@@ -108,30 +105,28 @@ const Roles = () => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:1234/api/v1/roles?page=0&&size=10&&sort=priority`,
+        `http://localhost:1234/api/v1/authorities?page=0&&size=100&&sort=name`,
         config
       )
       .then((res) => {
-        console.log(res.data.payload);
-        setRoles(res.data.payload);
+        setAuthority(res.data.payload);
       })
       .catch((err) => err);
-  }, [postRequest, putRequest, deleteRequest]);
-
+  }, [putRequest, postRequest, deleteRequest]);
   return (
     <App>
       <div className="header">
-        <h3 style={{ margin: 0 }}>Roles</h3>
+        <h3 style={{ margin: 0 }}>Authority</h3>
         <Search
           search={search}
           handleSearch={handleSearch}
-          placeholder={"Search the Roles name"}
+          placeholder={"Search the Authority name"}
         />
         <div>
           <button className="get" onClick={handleOpen}>
-            Create new Role
+            Create new Authority
           </button>
-          <RolesCom
+          <AuthorityCom
             decide={"create"}
             open={open}
             setOpen={setOpen}
@@ -141,7 +136,7 @@ const Roles = () => {
         </div>
       </div>
       <DataGrid
-        rows={roles
+        rows={authority
           .filter((row) =>
             row.name.toLowerCase().includes(search.toLowerCase())
           )
@@ -158,7 +153,7 @@ const Roles = () => {
             },
           },
         }}
-        pageSizeOptions={[5, 8]}
+        pageSizeOptions={[5, 8, 20]}
         localeText={{
           noRowsLabel: `
               : "No Data Available"
@@ -203,7 +198,7 @@ const Roles = () => {
         <div style={{ textAlign: "center" }}>
           <h3>{infoShow.name}</h3>
           <div className="cat-info">
-            <Accordion>
+            {/* <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1a-content"
@@ -233,7 +228,7 @@ const Roles = () => {
                   </p>
                 )}
               </AccordionDetails>
-            </Accordion>
+            </Accordion> */}
             <p>
               Created At:{" "}
               <b>
@@ -262,18 +257,10 @@ const Roles = () => {
                   : infoShow.updatedBy}
               </b>
             </p>
-            <p>
-              Priority:{" "}
-              <b>
-                {infoShow.priority === null
-                  ? "Not Available"
-                  : infoShow.priority}
-              </b>
-            </p>
           </div>
         </div>
       </PopUp>
-      <RolesCom
+      <AuthorityCom
         decide={"edit"}
         id={id}
         open={openEdit}
@@ -285,4 +272,4 @@ const Roles = () => {
   );
 };
 
-export default Roles;
+export default Authority;
