@@ -65,6 +65,7 @@ const Users = () => {
         config
       )
       .then((res) => {
+        console.log(res);
         setDataRow(
           res.data.payload.filter((user) => {
             return user.username !== window.localStorage.getItem("user");

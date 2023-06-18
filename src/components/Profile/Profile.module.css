@@ -1,0 +1,46 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.profile {
+  display: flex;
+  gap: 5px;
+}
+
+.left,
+.right {
+  padding: 5px;
+  align-self: flex-start;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.left {
+  min-width: 290px;
+  max-width: 350px;
+  color: white;
+  background-color: #0f467e;
+}
+
+.right {
+  flex: 1;
+  background-color: brown;
+}
+
+.mainInfo {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.infoContainer p {
+  background-color: #c4e0ff;
+  margin: 5px 0;
+  color: black;
+  border-radius: 5px;
+  padding: 10px;
+}

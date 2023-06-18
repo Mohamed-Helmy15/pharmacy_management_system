@@ -4,9 +4,9 @@ import PopUp from "../../materials/PopUp";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useFormik } from "formik";
 import Notification from "../../materials/Notification";
 import axios from "axios";
-import { useFormik } from "formik";
 
 /* 
 ******** props ********
@@ -18,8 +18,8 @@ const UserCom = (props) => {
   // ******************create******************
   const [image, setImage] = useState(null);
   const [roleValue, setRoleValue] = useState(null);
-  const [error, setError] = useState(false);
   const [pharmacyValue, setPharmacyValue] = useState(null);
+  const [error, setError] = useState(false);
   const [notification, setNotification] = useState(null);
   const [stateNotification, setStateNotification] = useState(false);
   const [errorRequest, setErrorRequest] = useState("");

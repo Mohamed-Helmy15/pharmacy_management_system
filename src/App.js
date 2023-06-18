@@ -17,27 +17,22 @@ export const configMultiPart = {
 };
 export const Role = React.createContext();
 function App(props) {
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `http://localhost:1234/api/v1/users?page=0&size=100&sort=username`,
-  //       config
-  //     )
-  //     .then((res) => {
-  //       console.log(
-  //         res.data.payload.filter(
-  //           (user) => user.username === window.localStorage.getItem("user")
-  //         )[0].role
-  //       );
-  //       localStorage.setItem(
-  //         "role",
-  //         res.data.payload.filter(
-  //           (user) => user.username === window.localStorage.getItem("user")
-  //         )[0].role
-  //       );
-  //     })
-  //     .catch((err) => err);
-  // }, [localStorage.getItem("role")]);
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:1234/api/v1/users?page=0&size=100&sort=username`,
+        config
+      )
+      .then((res) => {
+        localStorage.setItem(
+          "role",
+          res.data.payload.filter(
+            (user) => user.username === window.localStorage.getItem("user")
+          )[0].role
+        );
+      })
+      .catch((err) => err);
+  }, []);
 
   return (
     <>

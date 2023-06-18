@@ -96,6 +96,7 @@ const Tables = (props) => {
   const handleCloseModal = () => {
     setOpenEditModal(false);
     setOpenShowModal(false);
+    setimg(null);
   };
 
   useEffect(() => {
@@ -139,13 +140,10 @@ const Tables = (props) => {
     axios
       .get(`http://localhost:1234/api/v1/${props.section}/${row}`, config)
       .then((res) => {
-        setInfoShow(res.response.data.payload);
+        return res;
       })
       .catch((err) => {
-        if (
-          err.response.data.payload.img !== undefined &&
-          err.response.data.payload.img !== null
-        ) {
+        if (err.response.data.payload.img !== null) {
           setimg(err.response.data.payload.img.split("\\").join("/"));
         }
         if (
@@ -220,6 +218,7 @@ const Tables = (props) => {
             });
           })
           .catch((err) => {
+            console.log(err);
             setStateNotification(false);
             swal("", "the delete operation hasn't been completed!", "info");
           });
@@ -379,7 +378,7 @@ const Tables = (props) => {
               sx={{ width: 70, height: 70 }}
               alt="mohamed helmy"
               src={
-                infoShow.img !== null
+                img !== null
                   ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
                   : "null"
               }

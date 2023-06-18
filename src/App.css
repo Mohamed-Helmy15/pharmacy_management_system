@@ -238,3 +238,19 @@ div#panel1a-header,
 .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation1.MuiAccordion-root.MuiAccordion-rounded.Mui-expanded.MuiAccordion-gutters.css-1elwnq4-MuiPaper-root-MuiAccordion-root {
   background: #c4e0ff;
 }
+
+div#panel1a-header {
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+
+.cancel {
+  background: rgb(81 81 81);
+  margin: 5px 00;
+  color: white;
+  display: block;
+  width: 100%;
+}

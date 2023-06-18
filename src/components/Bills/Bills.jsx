@@ -59,6 +59,7 @@ const Bills = () => {
 
   const handleClose = () => {
     setOpenEdit(false);
+    setObj([]);
     emptyFields();
   };
 
@@ -92,6 +93,7 @@ const Bills = () => {
       .then((res) => {
         setPutRequest(res);
         handleClose();
+
         swal("The bill has been edited successfully!", {
           icon: "success",
         });

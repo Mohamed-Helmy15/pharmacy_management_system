@@ -44,7 +44,7 @@ const LogOut = () => {
     axios
       .post("http://localhost:1234/api/v1/auth/login", values)
       .then((response) => {
-        // console.log(response);
+        console.log(response);
         window.localStorage.setItem("user", values.username);
         window.localStorage.setItem("tokens", response.data.payload.jwt.token);
         const sign = signIn({
