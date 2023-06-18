@@ -18,7 +18,9 @@ const Users = () => {
   const [pharmacies, setPharmacies] = useState([]);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
+
   const handleSearch = (e) => {
     setSearch(e.target.value);
   };
@@ -51,12 +53,12 @@ const Users = () => {
   ];
 
   useEffect(() => {
-    axios
-      .get("http://localhost:1234/api/v1/users/pharmacies", config)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => console.log("err", err));
+    // axios
+    //   .get("http://localhost:1234/api/v1/users/pharmacies", config)
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => console.log("err", err));
     axios
       .get(
         `http://localhost:1234/api/v1/users?page=${page}&size=${rowsPerPage}&sort=username`,

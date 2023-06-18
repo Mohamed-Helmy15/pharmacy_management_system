@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./LogOut.module.css";
 import { useFormik } from "formik";
 import { useNavigate, Link } from "react-router-dom";
@@ -14,47 +14,17 @@ const LogOut = () => {
   const [success, setSuccess] = useState(null);
   const [loading, setloading] = useState(false);
 
-  const initialValues = {
-    username: "",
-    password: "",
-  };
-
   const isAuthenticated = useIsAuthenticated();
 
   const navigate = useNavigate();
 
   const signIn = useSignIn();
-  const onSubmit = async (values) => {
-    setloading(true);
-    try {
-      const response = await axios
-        .post("http://localhost:1234/api/v1/auth/login", values)
 
-        .catch((err) => err);
-
-      window.localStorage.setItem("user", values.username);
-      window.localStorage.setItem("tokens", response.data.payload.jwt.token);
-
-      const sign = signIn({
-        authState: { username: values.username },
-        token: response.data.payload.jwt.token,
-        expiresIn: 3600,
-        tokenType: response.data.payload.jwt.tokenType,
-      });
-      if (sign) {
-        console.log("auth");
-        setSuccess(true);
-      }
-    } catch (error) {
-      setloading(false);
-      setSuccess(false);
-      navigate("/");
-    }
+  const initialValues = {
+    username: "",
+    password: "",
   };
 
-  if (isAuthenticated()) {
-    navigate("/categories");
-  }
   const validate = (values) => {
     let errors = {};
 
@@ -68,11 +38,44 @@ const LogOut = () => {
     return errors;
   };
 
+  const onSubmit = (values) => {
+    setloading(true);
+
+    axios
+      .post("http://localhost:1234/api/v1/auth/login", values)
+      .then((response) => {
+        // console.log(response);
+        window.localStorage.setItem("user", values.username);
+        window.localStorage.setItem("tokens", response.data.payload.jwt.token);
+        const sign = signIn({
+          authState: { username: values.username },
+          token: response.data.payload.jwt.token,
+          expiresIn: 3600,
+          tokenType: response.data.payload.jwt.tokenType,
+        });
+        if (sign) {
+          setSuccess(true);
+          setloading(true);
+        }
+      })
+      .catch((err) => {
+        setloading(false);
+        setSuccess(false);
+        navigate("/");
+      });
+  };
+
   const formik = useFormik({
     initialValues,
     onSubmit,
     validate,
   });
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      navigate("/categories");
+    }
+  }, [isAuthenticated, navigate]);
 
   return loading ? (
     <Loading />
@@ -106,9 +109,6 @@ const LogOut = () => {
               className={styles.inputs}
               style={{
                 alignItems: "center",
-                // formik.touched.username && formik.errors.username
-                //   ? "center"
-                //   : "flex-end",
               }}
             >
               <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
@@ -138,9 +138,6 @@ const LogOut = () => {
               className={styles.inputs}
               style={{
                 alignItems: "center",
-                // formik.touched.password && formik.errors.password
-                //   ? "center"
-                //   : "flex-end",
               }}
             >
               <HttpsIcon sx={{ color: "action.active", mr: 1, my: 0.5 }} />

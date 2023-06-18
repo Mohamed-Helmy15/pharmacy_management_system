@@ -17,14 +17,20 @@ import { items } from "../Sidebar/Sidebar";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 import axios from "axios";
+import { config } from "./../../App";
+
 const Appbar = () => {
+  const [img, setImg] = useState("");
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const signOut = useSignOut();
+  const navigate = useNavigate();
+
   const out = () => {
     window.localStorage.clear();
     signOut();
     navigate("/");
   };
-  const signOut = useSignOut();
-  const navigate = useNavigate();
 
   const settings = ["Profile", "Logout"];
   const routSettings = ["Profile", ""];
@@ -37,11 +43,10 @@ const Appbar = () => {
     "Addresses",
     "Bills",
     "suppliers",
+    "Roles",
+    "Authority",
     "",
   ];
-
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -57,40 +62,33 @@ const Appbar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  const config = {
-    headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("tokens")}`,
-    },
-  };
-  const [id, setId] = useState("");
-  const [img, setImg] = useState("");
+
   useEffect(() => {
-    axios.get(`http://localhost:1234/api/v1/users/`, config).then((res) => {
-      res.data.payload.map((user) => {
-        if (user.username === window.localStorage.getItem("user")) {
-          setId(user.id);
-        }
-        return user.id;
-      });
-    });
-  }, []);
-  const getImgFromId = () => {
     axios
-      .get(`http://localhost:1234/api/v1/users/${id}`, config)
+      .get(`http://localhost:1234/api/v1/users/`, config)
       .then((res) => {
-        // console.log(res);
+        res.data.payload.map((user) => {
+          if (user.username === window.localStorage.getItem("user")) {
+            axios
+              .get(`http://localhost:1234/api/v1/users/${user.id}`, config)
+              .then((res) => {
+                return res;
+              })
+              .catch((err) => {
+                if (err.response.data.payload.img !== null) {
+                  console.log("mo");
+                  setImg(err.response.data.payload.img.split("\\").join("/"));
+                } else {
+                  return err;
+                }
+              });
+          }
+          return user.id;
+        });
       })
-      .catch((err) => {
-        // console.log(err);
-        if (
-          err.response.data.payload.img !== undefined &&
-          err.response.data.payload.img !== null
-        ) {
-          setImg(err.response.data.payload.img.split("\\").join("/"));
-        }
-      });
-  };
-  getImgFromId();
+      .catch((err) => err);
+  }, []);
+
   return (
     <div>
       <AppBar position="static">
@@ -177,8 +175,15 @@ const Appbar = () => {
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
                     alt={window.localStorage.getItem("user")}
-                    src={`http://localhost:1234/api/v1/users/load-file?file=${img}`}
-                  />
+                    src={
+                      img !== ""
+                        ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
+                        : "null"
+                    }
+                  >
+                    {window.localStorage.getItem("user").split("")[0]}
+                  </Avatar>
+
                   <Typography
                     sx={{
                       marginLeft: "10px",

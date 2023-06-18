@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Categories.module.css";
 import axios from "axios";
 import Tables from "../../materials/Table";
@@ -21,7 +21,6 @@ export const style = {
 
 const Categories = () => {
   const [pharmacySelected, setPharmacySelected] = useState(null);
-  const pharmacySelectedRef = useRef(pharmacySelected);
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [postRequest, setpostRequest] = useState("");
@@ -30,6 +29,7 @@ const Categories = () => {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
   const minWidth = 100;
   const columns = [
     { id: "name", label: "Category name", minWidth, align: "center" },
@@ -68,59 +68,52 @@ const Categories = () => {
       .catch((err) => err);
   }, [postRequest, deleteRequest, putRequest]);
 
-  console.log(pharmacySelectedRef);
-
   return (
-    <>
-      <App>
-        <SelectBranches
-          value={pharmacySelected}
-          setValue={setPharmacySelected}
-          storage={"branch"}
+    <App>
+      <SelectBranches
+        value={pharmacySelected}
+        setValue={setPharmacySelected}
+        storage={"branch"}
+      />
+      <div className="header">
+        <h3 style={{ margin: 0 }}>Categories</h3>
+        <Search
+          search={search}
+          handleSearch={handleSearch}
+          placeholder={"Search the category name"}
         />
-        <div className="header">
-          <h3 style={{ margin: 0 }}>Categories</h3>
-          <Search
-            search={search}
-            handleSearch={handleSearch}
-            placeholder={"Search the category name"}
-          />
-          <div>
-            {sessionStorage.getItem("role") === "ceo" ||
-            sessionStorage.getItem("role") === "branch manager" ? (
-              <button className="get" onClick={handleOpen}>
-                Create new Categories
-              </button>
-            ) : null}
+        <div>
+          <button className="get" onClick={handleOpen}>
+            Create new Categories
+          </button>
 
-            <CatCom
-              decide={"create"}
-              open={open}
-              setOpen={setOpen}
-              setpostRequest={setpostRequest}
-              postRequest={postRequest}
-            />
-          </div>
-        </div>
-
-        <div className={styles.content}>
-          <Tables
-            columns={columns}
-            dataRow={categories}
-            page={page} //pagination
-            rowsPerPage={rowsPerPage} //pagination
-            handleChangePage={handleChangePage} //pagination
-            handleChangeRowsPerPage={handleChangeRowsPerPage} //pagination
-            section={"categories"} // handle api
-            deleteRequest={deleteRequest} // delete state in the section
-            setdeleteRequest={setdeleteRequest} // set delete state to rerender the catergory component
-            setPutRequest={setPutRequest} // set put state to rerender the catergory component
-            search={search}
-            keySearch={"name"}
+          <CatCom
+            decide={"create"}
+            open={open}
+            setOpen={setOpen}
+            setpostRequest={setpostRequest}
+            postRequest={postRequest}
           />
         </div>
-      </App>
-    </>
+      </div>
+
+      <div className={styles.content}>
+        <Tables
+          columns={columns}
+          dataRow={categories}
+          page={page} //pagination
+          rowsPerPage={rowsPerPage} //pagination
+          handleChangePage={handleChangePage} //pagination
+          handleChangeRowsPerPage={handleChangeRowsPerPage} //pagination
+          section={"categories"} // handle api
+          deleteRequest={deleteRequest} // delete state in the section
+          setdeleteRequest={setdeleteRequest} // set delete state to rerender the catergory component
+          setPutRequest={setPutRequest} // set put state to rerender the catergory component
+          search={search}
+          keySearch={"name"}
+        />
+      </div>
+    </App>
   );
 };
 

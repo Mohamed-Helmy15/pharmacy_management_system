@@ -52,7 +52,7 @@ const Tables = (props) => {
   const [medId, setMedId] = useState("");
   const [count, setCount] = useState("");
 
-  const handleNotClose = (event, reason) => {
+  const handleNotClose = () => {
     setnotifDelete(null);
   };
   const handleToggleNotDelete = () => {
@@ -117,16 +117,19 @@ const Tables = (props) => {
         setManager(res.data.payload);
       })
       .catch((err) => err);
-    axios
-      .get(
-        `http://localhost:1234/api/v1/medicines/?pharmacy=${window.localStorage.getItem(
-          "branch"
-        )}`,
-        config
-      )
-      .then((res) => {
-        setMedicines(res.data.payload);
-      });
+    if (window.localStorage.getItem("branch")) {
+      axios
+        .get(
+          `http://localhost:1234/api/v1/medicines/?pharmacy=${window.localStorage.getItem(
+            "branch"
+          )}`,
+          config
+        )
+        .then((res) => {
+          setMedicines(res.data.payload);
+        })
+        .catch((err) => err);
+    }
   }, [addressRequest, count, window.localStorage.getItem("branch")]);
 
   const handleShow = (row) => {
@@ -347,13 +350,7 @@ const Tables = (props) => {
           <div
             style={{ textAlign: "center", overflow: "auto", maxHeight: "80vh" }}
           >
-            <h3
-              onClick={() => {
-                console.log(medicines);
-              }}
-            >
-              {infoShow.name}
-            </h3>
+            <h3>{infoShow.name}</h3>
             <div className="cat-info">
               <p>
                 Created By: <b>{infoShow.createdBy}</b>
@@ -377,14 +374,18 @@ const Tables = (props) => {
           </div>
         ) : props.section === "users" ? (
           <div style={{ textAlign: "center" }}>
-            {infoShow.img !== null && (
-              <Avatar
-                style={{ margin: "auto" }}
-                sx={{ width: 70, height: 70 }}
-                alt="mohamed helmy"
-                src={`http://localhost:1234/api/v1/users/load-file?file=${img}`}
-              />
-            )}
+            <Avatar
+              style={{ margin: "auto" }}
+              sx={{ width: 70, height: 70 }}
+              alt="mohamed helmy"
+              src={
+                infoShow.img !== null
+                  ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
+                  : "null"
+              }
+            >
+              {infoShow.name}
+            </Avatar>
 
             <h3>
               {infoShow.username === null ? "Not Available" : infoShow.username}
