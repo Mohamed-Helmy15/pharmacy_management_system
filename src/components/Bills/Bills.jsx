@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
+import { useHistory } from "react-router-dom";
 
 const columns = [
   { field: "id", headerName: "ID", width: 170 },
@@ -23,6 +24,7 @@ const columns = [
 ];
 
 const Bills = () => {
+  const navigate = useHistory();
   const [search, setSearch] = useState("");
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -46,6 +48,7 @@ const Bills = () => {
   const [deleteRequest, setdeleteRequest] = useState("");
   const [Quant, setQuant] = useState("");
   const [obj, setObj] = useState([]);
+  const [resell, setResell] = useState([]);
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
@@ -145,6 +148,7 @@ const Bills = () => {
       .get(`http://localhost:1234/api/v1/transactions/${id}`, config)
       .then((res) => res)
       .catch((err) => {
+        console.log(err);
         setOpenShow(true);
         setinfoShow(err.response.data.payload);
         setMedicines(err.response.data.payload.medicines);
@@ -156,10 +160,17 @@ const Bills = () => {
         setUpdateTime(
           err.response.data.payload.updatedAt.split("T").join(" At ")
         );
+        medicines.map((med) => {
+          setResell((prevObj) => [
+            ...prevObj,
+            { medicine: med.medicine.id, count: med.count },
+          ]);
+        });
       });
   };
   const handleCloseShow = () => {
     setOpenShow(false);
+    setResell([]);
   };
 
   const handleSearch = (e) => {
@@ -348,6 +359,66 @@ const Bills = () => {
                   : infoShow.updatedBy}
               </b>
             </p>
+            <p
+              onClick={() => {
+                navigate.push("www.google.com");
+              }}
+            >
+              bill
+            </p>
+            <button
+              className="get"
+              style={{ margin: "10px auto 0", display: "block" }}
+              onClick={() => {
+                swal({
+                  title: "Are you sure?",
+                  text: "you will Resell the Invoice again",
+                  icon: "info",
+                  buttons: true,
+                }).then((sure) => {
+                  if (sure) {
+                    axios
+                      .post(
+                        `http://localhost:1234/api/v1/transactions/create`,
+                        {
+                          customer: infoShow.customer.id,
+                          pharmacy: parseInt(
+                            window.localStorage.getItem("thisBranch")
+                          ),
+                          medicines: resell,
+                        },
+                        config
+                      )
+                      .then((res) => {
+                        setPutRequest(res);
+                        handleCloseShow();
+
+                        swal("The Invoice Reselled Successfully!", {
+                          icon: "success",
+                        });
+                      })
+                      .catch((err) => {
+                        console.log(err);
+                        setPutRequest(err);
+                        swal(
+                          "",
+                          "The Invoice hasn't been Reselled completed!",
+                          "error"
+                        );
+                      });
+                    return true;
+                  } else {
+                    swal(
+                      "",
+                      "the delete operation hasn't been completed!",
+                      "error"
+                    );
+                  }
+                });
+              }}
+            >
+              Resell the Invoice
+            </button>
           </div>
         </div>
       </PopUp>
@@ -442,8 +513,10 @@ const Bills = () => {
 
               <div
                 style={{
-                  margin: "10px auto",
+                  margin: "10px",
                   width: "fit-content",
+                  display: "flex",
+                  gap: "10px",
                 }}
               >
                 <input
@@ -478,11 +551,13 @@ const Bills = () => {
                     display: "block",
                   }}
                   onClick={() => {
-                    console.log(obj);
+                    setObj([]);
+                    setQuant("");
+                    setMedsVal("");
                   }}
                   className="get"
                 >
-                  Submit
+                  Clear the selected Medicines
                 </p>
               </div>
             </div>

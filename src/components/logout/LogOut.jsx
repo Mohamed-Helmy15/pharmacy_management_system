@@ -47,6 +47,10 @@ const LogOut = () => {
         console.log(response);
         window.localStorage.setItem("user", values.username);
         window.localStorage.setItem("tokens", response.data.payload.jwt.token);
+        window.localStorage.setItem(
+          "authorities",
+          response.data.payload.authorities
+        );
         const sign = signIn({
           authState: { username: values.username },
           token: response.data.payload.jwt.token,

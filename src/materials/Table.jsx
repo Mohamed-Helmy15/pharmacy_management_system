@@ -143,7 +143,11 @@ const Tables = (props) => {
         return res;
       })
       .catch((err) => {
-        if (err.response.data.payload.img !== null) {
+        console.log(err.response.data.payload.img);
+        if (
+          err.response.data.payload.img !== null &&
+          err.response.data.payload.img !== undefined
+        ) {
           setimg(err.response.data.payload.img.split("\\").join("/"));
         }
         if (

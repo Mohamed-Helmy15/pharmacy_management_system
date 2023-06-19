@@ -136,17 +136,19 @@ const AddNewM = () => {
       })
       .catch((err) => err);
 
-    axios
-      .get(
-        `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
-          "thisBranch"
-        )}`,
-        config
-      )
-      .then((res) => {
-        setDataRow(res.data.payload);
-      })
-      .catch((err) => err);
+    if (window.localStorage.getItem("thisBranch")) {
+      axios
+        .get(
+          `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
+            "thisBranch"
+          )}`,
+          config
+        )
+        .then((res) => {
+          setDataRow(res.data.payload);
+        })
+        .catch((err) => err);
+    }
   }, [deleteRequest, putRequest, postRequest, pharmacySelected]);
 
   return (
@@ -273,6 +275,7 @@ const AddNewM = () => {
               setQuant(e.target.value);
             }}
           />
+
           <button
             className="get"
             style={{
@@ -284,6 +287,18 @@ const AddNewM = () => {
             }}
           >
             Add The Medicine
+          </button>
+          <button
+            className="get"
+            style={{
+              marginLeft: "5px",
+            }}
+            onClick={() => {
+              setObj([]);
+              setQuant("");
+            }}
+          >
+            Clear the selected Medicines
           </button>
         </div>
       ) : null}
@@ -330,7 +345,7 @@ const AddNewM = () => {
                 )
                 .then((res) => {
                   setPostRequest(res);
-
+                  setObj([]);
                   swal("The bill has been completed successfully!", {
                     icon: "success",
                   });

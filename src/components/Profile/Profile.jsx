@@ -108,6 +108,7 @@ const Profile = () => {
     onSubmit,
   });
   useEffect(() => {
+    console.log(localStorage.getItem("authorities").split(","));
     axios
       .get("http://localhost:1234/api/v1/users/", config)
       .then((res) => {
@@ -300,12 +301,13 @@ const Profile = () => {
                 </button>
               </form>
               <button
-                className="get cancel"
+                className="cancel"
                 onClick={() => {
                   setEdit(false);
+                  emptyFields();
                 }}
               >
-                Stpp Editing
+                Stop Editing
               </button>
             </>
           ) : (
