@@ -28,8 +28,9 @@
 }
 
 .right {
+  height: 300px;
   flex: 1;
-  background-color: brown;
+  background-color: white;
 }
 
 .mainInfo {

@@ -11,6 +11,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import FormatCurrency from "../../FormatCurrency";
 import swal from "sweetalert";
+import Cart from "../../materials/Cart";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
@@ -49,7 +50,6 @@ const AddNewM = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  // const [openConfirm, setOpenConfirm] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [dataRow, setDataRow] = useState([]);
   const [selectedRows, setSelectedRows] = useState([]);
@@ -200,6 +200,7 @@ const AddNewM = () => {
             setPutRequest={setPutRequest}
           />
         </div>
+        <Cart medicines={obj} setMedicines={setObj} dataRow={dataRow} />
       </div>
 
       <DataGrid

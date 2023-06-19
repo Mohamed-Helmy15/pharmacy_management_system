@@ -14,7 +14,6 @@ import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
-import { useHistory } from "react-router-dom";
 
 const columns = [
   { field: "id", headerName: "ID", width: 170 },
@@ -24,7 +23,6 @@ const columns = [
 ];
 
 const Bills = () => {
-  const navigate = useHistory();
   const [search, setSearch] = useState("");
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -161,7 +159,7 @@ const Bills = () => {
           err.response.data.payload.updatedAt.split("T").join(" At ")
         );
         medicines.map((med) => {
-          setResell((prevObj) => [
+          return setResell((prevObj) => [
             ...prevObj,
             { medicine: med.medicine.id, count: med.count },
           ]);
@@ -358,13 +356,6 @@ const Bills = () => {
                   ? "Not Available"
                   : infoShow.updatedBy}
               </b>
-            </p>
-            <p
-              onClick={() => {
-                navigate.push("www.google.com");
-              }}
-            >
-              bill
             </p>
             <button
               className="get"
