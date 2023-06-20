@@ -72,7 +72,7 @@ const Users = () => {
           })
         );
       })
-      .catch((err) => err);
+      .catch((err) => console.log(err));
     axios
       .get(
         "http://localhost:1234/api/v1/roles?page=0&size=100&sort=priority",

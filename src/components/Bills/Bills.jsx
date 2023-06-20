@@ -35,8 +35,8 @@ const Bills = () => {
   const [meds, setMeds] = useState([]);
   const [medsVal, setMedsVal] = useState("");
   const [selectedRows, setSelectedRows] = useState([]);
-  const [infoShow, setinfoShow] = useState([]);
   const [medicines, setMedicines] = useState([]);
+  const [infoShow, setinfoShow] = useState([]);
   const [createTime, setCreateTime] = useState("");
   const [updateTime, setUpdateTime] = useState("");
   const [customer, setCustomer] = useState("");
@@ -173,15 +173,17 @@ const Bills = () => {
       .get("http://localhost:1234/api/v1/pharmacies/", config)
       .then((res) => setPharmacies(res.data.payload))
       .catch((err) => err);
-    axios
-      .get(
-        `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
-          "thisBranch"
-        )}`,
-        config
-      )
-      .then((res) => setMeds(res.data.payload))
-      .catch((err) => err);
+    if (window.localStorage.getItem("thisBranch")) {
+      axios
+        .get(
+          `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
+            "thisBranch"
+          )}`,
+          config
+        )
+        .then((res) => setMeds(res.data.payload))
+        .catch((err) => err);
+    }
   }, [deleteRequest, putRequest]);
 
   return (

@@ -50,9 +50,6 @@ const Tables = (props) => {
   const [count, setCount] = useState("");
 
   const [openShowModal, setOpenShowModal] = useState(false);
-  const handleShowOpen = () => {
-    setOpenShowModal(true);
-  };
 
   const [openEditModal, setOpenEditModal] = useState(false);
   const handleEditOpen = () => {
@@ -133,7 +130,7 @@ const Tables = (props) => {
         return res;
       })
       .catch((err) => {
-        console.log(err.response.data.payload.img);
+        setOpenShowModal(true);
         if (
           err.response.data.payload.img !== null &&
           err.response.data.payload.img !== undefined
@@ -184,9 +181,8 @@ const Tables = (props) => {
           );
         }
         setInfoShow(err.response.data.payload);
+        return err;
       });
-
-    handleShowOpen();
   };
 
   const handleDelete = (row) => {

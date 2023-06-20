@@ -13,6 +13,7 @@ import FormatCurrency from "../../functions/FormatCurrency";
 import swal from "sweetalert";
 import Cart from "../../materials/Cart";
 import handleDelete from "./../../functions/HandleDelete";
+import PopUp from "./../../materials/PopUp";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
@@ -50,6 +51,12 @@ const AddNewM = () => {
   const [types, setTypes] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
   const [open, setOpen] = useState(false);
+  const [openShow, setOpenShow] = useState(false);
+  const [infoShow, setinfoShow] = useState([]);
+  const [createTime, setCreateTime] = useState("");
+  const [updateTime, setUpdateTime] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [category, setCategory] = useState("");
   const [openEdit, setOpenEdit] = useState(false);
   const [putRequest, setPutRequest] = useState("");
   const [dataRow, setDataRow] = useState([]);
@@ -68,6 +75,36 @@ const AddNewM = () => {
     setSearch(e.target.value);
   };
   const handleOpen = () => setOpen(true);
+
+  const handleOpenShow = (id) => {
+    axios
+      .get(
+        `http://localhost:1234/api/v1/medicines/${id}?pharmacy=${window.localStorage.getItem(
+          "thisBranch"
+        )}`,
+        config
+      )
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        setOpenShow(true);
+        setinfoShow(err.response.data.payload);
+        setCategory(err.response.data.payload.category.name);
+        setSupplier(err.response.data.payload.supplier.name);
+        setCreateTime(
+          err.response.data.payload.createdAt.split("T").join(" At ")
+        );
+        setUpdateTime(
+          err.response.data.payload.updatedAt.split("T").join(" At ")
+        );
+      });
+  };
+
+  const handleCloseShow = () => {
+    setOpenShow(false);
+  };
 
   const handleOpenEdit = () => setOpenEdit(true);
 
@@ -291,6 +328,9 @@ const AddNewM = () => {
         <div className={styles.buttons}>
           {selectedRows.length === 1 ? (
             <>
+              <button className="get" onClick={() => handleOpenShow(id)}>
+                Show
+              </button>
               <button className="get" onClick={handleOpenEdit}>
                 Edit
               </button>
@@ -347,6 +387,55 @@ const AddNewM = () => {
           </button>
         </div>
       ) : null}
+      <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
+        <div style={{ textAlign: "center" }} className="pop">
+          <h3>{infoShow.marketName}</h3>
+          <div className="cat-info">
+            <p>
+              category: <b>{category === null ? "Not Available" : category}</b>
+            </p>
+            <p>
+              supplier: <b>{supplier === null ? "Not Available" : supplier}</b>
+            </p>
+            <p>
+              Description:{" "}
+              <b>
+                {infoShow.description === null
+                  ? "Not Available"
+                  : infoShow.description}
+              </b>
+            </p>
+            <p>
+              Created At:{" "}
+              <b>
+                {infoShow.createdAt === null ? "Not Available" : createTime}
+              </b>
+            </p>
+            <p>
+              Created By:{" "}
+              <b>
+                {infoShow.createdBy === null
+                  ? "Not Available"
+                  : infoShow.createdBy}
+              </b>
+            </p>
+            <p>
+              Last Update at:{" "}
+              <b>
+                {infoShow.updatedAt === null ? "Not Available" : updateTime}
+              </b>
+            </p>
+            <p>
+              Updated By:{" "}
+              <b>
+                {infoShow.updatedBy === null
+                  ? "Not Available"
+                  : infoShow.updatedBy}
+              </b>
+            </p>
+          </div>
+        </div>
+      </PopUp>
     </App>
   );
 };
