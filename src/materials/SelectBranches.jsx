@@ -19,34 +19,32 @@ const SelectBranches = (props) => {
       .catch((err) => err);
   }, []);
 
-  return loading === false ? (
-    <div>
-      <Autocomplete
-        options={pharmacies.map((pharmacy) => ({
-          id: pharmacy.id,
-          label: pharmacy.name,
-        }))}
-        renderInput={(params) => <TextField {...params} label="Pharmacy" />}
-        value={props.value}
-        onChange={(e, value) => {
-          props.setValue(value);
-          pharmacySelectedRefInCat.current = value;
-          window.localStorage.setItem(
-            props.storage,
-            pharmacySelectedRefInCat.current.id
-          );
-        }}
-        sx={{
-          width: "100%",
-        }}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-      />
-    </div>
-  ) : null;
+  return (
+    loading === false && (
+      <div>
+        <Autocomplete
+          options={pharmacies.map((pharmacy) => ({
+            id: pharmacy.id,
+            label: pharmacy.name,
+          }))}
+          renderInput={(params) => <TextField {...params} label="Pharmacy" />}
+          value={props.value}
+          onChange={(e, value) => {
+            props.setValue(value);
+            pharmacySelectedRefInCat.current = value;
+            window.localStorage.setItem(
+              props.storage,
+              pharmacySelectedRefInCat.current.id
+            );
+          }}
+          sx={{
+            width: "100%",
+          }}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
+        />
+      </div>
+    )
+  );
 };
 
 export default SelectBranches;
-// value ===> pharmacySelected
-// setValue ===> setPharmacySelected
-// ref ===> pharmacySelectedRef
-// storage ===> the name of the local storage

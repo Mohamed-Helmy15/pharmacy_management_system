@@ -6,6 +6,7 @@ import axios from "axios";
 import { config } from "../../App";
 import { TextField } from "@mui/material/";
 import { Autocomplete } from "@mui/material/";
+import swal from "sweetalert";
 
 const SupplierCom = (props) => {
   const [addressValue, setAddressValue] = useState(null);
@@ -80,8 +81,17 @@ const SupplierCom = (props) => {
         .then((res) => {
           props.setPutRequest(res);
           handleClose();
+          swal("The Supplier has been created Successfully!", {
+            icon: "success",
+          });
+          emptyFields();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          swal("The Supplier has been created wrongly!", {
+            icon: "error",
+          });
+          return err;
+        });
     } else {
       let suppliers = {};
       if (values.name !== "") {
@@ -105,8 +115,17 @@ const SupplierCom = (props) => {
         .then((res) => {
           props.setPutRequest(res);
           handleClose();
+          swal("The Supplier has been edited Successfully!", {
+            icon: "success",
+          });
+          emptyFields();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          swal("The Supplier has been edited wrongly!", {
+            icon: "error",
+          });
+          return err;
+        });
     }
   };
 

@@ -5,35 +5,18 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { useFormik } from "formik";
-import Notification from "../../materials/Notification";
 import axios from "axios";
+import swal from "sweetalert";
 
-/* 
-******** props ********
- decide - setPutRequest - putRequest - open - setOpen -pharmacies - roles - 
- setSideRequest(only in sidebar)
- id(in edit) - setPutRequest(only in edit) - handleCloseModal
- */
 const UserCom = (props) => {
   // ******************create******************
   const [image, setImage] = useState(null);
   const [roleValue, setRoleValue] = useState(null);
   const [pharmacyValue, setPharmacyValue] = useState(null);
   const [error, setError] = useState(false);
-  const [notification, setNotification] = useState(null);
-  const [stateNotification, setStateNotification] = useState(false);
-  const [errorRequest, setErrorRequest] = useState("");
   const handleClose = () => {
     props.setOpen(false);
-    setErrorRequest("");
     emptyFields();
-  };
-
-  // const handleCloseModal = () => {
-  //   props.setOpen(false);
-  // };
-  const handleNotClose = (event, reason) => {
-    setNotification(false);
   };
 
   const userInitialValues = {
@@ -130,23 +113,21 @@ const UserCom = (props) => {
           configMultiPart
         )
         .then((res) => {
-          console.log(res);
-          setErrorRequest("");
           if (res.data.success === true) {
             props.setPostRequest(formData);
-            setStateNotification(true);
-            if (props.setSideRequest) {
-              props.setSideRequest(true);
-            }
-            setNotification(true);
+
             handleClose();
+            swal("The User has been created Successfully!", {
+              icon: "success",
+            });
             emptyFields();
           }
         })
         .catch((err) => {
-          setErrorRequest(err.response.data.message.password);
-          setStateNotification(false);
-          setNotification(true);
+          swal("The User has been created wrongly!", {
+            icon: "error",
+          });
+          return err;
         });
     } else {
       const formData = new FormData();
@@ -186,14 +167,18 @@ const UserCom = (props) => {
         )
         .then((res) => {
           if (res.data.success === true) {
-            setErrorRequest("");
             props.setPutRequest(values);
-            emptyFields();
             handleClose();
+            swal("The User has been edited Successfully!", {
+              icon: "success",
+            });
+            emptyFields();
           }
         })
         .catch((err) => {
-          setErrorRequest(err.response.data.message.name);
+          swal("The User has been edited wrongly!", {
+            icon: "error",
+          });
         });
     }
   };
@@ -208,14 +193,6 @@ const UserCom = (props) => {
       {props.decide === "create" ? (
         <>
           <PopUp openModal={props.open} handleCloseModal={handleClose}>
-            <h4
-              style={{
-                color: "red",
-                textAlign: "center",
-              }}
-            >
-              {errorRequest}
-            </h4>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Create a New User
             </Typography>
@@ -408,14 +385,6 @@ const UserCom = (props) => {
         </>
       ) : (
         <form onSubmit={userFormik.handleSubmit}>
-          <h4
-            style={{
-              color: "red",
-              textAlign: "center",
-            }}
-          >
-            {errorRequest}
-          </h4>
           <TextField
             type="text"
             id="fname"
@@ -534,23 +503,6 @@ const UserCom = (props) => {
             Submit
           </button>
         </form>
-      )}
-      {stateNotification === true ? (
-        <Notification
-          auto={6000} // auto hide time in ms
-          case="success"
-          successfulMessage="the user has been successfully created"
-          notification={notification} //  show or not
-          handleNotClose={handleNotClose} // on close function
-        />
-      ) : (
-        <Notification
-          auto={6000}
-          case="error"
-          unsuccessfulMessage="the user has not been successfully created"
-          notification={notification}
-          handleNotClose={handleNotClose}
-        />
       )}
     </>
   );

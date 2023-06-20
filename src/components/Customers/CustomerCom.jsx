@@ -7,16 +7,9 @@ import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
 import axios from "axios";
 import Autocomplete from "@mui/material/Autocomplete";
-import Notification from "../../materials/Notification";
+import swal from "sweetalert";
 
-/* 
-******** props ********
- setPutRequest - putRequest - open - setOpen- addressRequest - setAddressRequest - address
- setSideRequest(only in sidebar)
- id(in edit) - setPutRequest(only in edit) - handleCloseModal
- */
 const CustomerCom = (props) => {
-  const [addNotification, setNotification] = useState(null);
   const [addressCustomer, setAddressCustomer] = useState(false);
   const [addressValue, setAddressValue] = useState(null);
   const [governerate, setGovernerate] = useState(null);
@@ -24,11 +17,6 @@ const CustomerCom = (props) => {
   const [city, setCity] = useState(null);
   const [cityError, setCityError] = useState(false);
   const [error, setError] = useState(false);
-  const [stateNotification, setStateNotification] = useState(false);
-
-  const handleNotClose = (event, reason) => {
-    setNotification(false);
-  };
 
   const handleCloseModal = () => {
     props.setOpen(false);
@@ -113,20 +101,19 @@ const CustomerCom = (props) => {
           config
         )
         .then((res) => {
-          console.log(res);
           props.setPutRequest(customer);
-          setStateNotification(true);
-          if (props.setSideRequest) {
-            props.setSideRequest(true);
-          }
-          setNotification(true);
+
           handleCloseModal();
+          swal("The Customer has been created Successfully!", {
+            icon: "success",
+          });
           emptyFields();
         })
         .catch((err) => {
-          console.log(err);
-          setStateNotification(false);
-          setNotification(true);
+          swal("The Customer has been created Wrongly!", {
+            icon: "error",
+          });
+          return err;
         });
     } else if (props.decide === "edit") {
       let customer = {};
@@ -155,13 +142,19 @@ const CustomerCom = (props) => {
         .then((res) => {
           if (res.data.success === true) {
             props.setPutRequest(values);
-            setStateNotification(true);
-            setNotification(true);
-            emptyFields();
             handleCloseModal();
+            swal("The Customer has been edited Successfully!", {
+              icon: "success",
+            });
+            emptyFields();
           }
         })
-        .catch((err) => err);
+        .catch((err) => {
+          swal("The Customer has been edited wrongly!", {
+            icon: "error",
+          });
+          return err;
+        });
     }
   };
   const customerFormik = useFormik({
@@ -200,9 +193,7 @@ const CustomerCom = (props) => {
       .then((res) => {
         if (res.data.success === true) {
           props.setAddressRequest(!props.addressRequest);
-          if (props.setSideRequest) {
-            props.setSideRequest(true);
-          }
+
           setAddressCustomer(false);
         }
       })
@@ -516,23 +507,6 @@ const CustomerCom = (props) => {
               </>
             )}
           </PopUp>
-          {stateNotification === true ? (
-            <Notification
-              auto={6000} // auto hide time in ms
-              case="success"
-              successfulMessage="the Customer has been successfully created"
-              notification={addNotification} // add state
-              handleNotClose={handleNotClose} // on close function
-            />
-          ) : (
-            <Notification
-              auto={6000}
-              case="error"
-              unsuccessfulMessage="the Customer has not been successfully created"
-              notification={addNotification}
-              handleNotClose={handleNotClose}
-            />
-          )}
         </>
       ) : (
         <>

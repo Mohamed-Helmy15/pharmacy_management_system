@@ -5,24 +5,16 @@ import { Input } from "@mui/material";
 import axios from "axios";
 import { config } from "../../App";
 import PopUp from "../../materials/PopUp";
-import Notification from "../../materials/Notification";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
+import swal from "sweetalert";
 
 const CatCom = (props) => {
   // *********************create*********************
   const [inputAdd, setInputAdd] = useState("");
-  const [errorRequest, setErrorRequest] = useState("");
-  const [addNotification, setNotification] = useState(null);
-  const [stateNotification, setStateNotification] = useState(false);
   const handleClose = () => {
     props.setOpen(false);
-    setErrorRequest("");
     setInputAdd("");
-  };
-
-  const handleNotClose = (event, reason) => {
-    setNotification(null);
   };
 
   const handleAddInput = (e) => {
@@ -30,7 +22,6 @@ const CatCom = (props) => {
   };
 
   const handleToggleNotAdd = () => {
-    setNotification(true);
     props.setpostRequest("");
     setInputAdd("");
   };
@@ -46,16 +37,16 @@ const CatCom = (props) => {
       )
       .then((res) => {
         props.setpostRequest(res.status);
-        setStateNotification(true);
-        if (props.setSideRequest) {
-          props.setSideRequest(true);
-        }
-
-        setErrorRequest("");
+        handleClose();
+        swal("The Category has been created Successfully!", {
+          icon: "success",
+        });
       })
       .catch((err) => {
-        setNotification(false);
-        setErrorRequest(err.response.data.message.name);
+        swal("The Category has been created wrongly!", {
+          icon: "error",
+        });
+        return err;
       });
   };
   // ****************************************************
@@ -83,13 +74,20 @@ const CatCom = (props) => {
       )
       .then((res) => {
         if (res.data.success === true) {
-          setErrorRequest("");
           props.setPutRequest(values);
           emptyCategory();
-          props.handleCloseModal();
+          handleClose();
+          swal("The Category has been edited Successfully!", {
+            icon: "success",
+          });
         }
       })
-      .catch((err) => setErrorRequest(err.response.data.message.name));
+      .catch((err) => {
+        swal("The Category has been edited wrongly!", {
+          icon: "error",
+        });
+        return err;
+      });
   };
   const categoryFormik = useFormik({
     initialValues: categoryInitialValue,
@@ -101,14 +99,6 @@ const CatCom = (props) => {
       {props.decide === "create" ? (
         <>
           <PopUp openModal={props.open} handleCloseModal={handleClose}>
-            <h4
-              style={{
-                color: "red",
-                textAlign: "center",
-              }}
-            >
-              {errorRequest}
-            </h4>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               Create a New Category
             </Typography>
@@ -132,23 +122,6 @@ const CatCom = (props) => {
               </button>
             </div>
           </PopUp>
-          {stateNotification === true ? (
-            <Notification
-              auto={6000} // auto hide time in ms
-              case="success"
-              successfulMessage="the Category has been successfully created"
-              notification={addNotification} // add state
-              handleNotClose={handleNotClose} // on close function
-            />
-          ) : (
-            <Notification
-              auto={6000}
-              case="error"
-              unsuccessfulMessage="the Category has not been successfully created"
-              notification={addNotification}
-              handleNotClose={handleNotClose}
-            />
-          )}
         </>
       ) : (
         <form onSubmit={categoryFormik.handleSubmit}>

@@ -99,7 +99,12 @@ const Bills = () => {
           icon: "success",
         });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        swal("The bill editing has been Failed!", {
+          icon: "success",
+        });
+        return err;
+      });
   };
 
   const billFormik = useFormik({

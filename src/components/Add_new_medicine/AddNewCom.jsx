@@ -4,16 +4,10 @@ import PopUp from "../../materials/PopUp";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Notification from "../../materials/Notification";
 import axios from "axios";
 import { useFormik } from "formik";
+import swal from "sweetalert";
 
-/* 
-******** props ********
- decide - setPutRequest - putRequest - open - setOpen -pharmacies - roles - 
- setSideRequest(only in sidebar)
- id(in edit) - setPutRequest(only in edit) - handleCloseModal
- */
 const AddNewCom = (props) => {
   // ******************create******************
   const [image, setImage] = useState(null);
@@ -21,16 +15,10 @@ const AddNewCom = (props) => {
   const [supplierValue, setSupplierValue] = useState(null);
   const [typeValue, settypeValue] = useState(null);
   const [error, setError] = useState(false);
-  const [notification, setNotification] = useState(null);
-  const [stateNotification, setStateNotification] = useState(false);
 
   const handleClose = () => {
     props.setOpen(false);
     emptyFields();
-  };
-
-  const handleNotClose = (event, reason) => {
-    setNotification(false);
   };
 
   const medicineInitialValues = {
@@ -104,17 +92,18 @@ const AddNewCom = (props) => {
           console.log(res);
           if (res.data.success === true) {
             props.setPostRequest(formData);
-            setStateNotification(true);
-            setNotification(true);
             handleClose();
+            swal("The Medicine has been created Successfully!", {
+              icon: "success",
+            });
             emptyFields();
           }
         })
         .catch((err) => {
-          // setErrorRequest(err.response.data.message.supplier);
-          console.log("err", err);
-          setStateNotification(false);
-          setNotification(true);
+          swal("The Medicine has not been created Successfully!", {
+            icon: "error",
+          });
+          return err;
         });
     } else {
       const formData = new FormData();
@@ -151,13 +140,17 @@ const AddNewCom = (props) => {
         .then((res) => {
           if (res.data.success === true) {
             props.setPutRequest(values);
-            setStateNotification(true);
-            setNotification(true);
-            emptyFields();
             handleClose();
+            emptyFields();
+            swal("The Medicine has been edited Successfully!", {
+              icon: "success",
+            });
           }
         })
         .catch((err) => {
+          swal("The Medicine has not been edited Successfully!", {
+            icon: "error",
+          });
           return err;
         });
     }
@@ -457,23 +450,6 @@ const AddNewCom = (props) => {
             </button>
           </form>
         </PopUp>
-      )}
-      {stateNotification === true ? (
-        <Notification
-          auto={6000} // auto hide time in ms
-          case="success"
-          successfulMessage="the user has been successfully created"
-          notification={notification} //  show or not
-          handleNotClose={handleNotClose} // on close function
-        />
-      ) : (
-        <Notification
-          auto={6000}
-          case="error"
-          unsuccessfulMessage="the user has not been successfully created"
-          notification={notification}
-          handleNotClose={handleNotClose}
-        />
       )}
     </>
   );

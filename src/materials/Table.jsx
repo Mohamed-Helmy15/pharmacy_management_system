@@ -12,7 +12,6 @@ import TableRow from "@mui/material/TableRow";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import PopUp from "./PopUp";
-import Notification from "./Notification";
 import { Avatar } from "@mui/material";
 import CatCom from "../components/Categories/CatCom";
 import UserCom from "./../components/Users/UserCom";
@@ -41,8 +40,6 @@ const Tables = (props) => {
   const [updateTime, setUpdateTime] = useState("");
   const [id, setId] = useState("");
   const [infoShow, setInfoShow] = useState([]);
-  const [stateNotification, setStateNotification] = useState(false);
-  const [notifDelete, setnotifDelete] = useState(null);
   const [roles, setRoles] = useState([]);
   const [pharmacies, setPharmacies] = useState([]);
   const [address, setAddress] = useState([]);
@@ -51,13 +48,6 @@ const Tables = (props) => {
   const [medicines, setMedicines] = useState([]);
   const [medId, setMedId] = useState("");
   const [count, setCount] = useState("");
-
-  const handleNotClose = () => {
-    setnotifDelete(null);
-  };
-  const handleToggleNotDelete = () => {
-    setnotifDelete(true);
-  };
 
   const [openShowModal, setOpenShowModal] = useState(false);
   const handleShowOpen = () => {
@@ -215,15 +205,12 @@ const Tables = (props) => {
           )
           .then((res) => {
             props.setdeleteRequest(row);
-            setStateNotification(true);
-            handleToggleNotDelete();
             swal("Deleted Successfully!", {
               icon: "success",
             });
           })
           .catch((err) => {
             console.log(err);
-            setStateNotification(false);
             swal("", "the delete operation hasn't been completed!", "info");
           });
       } else {
@@ -329,23 +316,6 @@ const Tables = (props) => {
           onPageChange={props.handleChangePage}
           onRowsPerPageChange={props.handleChangeRowsPerPage}
         />
-        {stateNotification === true ? (
-          <Notification
-            auto={6000} // auto hide time in ms
-            case="success"
-            successfulMessage={`the ${props.section} has been successfully deleted`}
-            notification={notifDelete} // add state
-            handleNotClose={handleNotClose} // on close function
-          />
-        ) : (
-          <Notification
-            auto={6000}
-            case="error"
-            unsuccessfulMessage={`the ${props.section} has not been successfully deleted`}
-            notification={notifDelete}
-            handleNotClose={handleNotClose}
-          />
-        )}
       </Paper>
       {/* show all section */}
       <PopUp openModal={openShowModal} handleCloseModal={handleCloseModal}>

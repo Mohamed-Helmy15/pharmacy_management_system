@@ -54,8 +54,16 @@ const AddressCom = (props) => {
         .then((res) => {
           props.setPostRequest(res);
           handleClose();
+          swal("The Address has been created Successfully!", {
+            icon: "success",
+          });
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          swal("The Address has not been created Successfully!", {
+            icon: "error",
+          });
+          return err;
+        });
     } else {
       let address = {};
       if (governerate !== null) {
@@ -81,7 +89,12 @@ const AddressCom = (props) => {
           handleClose();
           swal("", "the address has been edited successfully!", "info");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          swal("The Address has not been edited Successfully!", {
+            icon: "error",
+          });
+          return err;
+        });
     }
   };
   const addressFormik = useFormik({

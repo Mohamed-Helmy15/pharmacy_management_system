@@ -5,13 +5,11 @@ import PopUp from "./../../materials/PopUp";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import Notification from "../../materials/Notification";
 import axios from "axios";
 import { useFormik } from "formik";
+import swal from "sweetalert";
 
 const BranchCom = (props) => {
-  const [addNotification, setNotification] = useState(null);
-  const [stateNotification, setStateNotification] = useState(false);
   const [governorate, setGovernerate] = useState(null);
   const [city, setCity] = useState(null);
   const [error, setError] = useState(false);
@@ -22,10 +20,6 @@ const BranchCom = (props) => {
   const handleClose = () => {
     props.setOpen(false);
     addressEmptyFields();
-  };
-
-  const handleNotClose = (event, reason) => {
-    setNotification(false);
   };
 
   const addressInitialValues = {
@@ -84,17 +78,19 @@ const BranchCom = (props) => {
                   )
                   .then((res) => {
                     props.setPutRequest(res);
-                    setStateNotification(true);
-                    if (props.setSideRequest) {
-                      props.setSideRequest(true);
-                    }
-                    setNotification(true);
+
                     handleClose();
+                    swal("The New Branch has been created Successfully!", {
+                      icon: "success",
+                    });
                   })
                   .catch((err) => {
                     if (err.response.data.success === false) {
                       props.setPutRequest(err);
                       handleClose();
+                      swal("The Branch has been created wrongly!", {
+                        icon: "error",
+                      });
                     }
                   });
               })
@@ -130,7 +126,7 @@ const BranchCom = (props) => {
       axios
         .get(`http://localhost:1234/api/v1/pharmacies/${props.id}`, config)
         .then((res) => {
-          console.log("res", res.data.payload.address.id);
+          return res;
         })
         .catch((err) => {
           axios
@@ -149,8 +145,16 @@ const BranchCom = (props) => {
                 .then((res) => {
                   props.setPutRequest(res);
                   handleClose();
+                  swal("The Branch has been edited Successfully!", {
+                    icon: "success",
+                  });
                 })
-                .catch((err) => err);
+                .catch((err) => {
+                  swal("The Branch has been edited wrongly!", {
+                    icon: "error",
+                  });
+                  return err;
+                });
             })
             .catch((err) => err);
         });
@@ -335,23 +339,6 @@ const BranchCom = (props) => {
               </form>
             </div>
           </PopUp>
-          {stateNotification === true ? (
-            <Notification
-              auto={6000} // auto hide time in ms
-              case="success"
-              successfulMessage="the Branch has been successfully created"
-              notification={addNotification} // add state
-              handleNotClose={handleNotClose} // on close function
-            />
-          ) : (
-            <Notification
-              auto={6000}
-              case="error"
-              unsuccessfulMessage="the Branch has not been successfully created"
-              notification={addNotification}
-              handleNotClose={handleNotClose}
-            />
-          )}
         </>
       ) : (
         <>
