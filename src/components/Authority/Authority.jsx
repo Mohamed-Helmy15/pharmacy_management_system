@@ -4,8 +4,8 @@ import Search from "./../../materials/Search";
 import AuthorityCom from "./AuthorityCom";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import swal from "sweetalert";
 import PopUp from "./../../materials/PopUp";
+import handleDelete from "./../../functions/HandleDelete";
 
 const Authority = () => {
   const columns = [
@@ -67,39 +67,6 @@ const Authority = () => {
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
-  };
-
-  const handleDelete = (rows) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover it",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        rows.map((row) => {
-          axios
-            .delete(
-              `http://localhost:1234/api/v1/authorities/${row.id}`,
-              config
-            )
-            .then((res) => {
-              setdeleteRequest(res);
-              swal("Deleted Successfully!", {
-                icon: "success",
-              });
-            })
-            .catch((err) => {
-              setdeleteRequest(err);
-              swal("", "the delete operation hasn't been completed!", "info");
-            });
-          return true;
-        });
-      } else {
-        swal("", "the delete operation hasn't been completed!", "info");
-      }
-    });
   };
 
   useEffect(() => {
@@ -187,7 +154,7 @@ const Authority = () => {
           <button
             className="get"
             onClick={() => {
-              handleDelete(selectedRows);
+              handleDelete("authorities", selectedRows, setdeleteRequest);
             }}
           >
             Delete

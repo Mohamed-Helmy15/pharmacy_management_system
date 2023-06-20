@@ -4,13 +4,13 @@ import Search from "./../../materials/Search";
 import { DataGrid } from "@mui/x-data-grid";
 import { config } from "./../../App";
 import axios from "axios";
-import swal from "sweetalert";
 import RolesCom from "./RolesCom";
 import PopUp from "./../../materials/PopUp";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import handleDelete from "./../../functions/HandleDelete";
 const Roles = () => {
   const columns = [
     { field: "id", headerName: "ID", width: 170 },
@@ -73,36 +73,6 @@ const Roles = () => {
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
-  };
-
-  const handleDelete = (rows) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover it",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        rows.map((row) => {
-          axios
-            .delete(`http://localhost:1234/api/v1/roles/${row.id}`, config)
-            .then((res) => {
-              setdeleteRequest(res);
-              swal("Deleted Successfully!", {
-                icon: "success",
-              });
-            })
-            .catch((err) => {
-              setdeleteRequest(err);
-              swal("", "the delete operation hasn't been completed!", "info");
-            });
-          return true;
-        });
-      } else {
-        swal("", "the delete operation hasn't been completed!", "info");
-      }
-    });
   };
 
   useEffect(() => {
@@ -192,7 +162,7 @@ const Roles = () => {
           <button
             className="get"
             onClick={() => {
-              handleDelete(selectedRows);
+              handleDelete("roles", selectedRows, setdeleteRequest);
             }}
           >
             Delete

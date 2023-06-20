@@ -3,7 +3,7 @@ import App, { config } from "../../App";
 import Search from "../../materials/Search";
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
-import FormatCurrency from "./../../FormatCurrency";
+import FormatCurrency from "./../../functions/FormatCurrency";
 import swal from "sweetalert";
 import PopUp from "./../../materials/PopUp";
 import Accordion from "@mui/material/Accordion";
@@ -14,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { useFormik } from "formik";
+import handleDelete from "./../../functions/HandleDelete";
 
 const columns = [
   { field: "id", headerName: "ID", width: 170 },
@@ -113,45 +114,11 @@ const Bills = () => {
     validate: billValidate,
   });
 
-  const handleDelete = (rows) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover it",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        rows.map((row) => {
-          axios
-            .delete(
-              `http://localhost:1234/api/v1/transactions/${row.id}`,
-              config
-            )
-            .then((res) => {
-              setdeleteRequest(res);
-              swal("Deleted Successfully!", {
-                icon: "success",
-              });
-            })
-            .catch((err) => {
-              setdeleteRequest(err);
-              swal("", "the delete operation hasn't been completed!", "info");
-            });
-          return true;
-        });
-      } else {
-        swal("", "the delete operation hasn't been completed!", "info");
-      }
-    });
-  };
-
   const handleOpenShow = (id) => {
     axios
       .get(`http://localhost:1234/api/v1/transactions/${id}`, config)
       .then((res) => res)
       .catch((err) => {
-        console.log(err);
         setOpenShow(true);
         setinfoShow(err.response.data.payload);
         setMedicines(err.response.data.payload.medicines);
@@ -279,7 +246,7 @@ const Bills = () => {
           <button
             className="get"
             onClick={() => {
-              handleDelete(selectedRows);
+              handleDelete("transactions", selectedRows, setdeleteRequest);
             }}
           >
             Delete

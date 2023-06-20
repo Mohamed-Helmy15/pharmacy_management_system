@@ -4,8 +4,8 @@ import Search from "./../../materials/Search";
 import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 import AddressCom from "./AddressCom";
-import swal from "sweetalert";
 import PopUp from "./../../materials/PopUp";
+import handleDelete from "./../../functions/HandleDelete";
 
 const columns = [
   { field: "id", headerName: "ID", width: 170 },
@@ -31,36 +31,6 @@ const Address = () => {
 
   const handleOpenEdit = () => {
     setOpenEdit(true);
-  };
-
-  const handleDelete = (rows) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover it",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        rows.map((row) => {
-          axios
-            .delete(`http://localhost:1234/api/v1/addresses/${row.id}`, config)
-            .then((res) => {
-              setdeleteRequest(res);
-              swal("Deleted Successfully!", {
-                icon: "success",
-              });
-            })
-            .catch((err) => {
-              setdeleteRequest(err);
-              swal("", "the delete operation hasn't been completed!", "info");
-            });
-          return true;
-        });
-      } else {
-        swal("", "the delete operation hasn't been completed!", "info");
-      }
-    });
   };
 
   const handleOpenShow = (id) => {
@@ -180,7 +150,7 @@ const Address = () => {
           <button
             className="get"
             onClick={() => {
-              handleDelete(selectedRows);
+              handleDelete("addresses", selectedRows, setdeleteRequest);
             }}
           >
             Delete

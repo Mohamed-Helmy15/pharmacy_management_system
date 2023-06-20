@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Appbar from "./components/Appbar/Appbar";
 import MainSidebar from "./components/Sidebar/Sidebar";
 import axios from "axios";
@@ -15,7 +15,7 @@ export const configMultiPart = {
     Authorization: `Bearer ${window.localStorage.getItem("tokens")}`,
   },
 };
-export const Role = React.createContext();
+
 function App(props) {
   useEffect(() => {
     axios

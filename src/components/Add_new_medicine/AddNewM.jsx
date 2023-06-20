@@ -9,9 +9,10 @@ import { DataGrid } from "@mui/x-data-grid";
 import styles from "./AddNewM.module.css";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import FormatCurrency from "../../FormatCurrency";
+import FormatCurrency from "../../functions/FormatCurrency";
 import swal from "sweetalert";
 import Cart from "../../materials/Cart";
+import handleDelete from "./../../functions/HandleDelete";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
@@ -78,35 +79,6 @@ const AddNewM = () => {
     if (selectedRowObjects.length > 0) {
       setId(selectedRowObjects[0].id);
     }
-  };
-
-  const handleDelete = (rows) => {
-    swal({
-      title: "Are you sure?",
-      text: "Once deleted, you will not be able to recover it",
-      icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        rows.map((row) => {
-          axios
-            .delete(`http://localhost:1234/api/v1/medicines/${row.id}`, config)
-            .then((res) => {
-              setdeleteRequest(res);
-              swal("Deleted Successfully!", {
-                icon: "success",
-              });
-            })
-            .catch((err) => {
-              swal("", "the delete operation hasn't been completed!", "info");
-            });
-          return true;
-        });
-      } else {
-        swal("", "the delete operation hasn't been completed!", "info");
-      }
-    });
   };
 
   useEffect(() => {
@@ -324,7 +296,12 @@ const AddNewM = () => {
               </button>
             </>
           ) : null}
-          <button className="get" onClick={() => handleDelete(selectedRows)}>
+          <button
+            className="get"
+            onClick={() => {
+              handleDelete("medicines", selectedRows, setdeleteRequest);
+            }}
+          >
             Delete
           </button>
 

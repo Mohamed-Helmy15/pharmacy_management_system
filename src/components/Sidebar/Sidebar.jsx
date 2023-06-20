@@ -18,8 +18,8 @@ export const items = [
   "Categories",
   "Users",
   "Customers",
-  "Medicines",
   "Branches",
+  "Medicines",
   "Addresses",
   "Bills",
   "suppliers",
@@ -64,6 +64,13 @@ const MainSidebar = (props) => {
           </MenuItem>
 
           <MenuItem
+            icon={<DeviceHubIcon />}
+            component={<Link to={"/Branches"} />}
+            className={styles.menuitem}
+          >
+            Branches
+          </MenuItem>
+          <MenuItem
             icon={<MedicationLiquidIcon />}
             component={<Link to={"/Medicines"} />}
             className={styles.menuitem}
@@ -71,13 +78,6 @@ const MainSidebar = (props) => {
             Medicines
           </MenuItem>
 
-          <MenuItem
-            icon={<DeviceHubIcon />}
-            component={<Link to={"/Branches"} />}
-            className={styles.menuitem}
-          >
-            Branches
-          </MenuItem>
           <MenuItem
             icon={<LocationOnIcon />}
             component={<Link to={"/Addresses"} />}
