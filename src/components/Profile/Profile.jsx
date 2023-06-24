@@ -176,9 +176,9 @@ const Profile = () => {
           .get(`http://localhost:1234/api/v1/users/${res}`, config)
           .then((res) => res)
           .catch((err) => {
+            console.log(err.response.data.payload);
             setProfileInfo(err.response.data.payload);
             setManage(err.response.data.payload.managing);
-            setPharmacy(err.response.data.payload.pharmacy.name);
             setRole(err.response.data.payload.role.name);
             setCreated(
               err.response.data.payload.createdAt.split("T").join(" At ")
@@ -189,6 +189,7 @@ const Profile = () => {
             if (err.response.data.payload.img !== null) {
               setImg(err.response.data.payload.img.split("\\").join("/"));
             }
+            setPharmacy(err.response.data.payload.pharmacy.name);
           });
         axios
           .get(
@@ -386,7 +387,7 @@ const Profile = () => {
                   variant="rounded"
                   alt={localStorage.getItem("user")}
                   src={
-                    img !== null
+                    img !== ""
                       ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
                       : "null"
                   }

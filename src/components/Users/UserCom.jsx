@@ -176,6 +176,7 @@ const UserCom = (props) => {
           }
         })
         .catch((err) => {
+          console.log(err);
           swal("The User has been edited wrongly!", {
             icon: "error",
           });

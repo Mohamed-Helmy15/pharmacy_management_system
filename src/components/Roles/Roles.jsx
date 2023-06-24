@@ -32,6 +32,7 @@ const Roles = () => {
   const [createTime, setCreateTime] = useState("");
   const [updateTime, setUpdateTime] = useState("");
   const [users, setUsers] = useState([]);
+  const [authorities, setAuthorities] = useState([]);
 
   const handleOpen = () => setOpen(true);
 
@@ -62,6 +63,7 @@ const Roles = () => {
         console.log(err);
         setinfoShow(err.response.data.payload);
         setUsers(err.response.data.payload.users);
+        setAuthorities(err.response.data.payload.authorities);
         setCreateTime(
           err.response.data.payload.createdAt.split("T").join(" At ")
         );
@@ -172,7 +174,7 @@ const Roles = () => {
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }}>
           <h3>{infoShow.name}</h3>
-          <div className="cat-info">
+          <div className="cat-info pop">
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -204,6 +206,7 @@ const Roles = () => {
                 )}
               </AccordionDetails>
             </Accordion>
+
             <p>
               Created At:{" "}
               <b>
@@ -240,6 +243,33 @@ const Roles = () => {
                   : infoShow.priority}
               </b>
             </p>
+            <Accordion>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <h3>Authorities</h3>
+              </AccordionSummary>
+              <AccordionDetails>
+                {authorities.length > 0 ? (
+                  authorities.map((authorities, i) => {
+                    return (
+                      <p key={i} className="med" style={{ fontWeight: "bold" }}>
+                        <span>
+                          {i + 1} : {authorities}
+                        </span>
+                      </p>
+                    );
+                  })
+                ) : (
+                  <p className="med" style={{ fontWeight: "bold" }}>
+                    {" "}
+                    No authorities for this Role{" "}
+                  </p>
+                )}
+              </AccordionDetails>
+            </Accordion>
           </div>
         </div>
       </PopUp>

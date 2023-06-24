@@ -14,6 +14,7 @@ import swal from "sweetalert";
 import Cart from "../../materials/Cart";
 import handleDelete from "./../../functions/HandleDelete";
 import PopUp from "./../../materials/PopUp";
+import { Avatar } from "@mui/material";
 const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
@@ -53,6 +54,7 @@ const AddNewM = () => {
   const [open, setOpen] = useState(false);
   const [openShow, setOpenShow] = useState(false);
   const [infoShow, setinfoShow] = useState([]);
+  const [img, setImg] = useState(null);
   const [createTime, setCreateTime] = useState("");
   const [updateTime, setUpdateTime] = useState("");
   const [supplier, setSupplier] = useState("");
@@ -88,9 +90,11 @@ const AddNewM = () => {
         console.log(res);
       })
       .catch((err) => {
-        console.log(err);
         setOpenShow(true);
         setinfoShow(err.response.data.payload);
+        if (err.response.data.payload.img !== null) {
+          setImg(err.response.data.payload.img.split("\\").join("/"));
+        }
         setCategory(err.response.data.payload.category.name);
         setSupplier(err.response.data.payload.supplier.name);
         setCreateTime(
@@ -389,6 +393,24 @@ const AddNewM = () => {
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }} className="pop">
+          <Avatar
+            sx={{
+              bgcolor: "#aaa",
+              width: "200px",
+              height: "200px",
+              fontSize: "50px",
+              margin: "0 auto",
+            }}
+            variant="rounded"
+            alt={infoShow.marketName}
+            src={
+              img !== null
+                ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
+                : "null"
+            }
+          >
+            {infoShow.marketName}
+          </Avatar>
           <h3>{infoShow.marketName}</h3>
           <div className="cat-info">
             <p>
