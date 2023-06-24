@@ -20,6 +20,7 @@ export const style = {
 };
 
 const Categories = () => {
+  const [auth, setAuth] = useState("");
   const [pharmacySelected, setPharmacySelected] = useState(null);
   const [open, setOpen] = useState(false);
   const [categories, setCategories] = useState([]);
@@ -57,6 +58,7 @@ const Categories = () => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get(
         `http://localhost:1234/api/v1/categories?page=${page}&size=${rowsPerPage}&sort=name`,
@@ -83,9 +85,11 @@ const Categories = () => {
           placeholder={"Search the category name"}
         />
         <div>
-          <button className="get" onClick={handleOpen}>
-            Create new Categories
-          </button>
+          {auth !== "pharmacist" && (
+            <button className="get" onClick={handleOpen}>
+              Create new Categories
+            </button>
+          )}
 
           <CatCom
             decide={"create"}

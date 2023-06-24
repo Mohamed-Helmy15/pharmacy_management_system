@@ -10,6 +10,7 @@ import App from "./../../App";
 const minWidth = 100;
 
 const Users = () => {
+  const [auth, setAuth] = useState("");
   const [postRequest, setPostRequest] = useState("");
   const [putRequest, setPutRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState(0);
@@ -59,13 +60,14 @@ const Users = () => {
     //     console.log(res);
     //   })
     //   .catch((err) => console.log("err", err));
+
+    setAuth(localStorage.getItem("role"));
     axios
       .get(
         `http://localhost:1234/api/v1/users?page=${page}&size=${rowsPerPage}&sort=username`,
         config
       )
       .then((res) => {
-        console.log(res);
         setDataRow(
           res.data.payload.filter((user) => {
             return user.username !== window.localStorage.getItem("user");
@@ -117,14 +119,16 @@ const Users = () => {
           />
 
           <div>
-            <button
-              className="get"
-              onClick={() => {
-                handleOpen();
-              }}
-            >
-              Create new Users
-            </button>
+            {auth !== "pharmacist" && (
+              <button
+                className="get"
+                onClick={() => {
+                  handleOpen();
+                }}
+              >
+                Create new Users
+              </button>
+            )}
             <UserCom
               decide={"create"}
               open={open}

@@ -14,6 +14,7 @@ const Authority = () => {
     { field: "createdAt", headerName: "Created At", width: 270 },
   ];
 
+  const [auth, setAuth] = useState("");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [putRequest, setPutRequest] = useState("");
@@ -70,6 +71,7 @@ const Authority = () => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get(
         `http://localhost:1234/api/v1/authorities?page=0&&size=100&&sort=name`,
@@ -90,9 +92,11 @@ const Authority = () => {
           placeholder={"Search the Authority name"}
         />
         <div>
-          <button className="get" onClick={handleOpen}>
-            Create new Authority
-          </button>
+          {auth === "super" && (
+            <button className="get" onClick={handleOpen}>
+              Create new Authority
+            </button>
+          )}
           <AuthorityCom
             decide={"create"}
             open={open}
@@ -133,14 +137,16 @@ const Authority = () => {
         <div className="buttons">
           {selectedRows.length === 1 ? (
             <>
-              <button
-                className="get"
-                onClick={() => {
-                  handleOpenEdit();
-                }}
-              >
-                Edit
-              </button>
+              {auth === "super" && (
+                <button
+                  className="get"
+                  onClick={() => {
+                    handleOpenEdit();
+                  }}
+                >
+                  Edit
+                </button>
+              )}
               <button
                 className="get"
                 onClick={() => {
@@ -151,51 +157,22 @@ const Authority = () => {
               </button>
             </>
           ) : null}
-          <button
-            className="get"
-            onClick={() => {
-              handleDelete("authorities", selectedRows, setdeleteRequest);
-            }}
-          >
-            Delete
-          </button>
+          {auth === "super" && (
+            <button
+              className="get"
+              onClick={() => {
+                handleDelete("authorities", selectedRows, setdeleteRequest);
+              }}
+            >
+              Delete
+            </button>
+          )}
         </div>
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }}>
           <h3>{infoShow.name}</h3>
           <div className="cat-info">
-            {/* <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <h3>Users</h3>
-              </AccordionSummary>
-              <AccordionDetails>
-                {users.length > 0 ? (
-                  users.map((user, i) => {
-                    return (
-                      <p
-                        key={user.id}
-                        className="med"
-                        style={{ fontWeight: "bold" }}
-                      >
-                        <span>
-                          {i + 1} : {user.name}
-                        </span>
-                      </p>
-                    );
-                  })
-                ) : (
-                  <p className="med" style={{ fontWeight: "bold" }}>
-                    {" "}
-                    No users for this Role{" "}
-                  </p>
-                )}
-              </AccordionDetails>
-            </Accordion> */}
             <p>
               Created At:{" "}
               <b>

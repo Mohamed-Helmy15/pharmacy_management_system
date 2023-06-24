@@ -47,6 +47,7 @@ const columns = [
 ];
 
 const AddNewM = () => {
+  const [auth, setAuth] = useState("");
   const [search, setSearch] = useState("");
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
@@ -123,6 +124,7 @@ const AddNewM = () => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get("http://localhost:1234/api/v1/categories", config)
       .then((res) => {
@@ -199,9 +201,11 @@ const AddNewM = () => {
         />
 
         <div>
-          <button className="get" onClick={handleOpen}>
-            Create new Medicines
-          </button>
+          {(auth === "super" || auth === "branch manager") && (
+            <button className="get" onClick={handleOpen}>
+              Create new Medicines
+            </button>
+          )}
           <AddNewCom
             decide={"create"}
             open={open}
@@ -335,19 +339,23 @@ const AddNewM = () => {
               <button className="get" onClick={() => handleOpenShow(id)}>
                 Show
               </button>
-              <button className="get" onClick={handleOpenEdit}>
-                Edit
-              </button>
+              {(auth === "super" || auth === "branch manager") && (
+                <button className="get" onClick={handleOpenEdit}>
+                  Edit
+                </button>
+              )}
             </>
           ) : null}
-          <button
-            className="get"
-            onClick={() => {
-              handleDelete("medicines", selectedRows, setdeleteRequest);
-            }}
-          >
-            Delete
-          </button>
+          {(auth === "super" || auth === "branch manager") && (
+            <button
+              className="get"
+              onClick={() => {
+                handleDelete("medicines", selectedRows, setdeleteRequest);
+              }}
+            >
+              Delete
+            </button>
+          )}
 
           <button
             className="get"

@@ -109,6 +109,39 @@ const RolesCom = (props) => {
       </Typography>
       <div className="pop">
         <form onSubmit={rolesFormik.handleSubmit}>
+          <Autocomplete
+            sx={{ width: "99%" }}
+            multiple
+            id="tags-standard"
+            options={authority}
+            getOptionLabel={(option) => option.name}
+            defaultValue={[]}
+            onChange={(e, newValue) => {
+              rolesFormik.values.authorities.push(newValue);
+
+              setAuthorityValues(newValue.map((authority) => authority.id));
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="standard"
+                label="Authorities"
+                placeholder="Authorities"
+                {...rolesFormik.getFieldProps("authorities")}
+                error={
+                  rolesFormik.touched.authorities &&
+                  rolesFormik.errors.authorities
+                    ? true
+                    : false
+                }
+                helperText={
+                  rolesFormik.touched.authorities &&
+                  rolesFormik.errors.authorities &&
+                  rolesFormik.errors.authorities
+                }
+              />
+            )}
+          />
           <TextField
             type="text"
             id="name"
@@ -146,39 +179,7 @@ const RolesCom = (props) => {
               rolesFormik.errors.priority
             }
           />
-          <Autocomplete
-            sx={{ width: "99%" }}
-            multiple
-            id="tags-standard"
-            options={authority}
-            getOptionLabel={(option) => option.name}
-            defaultValue={[]}
-            onChange={(e, newValue) => {
-              rolesFormik.values.authorities.push(newValue);
 
-              setAuthorityValues(newValue.map((authority) => authority.id));
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="standard"
-                label="Authorities"
-                placeholder="Authorities"
-                {...rolesFormik.getFieldProps("authorities")}
-                error={
-                  rolesFormik.touched.authorities &&
-                  rolesFormik.errors.authorities
-                    ? true
-                    : false
-                }
-                helperText={
-                  rolesFormik.touched.authorities &&
-                  rolesFormik.errors.authorities &&
-                  rolesFormik.errors.authorities
-                }
-              />
-            )}
-          />
           <button
             type="submit"
             style={{

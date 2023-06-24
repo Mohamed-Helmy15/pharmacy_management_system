@@ -31,6 +31,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const Tables = (props) => {
+  const [auth, setAuth] = useState("");
   const [img, setimg] = useState(null); // src
   const [pharmacy, setPharmacy] = useState("");
   const [role, setRole] = useState("");
@@ -87,6 +88,7 @@ const Tables = (props) => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get(
         `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
@@ -271,27 +273,36 @@ const Tables = (props) => {
                                 >
                                   Show
                                 </button>
-                                <button
-                                  className="get"
-                                  style={{
-                                    marginRight: 5,
-                                  }}
-                                  onClick={() => {
-                                    setId(row.id);
-                                    handleEditOpen();
-                                  }}
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  className="get"
-                                  style={{ marginTop: "5px" }}
-                                  onClick={() => {
-                                    handleDelete(row.id);
-                                  }}
-                                >
-                                  Delete
-                                </button>
+                                {(auth === "pharmacist") &
+                                  (props.section === "categories" ||
+                                    props.section === "users") ||
+                                (auth === "branch manager") &
+                                  (props.section === "pharmacies" ||
+                                    props.section === "users") ? null : (
+                                  <>
+                                    <button
+                                      className="get"
+                                      style={{
+                                        marginRight: 5,
+                                      }}
+                                      onClick={() => {
+                                        setId(row.id);
+                                        handleEditOpen();
+                                      }}
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      className="get"
+                                      style={{ marginTop: "5px" }}
+                                      onClick={() => {
+                                        handleDelete(row.id);
+                                      }}
+                                    >
+                                      Delete
+                                    </button>
+                                  </>
+                                )}
                               </>
                             )}
                           </TableCell>

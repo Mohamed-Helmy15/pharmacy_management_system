@@ -18,6 +18,7 @@ const Roles = () => {
     { field: "createdAt", headerName: "Created At", width: 270 },
   ];
 
+  const [auth, setAuth] = useState("");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [roles, setRoles] = useState([]);
@@ -78,6 +79,7 @@ const Roles = () => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get(
         `http://localhost:1234/api/v1/roles?page=0&&size=10&&sort=priority`,
@@ -100,9 +102,11 @@ const Roles = () => {
           placeholder={"Search the Roles name"}
         />
         <div>
-          <button className="get" onClick={handleOpen}>
-            Create new Role
-          </button>
+          {auth === "super" && (
+            <button className="get" onClick={handleOpen}>
+              Create new Role
+            </button>
+          )}
           <RolesCom
             decide={"create"}
             open={open}
@@ -116,6 +120,13 @@ const Roles = () => {
         rows={roles
           .filter((row) =>
             row.name.toLowerCase().includes(search.toLowerCase())
+          )
+          .filter((role) =>
+            auth === "super"
+              ? role
+              : auth === "branch manager"
+              ? role.name !== "super"
+              : role.name === auth
           )
           .map((row) => ({
             id: row.id,
@@ -143,14 +154,16 @@ const Roles = () => {
         <div className="buttons">
           {selectedRows.length === 1 ? (
             <>
-              <button
-                className="get"
-                onClick={() => {
-                  handleOpenEdit();
-                }}
-              >
-                Edit
-              </button>
+              {auth === "super" && (
+                <button
+                  className="get"
+                  onClick={() => {
+                    handleOpenEdit();
+                  }}
+                >
+                  Edit
+                </button>
+              )}
               <button
                 className="get"
                 onClick={() => {
@@ -161,14 +174,16 @@ const Roles = () => {
               </button>
             </>
           ) : null}
-          <button
-            className="get"
-            onClick={() => {
-              handleDelete("roles", selectedRows, setdeleteRequest);
-            }}
-          >
-            Delete
-          </button>
+          {auth === "super" && (
+            <button
+              className="get"
+              onClick={() => {
+                handleDelete("roles", selectedRows, setdeleteRequest);
+              }}
+            >
+              Delete
+            </button>
+          )}
         </div>
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>

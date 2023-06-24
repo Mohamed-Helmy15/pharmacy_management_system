@@ -28,6 +28,7 @@ const Branches = () => {
     },
   ];
 
+  const [auth, setAuth] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const handleChangePage = (event, newPage) => {
@@ -50,6 +51,7 @@ const Branches = () => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get(
         `http://localhost:1234/api/v1/pharmacies?page=${page}&size=${rowsPerPage}&sort=name`,
@@ -81,9 +83,11 @@ const Branches = () => {
             placeholder={"Search the Name"}
           />
           <div>
-            <button className="get" onClick={handleOpen}>
-              Create a new Branch
-            </button>
+            {auth === "super" && (
+              <button className="get" onClick={handleOpen}>
+                Create a new Branch
+              </button>
+            )}
           </div>
         </div>
         <BranchCom

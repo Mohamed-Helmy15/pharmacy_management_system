@@ -19,6 +19,7 @@ const columns = [
 ];
 
 const Suppliers = () => {
+  const [auth, setAuth] = useState("");
   const [search, setSearch] = useState("");
   const [suppliers, setSuppliers] = useState([]);
   const [addreShow, setAddreShow] = useState({});
@@ -79,6 +80,7 @@ const Suppliers = () => {
   };
 
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get(`http://localhost:1234/api/v1/suppliers`, config)
       .then((res) => {
@@ -103,9 +105,11 @@ const Suppliers = () => {
           placeholder={"Search the suppliers name"}
         />
         <div>
-          <button className="get" onClick={handleOpen}>
-            Create new Suppliers
-          </button>
+          {auth === "super" && (
+            <button className="get" onClick={handleOpen}>
+              Create new Suppliers
+            </button>
+          )}
           <SupplierCom
             decide={"create"}
             open={open}
@@ -141,14 +145,16 @@ const Suppliers = () => {
         <div className="buttons">
           {selectedRows.length === 1 ? (
             <>
-              <button
-                className="get"
-                onClick={() => {
-                  handleOpenEdit();
-                }}
-              >
-                Edit
-              </button>
+              {auth === "super" && (
+                <button
+                  className="get"
+                  onClick={() => {
+                    handleOpenEdit();
+                  }}
+                >
+                  Edit
+                </button>
+              )}
               <button
                 className="get"
                 onClick={() => {
@@ -159,14 +165,16 @@ const Suppliers = () => {
               </button>
             </>
           ) : null}
-          <button
-            className="get"
-            onClick={() => {
-              handleDelete("suppliers", selectedRows, setdeleteRequest);
-            }}
-          >
-            Delete
-          </button>
+          {auth === "super" && (
+            <button
+              className="get"
+              onClick={() => {
+                handleDelete("suppliers", selectedRows, setdeleteRequest);
+              }}
+            >
+              Delete
+            </button>
+          )}
         </div>
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
