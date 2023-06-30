@@ -283,6 +283,7 @@ const AddNewM = () => {
         >
           <input
             className="search-input"
+            style={{ width: "400px" }}
             type="number"
             min={0}
             placeholder="choose quantity of the selected medicine"
@@ -401,6 +402,7 @@ const AddNewM = () => {
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }} className="pop">
+          <h3>{infoShow.marketName}</h3>
           <Avatar
             sx={{
               bgcolor: "#aaa",
@@ -417,9 +419,9 @@ const AddNewM = () => {
                 : "null"
             }
           >
-            {infoShow.marketName}
+            {infoShow.marketName && Array.from(infoShow.marketName)[0]}
           </Avatar>
-          <h3>{infoShow.marketName}</h3>
+
           <div className="cat-info">
             <p>
               category: <b>{category === null ? "Not Available" : category}</b>

@@ -35,6 +35,7 @@ const Appbar = () => {
   const settings = ["Profile", "Logout"];
   const routSettings = ["Profile", ""];
   const routes = [
+    "dashboard",
     "categories",
     "Users",
     "Customers",

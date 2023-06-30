@@ -4,15 +4,9 @@
   box-sizing: border-box;
 }
 
-.profile {
-  display: flex;
-  gap: 5px;
-}
-
 .left,
 .right {
   padding: 5px;
-  align-self: flex-start;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -21,21 +15,8 @@
 }
 
 .left {
-  min-width: 290px;
-  max-width: 350px;
   color: white;
   background-color: #0f467e;
-}
-
-.right {
-  height: 300px;
-  flex: 1;
-  background-color: white;
-}
-
-.mainInfo {
-  display: flex;
-  flex-direction: row-reverse;
 }
 
 .infoContainer p {

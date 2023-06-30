@@ -275,7 +275,8 @@ const Tables = (props) => {
                                 </button>
                                 {(auth === "pharmacist") &
                                   (props.section === "categories" ||
-                                    props.section === "users") ||
+                                    props.section === "users" ||
+                                    props.section === "pharmacies") ||
                                 (auth === "branch manager") &
                                   (props.section === "pharmacies" ||
                                     props.section === "users") ? null : (

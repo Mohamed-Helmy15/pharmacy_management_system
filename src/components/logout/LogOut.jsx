@@ -77,7 +77,7 @@ const LogOut = () => {
 
   useEffect(() => {
     if (isAuthenticated()) {
-      navigate("/categories");
+      navigate("/dashboard");
     }
   }, [isAuthenticated, navigate]);
 

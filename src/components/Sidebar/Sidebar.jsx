@@ -13,8 +13,9 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useSignOut } from "react-auth-kit";
 import { SiAuth0 } from "react-icons/si";
 import { FaCriticalRole } from "react-icons/fa";
-
+import DashboardIcon from "@mui/icons-material/Dashboard";
 export const items = [
+  "Dashboard",
   "Categories",
   "Users",
   "Customers",
@@ -38,8 +39,15 @@ const MainSidebar = (props) => {
   };
   return (
     <>
-      <Sidebar width="260px" className={styles.side} backgroundColor="#0F467E">
+      <Sidebar width="200px" className={styles.side} backgroundColor="#0F467E">
         <Menu className={styles.menu}>
+          <MenuItem
+            icon={<DashboardIcon />}
+            component={<Link to={"/dashboard"} />}
+            className={styles.menuitem}
+          >
+            Dashboard
+          </MenuItem>
           <MenuItem
             icon={<CategoryIcon />}
             component={<Link to={"/categories"} />}

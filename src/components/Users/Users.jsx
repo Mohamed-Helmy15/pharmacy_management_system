@@ -69,9 +69,11 @@ const Users = () => {
       )
       .then((res) => {
         setDataRow(
-          res.data.payload.filter((user) => {
-            return user.username !== window.localStorage.getItem("user");
-          })
+          res.data.payload
+            .filter((user) => {
+              return user.username !== window.localStorage.getItem("user");
+            })
+            .filter((user) => user.role !== "super")
         );
       })
       .catch((err) => console.log(err));

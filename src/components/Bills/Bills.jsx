@@ -282,6 +282,12 @@ const Bills = () => {
                         Price : {FormatCurrency(medicine.medicine.price)}
                       </span>
                       <span>Count : {medicine.count}</span>
+                      <span>
+                        Total Price :{" "}
+                        {FormatCurrency(
+                          medicine.count * medicine.medicine.price
+                        )}
+                      </span>
                     </p>
                   );
                 })}

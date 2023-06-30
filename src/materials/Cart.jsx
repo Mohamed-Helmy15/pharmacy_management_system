@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 const Cart = (props) => {
   const [state, setState] = React.useState({
     right: false,
@@ -54,7 +54,17 @@ const Cart = (props) => {
           Clear the Selected Medicines
         </button>
       ) : (
-        <h3>There is no Medicines Yet!</h3>
+        <>
+          <SentimentVeryDissatisfiedIcon
+            style={{
+              width: "100px",
+              height: "100px",
+              margin: "auto",
+              display: "block",
+            }}
+          />
+          <h3 style={{ textAlign: "center" }}>There is no Medicines Yet!</h3>
+        </>
       )}
     </Box>
   );

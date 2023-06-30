@@ -20,12 +20,21 @@ import Suppliers from "./components/Suppliers/Suppliers";
 import Address from "./components/Addresses/Address";
 import Roles from "./components/Roles/Roles";
 import Authority from "./components/Authority/Authority";
+import Dashboard from "./components/Dashboard/Dashboard";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const router = createBrowserRouter([
   {
     path: "/",
     element: <LogOut />,
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <RequireAuth loginPath="/">
+        <Dashboard />
+      </RequireAuth>
+    ),
   },
   {
     path: "/categories",
