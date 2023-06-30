@@ -58,7 +58,6 @@ const Customers = () => {
         config
       )
       .then((res) => {
-        console.log(res.data.payload);
         setDataRow(res.data.payload);
       })
       .catch((err) => err);

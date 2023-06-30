@@ -89,7 +89,6 @@ const AddNewCom = (props) => {
           configMultiPart
         )
         .then((res) => {
-          console.log(res);
           if (res.data.success === true) {
             props.setPostRequest(formData);
             handleClose();
@@ -302,7 +301,6 @@ const AddNewCom = (props) => {
                   value={typeValue}
                   onChange={(e, value) => {
                     settypeValue(value);
-                    console.log(value);
                   }}
                   sx={{ width: "100%" }}
                   isOptionEqualToValue={(option, value) => option === value}

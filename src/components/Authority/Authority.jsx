@@ -55,7 +55,6 @@ const Authority = () => {
       .get(`http://localhost:1234/api/v1/authorities/${id}`, config)
       .then((res) => res)
       .catch((err) => {
-        console.log(err);
         setinfoShow(err.response.data.payload);
         setCreateTime(
           err.response.data.payload.createdAt.split("T").join(" At ")
@@ -63,6 +62,7 @@ const Authority = () => {
         setUpdateTime(
           err.response.data.payload.updatedAt.split("T").join(" At ")
         );
+        return err;
       });
   };
 

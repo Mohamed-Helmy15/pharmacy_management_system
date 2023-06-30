@@ -47,7 +47,7 @@ const Suppliers = () => {
     setOpenShow(true);
     axios
       .get(`http://localhost:1234/api/v1/suppliers/${id}`, config)
-      .then((res) => console.log(res))
+      .then((res) => res)
       .catch((err) => {
         setinfoShow(err.response.data.payload);
         setAddreShow(err.response.data.payload.address);

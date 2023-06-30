@@ -77,7 +77,6 @@ const Appbar = () => {
               })
               .catch((err) => {
                 if (err.response.data.payload.img !== null) {
-                  console.log("mo");
                   setImg(err.response.data.payload.img.split("\\").join("/"));
                 } else {
                   return err;

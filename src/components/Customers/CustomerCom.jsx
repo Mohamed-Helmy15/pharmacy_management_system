@@ -197,7 +197,7 @@ const CustomerCom = (props) => {
           setAddressCustomer(false);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => err);
   };
   const addressFormik = useFormik({
     initialValues: addressInitialValues,

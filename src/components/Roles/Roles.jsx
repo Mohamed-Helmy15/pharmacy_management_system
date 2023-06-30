@@ -61,7 +61,6 @@ const Roles = () => {
       .get(`http://localhost:1234/api/v1/roles/${id}`, config)
       .then((res) => res)
       .catch((err) => {
-        console.log(err);
         setinfoShow(err.response.data.payload);
         setUsers(err.response.data.payload.users);
         setAuthorities(err.response.data.payload.authorities);
@@ -71,6 +70,7 @@ const Roles = () => {
         setUpdateTime(
           err.response.data.payload.updatedAt.split("T").join(" At ")
         );
+        return err;
       });
   };
 
@@ -86,7 +86,6 @@ const Roles = () => {
         config
       )
       .then((res) => {
-        console.log(res.data.payload);
         setRoles(res.data.payload);
       })
       .catch((err) => err);

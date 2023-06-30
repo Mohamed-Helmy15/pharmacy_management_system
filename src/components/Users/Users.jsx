@@ -76,7 +76,7 @@ const Users = () => {
             .filter((user) => user.role !== "super")
         );
       })
-      .catch((err) => console.log(err));
+      .catch((err) => err);
     axios
       .get(
         "http://localhost:1234/api/v1/roles?page=0&size=100&sort=priority",

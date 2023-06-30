@@ -369,13 +369,13 @@ const Bills = () => {
                         });
                       })
                       .catch((err) => {
-                        console.log(err);
                         setPutRequest(err);
                         swal(
                           "",
                           "The Invoice hasn't been Reselled completed!",
                           "error"
                         );
+                        return err;
                       });
                     return true;
                   } else {

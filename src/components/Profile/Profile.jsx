@@ -121,7 +121,6 @@ const Profile = () => {
           .get(`http://localhost:1234/api/v1/users/${res}`, config)
           .then((res) => res)
           .catch((err) => {
-            console.log(err.response.data.payload);
             setProfileInfo(err.response.data.payload);
             setManage(err.response.data.payload.managing);
             setRole(err.response.data.payload.role.name);
@@ -135,6 +134,7 @@ const Profile = () => {
               setImg(err.response.data.payload.img.split("\\").join("/"));
             }
             setPharmacy(err.response.data.payload.pharmacy.name);
+            return err;
           });
         axios
           .get(
@@ -339,11 +339,7 @@ const Profile = () => {
                 >
                   {Array.from(localStorage.getItem("user"))[0]}
                 </Avatar>
-                <p
-                  onClick={() => {
-                    console.log(profileInfo);
-                  }}
-                >
+                <p>
                   Name: {profileInfo.fname} {profileInfo.lname}
                 </p>
                 <p>User Name: {profileInfo.username}</p>

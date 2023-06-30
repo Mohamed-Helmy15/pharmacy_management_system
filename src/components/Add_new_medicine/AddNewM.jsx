@@ -88,7 +88,7 @@ const AddNewM = () => {
         config
       )
       .then((res) => {
-        console.log(res);
+        return res;
       })
       .catch((err) => {
         setOpenShow(true);
@@ -361,7 +361,6 @@ const AddNewM = () => {
           <button
             className="get"
             onClick={() => {
-              console.log(obj);
               axios
                 .post(
                   "http://localhost:1234/api/v1/transactions/create",
@@ -382,7 +381,6 @@ const AddNewM = () => {
                   });
                 })
                 .catch((err) => {
-                  console.log(err);
                   if (!customerValue) {
                     swal("Please choose the Customer", {
                       icon: "error",

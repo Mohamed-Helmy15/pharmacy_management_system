@@ -151,7 +151,6 @@ const Dashboard = () => {
         config
       )
       .then((res) => {
-        console.log(res);
         setStatistics(res.data.payload);
       })
       .catch((err) => console.error(err));
