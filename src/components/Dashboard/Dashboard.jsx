@@ -93,25 +93,37 @@ const Dashboard = () => {
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
-      const { month, price, year } = statistics[0];
-      return (
-        <div
-          className="custom-tooltip"
-          style={{
-            backgroundColor: "#eee",
-            padding: "8px 4px",
-            border: "1px solid #aaa",
-            borderRadius: "5px",
-            textAlign: "center",
-          }}
-        >
-          <p className="label">{months[month - 1]}</p>
-          <p className="value">Price: {FormatCurrency(price)}</p>
-          <p className="year">Year: {year}</p>
-        </div>
-      );
+      // console.log(payload[0].payload);
+      if (statistics.length !== 0) {
+        const { month, price, year } = payload[0].payload;
+        return (
+          <div
+            className="custom-tooltip"
+            style={{
+              backgroundColor: "#eee",
+              padding: "8px 4px",
+              border: "1px solid #aaa",
+              borderRadius: "5px",
+              textAlign: "center",
+            }}
+          >
+            <p className="label">{month}</p>
+            <p className="value">Price: {FormatCurrency(price)}</p>
+            <p className="year">Year: {year}</p>
+          </div>
+        );
+      }
     }
     return null;
+  };
+
+  const handleMonth = (event, count) => {
+    setMonthCount(count);
+    document.querySelectorAll(".month-filter").forEach((button) => {
+      button.classList.remove("clicked");
+    });
+
+    event.target.classList.add("clicked");
   };
 
   useEffect(() => {
@@ -151,7 +163,7 @@ const Dashboard = () => {
         config
       )
       .then((res) => {
-        setStatistics(res.data.payload);
+        setStatistics(res.data.payload.sort((a, b) => a.month - b.month));
       })
       .catch((err) => console.error(err));
   }, [monthCount]);
@@ -235,13 +247,14 @@ const Dashboard = () => {
                       <span>Price</span>
                       <span>Date of Transaction</span>
                     </p>
+
                     {transactions.map((transaction, i) => {
                       return (
                         <p key={transaction.id} className="med">
-                          <span>{transaction.customer.name}</span>
                           <span>
-                            {i + 1}: {FormatCurrency(transaction.price)}
+                            {i + 1}: {transaction.customer.name}
                           </span>
+                          <span>{FormatCurrency(transaction.price)}</span>
                           <span>
                             {transaction.createdAt.split("T").join(" AT ")}
                           </span>
@@ -271,74 +284,98 @@ const Dashboard = () => {
                   }}
                 >
                   <button
-                    className="month-filter"
-                    onClick={() => setMonthCount(1)}
+                    className="month-filter clicked"
+                    onClick={(event) => {
+                      handleMonth(event, 1);
+                    }}
                   >
                     1 month
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(2)}
+                    onClick={(event) => {
+                      handleMonth(event, 2);
+                    }}
                   >
-                    2 monhts
+                    2 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(3)}
+                    onClick={(event) => {
+                      handleMonth(event, 3);
+                    }}
                   >
                     3 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(4)}
+                    onClick={(event) => {
+                      handleMonth(event, 4);
+                    }}
                   >
                     4 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(5)}
+                    onClick={(event) => {
+                      handleMonth(event, 5);
+                    }}
                   >
                     5 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(5)}
+                    onClick={(event) => {
+                      handleMonth(event, 6);
+                    }}
                   >
                     6 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(5)}
+                    onClick={(event) => {
+                      handleMonth(event, 7);
+                    }}
                   >
                     7 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(5)}
+                    onClick={(event) => {
+                      handleMonth(event, 8);
+                    }}
                   >
                     8 months
                   </button>
                   <button
                     className="month-filter"
-                    onClick={() => setMonthCount(5)}
+                    onClick={(event) => {
+                      handleMonth(event, 9);
+                    }}
                   >
                     9 months
                   </button>
                   <button
-                    className="month-filter "
-                    onClick={() => setMonthCount(5)}
+                    className="month-filter"
+                    onClick={(event) => {
+                      handleMonth(event, 10);
+                    }}
                   >
                     10 months
                   </button>
                   <button
-                    className="month-filter "
-                    onClick={() => setMonthCount(5)}
+                    className="month-filter"
+                    onClick={(event) => {
+                      handleMonth(event, 11);
+                    }}
                   >
                     11 months
                   </button>
                   <button
-                    className="month-filter "
-                    onClick={() => setMonthCount(5)}
+                    className="month-filter"
+                    onClick={(event) => {
+                      handleMonth(event, 12);
+                    }}
                   >
                     12 months
                   </button>
@@ -351,12 +388,12 @@ const Dashboard = () => {
                 >
                   <LineChart
                     data={
-                      data
-                      // statistics.map((stat) => ({
-                      //   month: months[stat.month - 1],
-                      //   price: stat.price,
-                      //   year: stat.year,
-                      // }))
+                      // data
+                      statistics.map((stat) => ({
+                        month: months[stat.month - 1],
+                        price: stat.price,
+                        year: stat.year,
+                      }))
                     }
                     margin={{
                       top: 5,

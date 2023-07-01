@@ -133,7 +133,9 @@ const Profile = () => {
             if (err.response.data.payload.img !== null) {
               setImg(err.response.data.payload.img.split("\\").join("/"));
             }
-            setPharmacy(err.response.data.payload.pharmacy.name);
+            if (err.response.data.payload.pharmacy !== null) {
+              setPharmacy(err.response.data.payload.pharmacy.name);
+            }
             return err;
           });
         axios
@@ -347,9 +349,12 @@ const Profile = () => {
                   E-mail:{" "}
                   {profileInfo.email ? profileInfo.email : "Not Available"}
                 </p>
-                <p>Phone: {profileInfo.phone}</p>
+                <p>
+                  Phone:{" "}
+                  {profileInfo.phone ? profileInfo.phone : "Not Available"}
+                </p>
                 <p>Position: {role}</p>
-                <p>Pharmacy: {pharmacy}</p>
+                <p>Pharmacy: {pharmacy ? pharmacy : "Not Available"}</p>
                 <div className="cat-info">
                   <Accordion style={{ borderRadius: "5px" }}>
                     <AccordionSummary
