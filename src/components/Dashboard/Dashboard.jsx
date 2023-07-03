@@ -44,33 +44,33 @@ const months = [
   "December",
 ];
 
-const data = [
-  {
-    month: "January",
-    price: "200",
-    year: "2023",
-  },
-  {
-    month: "February",
-    price: "250",
-    year: "2023",
-  },
-  {
-    month: "March",
-    price: "500",
-    year: "2023",
-  },
-  {
-    month: "April",
-    price: "400",
-    year: "2023",
-  },
-  {
-    month: "May",
-    price: "20",
-    year: "2023",
-  },
-];
+// const data = [
+//   {
+//     month: "January",
+//     price: "200",
+//     year: "2023",
+//   },
+//   {
+//     month: "February",
+//     price: "250",
+//     year: "2023",
+//   },
+//   {
+//     month: "March",
+//     price: "500",
+//     year: "2023",
+//   },
+//   {
+//     month: "April",
+//     price: "400",
+//     year: "2023",
+//   },
+//   {
+//     month: "May",
+//     price: "20",
+//     year: "2023",
+//   },
+// ];
 
 const Dashboard = () => {
   const [customerCount, setCustomerCount] = useState("");
@@ -79,7 +79,6 @@ const Dashboard = () => {
   const [transactions, set5Transactions] = useState([]);
   const [statistics, setStatistics] = useState([]);
   const [monthCount, setMonthCount] = useState(1);
-  const [count, setCount] = useState(1);
 
   const data1 = [
     {
