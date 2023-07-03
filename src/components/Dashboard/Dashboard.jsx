@@ -79,6 +79,7 @@ const Dashboard = () => {
   const [transactions, set5Transactions] = useState([]);
   const [statistics, setStatistics] = useState([]);
   const [monthCount, setMonthCount] = useState(1);
+  const [count, setCount] = useState(1);
 
   const data1 = [
     {

@@ -15,6 +15,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useFormik } from "formik";
 
 const Profile = () => {
+  const [auth, setAuth] = useState("");
   const [image, setImage] = useState(null);
   const [roleValue, setRoleValue] = useState(null);
   const [pharmacyValue, setPharmacyValue] = useState(null);
@@ -108,6 +109,7 @@ const Profile = () => {
     onSubmit,
   });
   useEffect(() => {
+    setAuth(localStorage.getItem("role"));
     axios
       .get("http://localhost:1234/api/v1/users/", config)
       .then((res) => {
@@ -314,14 +316,16 @@ const Profile = () => {
             </>
           ) : (
             <div className={styles.mainInfo}>
-              <Tooltip title="Edit" arrow>
-                <CreateIcon
-                  style={{ cursor: "pointer", fontSize: "20px" }}
-                  onClick={() => {
-                    setEdit(true);
-                  }}
-                />
-              </Tooltip>
+              {auth === "super" && (
+                <Tooltip title="Edit" arrow>
+                  <CreateIcon
+                    style={{ cursor: "pointer", fontSize: "20px" }}
+                    onClick={() => {
+                      setEdit(true);
+                    }}
+                  />
+                </Tooltip>
+              )}
               <div className={styles.infoContainer}>
                 <Avatar
                   sx={{
@@ -334,9 +338,9 @@ const Profile = () => {
                   variant="rounded"
                   alt={localStorage.getItem("user")}
                   src={
-                    img !== ""
+                    img !== null
                       ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
-                      : "null"
+                      : null
                   }
                 >
                   {Array.from(localStorage.getItem("user"))[0]}

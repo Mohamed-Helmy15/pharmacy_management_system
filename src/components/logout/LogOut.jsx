@@ -77,6 +77,7 @@ const LogOut = () => {
   useEffect(() => {
     if (isAuthenticated()) {
       navigate("/dashboard");
+      window.location.reload();
     }
   }, [isAuthenticated, navigate]);
 
