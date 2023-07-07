@@ -48,7 +48,8 @@ const columns = [
 
 const AddNewM = () => {
   const [auth, setAuth] = useState("");
-  const [search, setSearch] = useState("");
+  const [marketSeatch, setMarketSearch] = useState("");
+  const [effectiveSearch, setEffectiveSearch] = useState("");
   const [categories, setCategories] = useState([]);
   const [types, setTypes] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
@@ -74,8 +75,11 @@ const AddNewM = () => {
   const [Quant, setQuant] = useState("");
   const [obj, setObj] = useState([]);
 
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
+  const handleMarketSearch = (e) => {
+    setMarketSearch(e.target.value);
+  };
+  const handleEffectiveSearch = (e) => {
+    setEffectiveSearch(e.target.value);
   };
   const handleOpen = () => setOpen(true);
 
@@ -169,6 +173,7 @@ const AddNewM = () => {
   return (
     <App>
       <SelectBranches
+        medCat={"med"}
         value={pharmacySelected}
         setValue={setPharmacySelected}
         storage={"thisBranch"}
@@ -195,9 +200,14 @@ const AddNewM = () => {
       <div className="header">
         <h3 style={{ margin: 0 }}>Medicines</h3>
         <Search
-          search={search}
-          handleSearch={handleSearch}
-          placeholder={"Search the medicines name"}
+          search={marketSeatch}
+          handleSearch={handleMarketSearch}
+          placeholder={"Search the market name"}
+        />
+        <Search
+          search={effectiveSearch}
+          handleSearch={handleEffectiveSearch}
+          placeholder={"Search the Effective name"}
         />
 
         <div>
@@ -223,7 +233,12 @@ const AddNewM = () => {
       <DataGrid
         rows={dataRow
           .filter((row) =>
-            row.marketName.toLowerCase().includes(search.toLowerCase())
+            row.marketName.toLowerCase().includes(marketSeatch.toLowerCase())
+          )
+          .filter((row) =>
+            row.scientificName
+              .toLowerCase()
+              .includes(effectiveSearch.toLowerCase())
           )
           .map((row) => ({
             id: row.id,

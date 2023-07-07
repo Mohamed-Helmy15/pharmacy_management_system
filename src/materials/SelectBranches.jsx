@@ -9,15 +9,25 @@ const SelectBranches = (props) => {
   const [loading, setLoading] = useState(true);
   const pharmacySelectedRefInCat = useRef(props.value);
   useEffect(() => {
-    axios
-      .get(`http://localhost:1234/api/v1/pharmacies`, config)
-      .then((response) => {
-        setPharmacies(response.data.payload);
+    if (props.medCat === "med") {
+      axios
+        .get(`http://localhost:1234/api/v1/users/pharmacies`, config)
+        .then((response) => {
+          setPharmacies(response.data.payload);
+          setLoading(false);
+        })
+        .catch((err) => err);
+    } else {
+      axios
+        .get(`http://localhost:1234/api/v1/pharmacies`, config)
+        .then((response) => {
+          setPharmacies(response.data.payload);
 
-        setLoading(false);
-      })
-      .catch((err) => err);
-  }, []);
+          setLoading(false);
+        })
+        .catch((err) => err);
+    }
+  }, [props.medCat]);
 
   return (
     loading === false && (

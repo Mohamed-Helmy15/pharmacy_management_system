@@ -44,33 +44,33 @@ const months = [
   "December",
 ];
 
-// const data = [
-//   {
-//     month: "January",
-//     price: "200",
-//     year: "2023",
-//   },
-//   {
-//     month: "February",
-//     price: "250",
-//     year: "2023",
-//   },
-//   {
-//     month: "March",
-//     price: "500",
-//     year: "2023",
-//   },
-//   {
-//     month: "April",
-//     price: "400",
-//     year: "2023",
-//   },
-//   {
-//     month: "May",
-//     price: "20",
-//     year: "2023",
-//   },
-// ];
+const data = [
+  {
+    month: "January",
+    price: "200",
+    year: "2023",
+  },
+  {
+    month: "February",
+    price: "250",
+    year: "2023",
+  },
+  {
+    month: "March",
+    price: "500",
+    year: "2023",
+  },
+  {
+    month: "April",
+    price: "400",
+    year: "2023",
+  },
+  {
+    month: "May",
+    price: "20",
+    year: "2023",
+  },
+];
 
 const Dashboard = () => {
   const [customerCount, setCustomerCount] = useState("");
@@ -388,12 +388,12 @@ const Dashboard = () => {
                 >
                   <LineChart
                     data={
-                      // data
-                      statistics.map((stat) => ({
-                        month: months[stat.month - 1],
-                        price: stat.price,
-                        year: stat.year,
-                      }))
+                      data
+                      // statistics.map((stat) => ({
+                      //   month: months[stat.month - 1],
+                      //   price: stat.price,
+                      //   year: stat.year,
+                      // }))
                     }
                     margin={{
                       top: 5,
