@@ -9,7 +9,7 @@ const SelectBranches = (props) => {
   const [loading, setLoading] = useState(true);
   const pharmacySelectedRefInCat = useRef(props.value);
   useEffect(() => {
-    if (props.medCat === "med") {
+    if (props.medCat === "med" && props.auth !== "super") {
       axios
         .get(`http://localhost:1234/api/v1/users/pharmacies`, config)
         .then((response) => {
@@ -27,7 +27,7 @@ const SelectBranches = (props) => {
         })
         .catch((err) => err);
     }
-  }, [props.medCat]);
+  }, [props.auth, props.medCat]);
 
   return (
     loading === false && (

@@ -173,6 +173,7 @@ const AddNewM = () => {
   return (
     <App>
       <SelectBranches
+        auth={auth}
         medCat={"med"}
         value={pharmacySelected}
         setValue={setPharmacySelected}
