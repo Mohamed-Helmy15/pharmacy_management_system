@@ -13,7 +13,9 @@ const CatCom = (props) => {
   // *********************create*********************
   const [inputAdd, setInputAdd] = useState("");
   const handleClose = () => {
-    props.setOpen(false);
+    if (props.decide === "create") {
+      props.setOpen(false);
+    }
     setInputAdd("");
   };
 
@@ -73,14 +75,12 @@ const CatCom = (props) => {
         config
       )
       .then((res) => {
-        if (res.data.success === true) {
-          props.setPutRequest(values);
-          emptyCategory();
-          handleClose();
-          swal("The Category has been edited Successfully!", {
-            icon: "success",
-          });
-        }
+        props.setPutRequest(res);
+        emptyCategory();
+        handleClose();
+        swal("The Category has been edited Successfully!", {
+          icon: "success",
+        });
       })
       .catch((err) => {
         swal("The Category has been edited wrongly!", {
