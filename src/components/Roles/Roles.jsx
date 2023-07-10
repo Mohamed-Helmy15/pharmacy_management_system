@@ -63,6 +63,7 @@ const Roles = () => {
       .catch((err) => {
         setinfoShow(err.response.data.payload);
         setUsers(err.response.data.payload.users);
+        // console.log(err.response.data.payload.authorities.sort());
         setAuthorities(err.response.data.payload.authorities);
         setCreateTime(
           err.response.data.payload.createdAt.split("T").join(" At ")
