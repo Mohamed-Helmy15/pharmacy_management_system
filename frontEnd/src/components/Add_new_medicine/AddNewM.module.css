@@ -1,8 +1,0 @@
-.buttons {
-  width: fit-content;
-  margin: 10px auto;
-}
-
-.buttons button:not(:last-child) {
-  margin-right: 8px;
-}
