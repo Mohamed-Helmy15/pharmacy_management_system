@@ -6,37 +6,43 @@ import { config } from "./../App";
 
 const SelectBranches = (props) => {
   const [pharmacies, setPharmacies] = useState([]);
+  const [userPharmacies, setUserPharmacies] = useState([]);
   const [loading, setLoading] = useState(true);
   const pharmacySelectedRefInCat = useRef(props.value);
   useEffect(() => {
-    if (props.medCat === "med" && props.auth !== "super") {
-      axios
-        .get(`http://localhost:1234/api/v1/users/pharmacies`, config)
-        .then((response) => {
-          setPharmacies(response.data.payload);
-          setLoading(false);
-        })
-        .catch((err) => err);
-    } else {
-      axios
-        .get(`http://localhost:1234/api/v1/pharmacies`, config)
-        .then((response) => {
-          setPharmacies(response.data.payload);
+    axios
+      .get(`http://localhost:1234/api/v1/pharmacies`, config)
+      .then((response) => {
+        setPharmacies(response.data.payload);
 
-          setLoading(false);
-        })
-        .catch((err) => err);
-    }
+        setLoading(false);
+      })
+      .catch((err) => err);
+
+    axios
+      .get(`http://localhost:1234/api/v1/users/pharmacies`, config)
+      .then((response) => {
+        setUserPharmacies(response.data.payload);
+        setLoading(false);
+      })
+      .catch((err) => err);
   }, [props.auth, props.medCat]);
 
   return (
     loading === false && (
       <div>
         <Autocomplete
-          options={pharmacies.map((pharmacy) => ({
-            id: pharmacy.id,
-            label: pharmacy.name,
-          }))}
+          options={
+            props.auth === "super" || props.medCat === "cat"
+              ? pharmacies.map((pharmacy) => ({
+                  id: pharmacy.id,
+                  label: pharmacy.name,
+                }))
+              : userPharmacies.map((pharmacy) => ({
+                  id: pharmacy.id,
+                  label: pharmacy.name,
+                }))
+          }
           renderInput={(params) => <TextField {...params} label="Pharmacy" />}
           value={props.value}
           onChange={(e, value) => {

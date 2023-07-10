@@ -73,6 +73,8 @@ const Categories = () => {
   return (
     <App>
       <SelectBranches
+        auth={auth}
+        medCat={"cat"}
         value={pharmacySelected}
         setValue={setPharmacySelected}
         storage={"branch"}
