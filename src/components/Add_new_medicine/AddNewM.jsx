@@ -394,6 +394,7 @@ const AddNewM = () => {
                 )
                 .then((res) => {
                   setPostRequest(res);
+                  console.log(res);
                   setObj([]);
                   swal("The bill has been completed successfully!", {
                     icon: "success",

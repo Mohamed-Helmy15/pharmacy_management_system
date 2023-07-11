@@ -37,6 +37,7 @@ const Bills = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [medicines, setMedicines] = useState([]);
   const [infoShow, setinfoShow] = useState([]);
+  const [invoice, setInvoice] = useState("");
   const [createTime, setCreateTime] = useState("");
   const [updateTime, setUpdateTime] = useState("");
   const [customer, setCustomer] = useState("");
@@ -119,7 +120,7 @@ const Bills = () => {
       .get(`http://localhost:1234/api/v1/transactions/${id}`, config)
       .then((res) => res)
       .catch((err) => {
-        console.log(err.response.data.payload);
+        setInvoice(err.response.data.payload.invoice.split("\\").join("/"));
         setOpenShow(true);
         setinfoShow(err.response.data.payload);
         setMedicines(err.response.data.payload.medicines);
@@ -338,59 +339,77 @@ const Bills = () => {
                   : infoShow.updatedBy}
               </b>
             </p>
-            <button
-              className="get"
-              style={{ margin: "10px auto 0", display: "block" }}
-              onClick={() => {
-                swal({
-                  title: "Are you sure?",
-                  text: "you will Resell the Invoice again",
-                  icon: "info",
-                  buttons: true,
-                }).then((sure) => {
-                  if (sure) {
-                    axios
-                      .post(
-                        `http://localhost:1234/api/v1/transactions/create`,
-                        {
-                          customer: infoShow.customer.id,
-                          pharmacy: parseInt(
-                            window.localStorage.getItem("thisBranch")
-                          ),
-                          medicines: resell,
-                        },
-                        config
-                      )
-                      .then((res) => {
-                        setPutRequest(res);
-                        handleCloseShow();
-
-                        swal("The Invoice Reselled Successfully!", {
-                          icon: "success",
-                        });
-                      })
-                      .catch((err) => {
-                        setPutRequest(err);
-                        swal(
-                          "",
-                          "The Invoice hasn't been Reselled completed!",
-                          "error"
-                        );
-                        return err;
-                      });
-                    return true;
-                  } else {
-                    swal(
-                      "",
-                      "the delete operation hasn't been completed!",
-                      "error"
-                    );
-                  }
-                });
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "10px",
+                marginTop: "20px",
               }}
             >
-              Resell the Invoice
-            </button>
+              <button
+                className="get"
+                onClick={() => {
+                  swal({
+                    title: "Are you sure?",
+                    text: "you will Resell the Invoice again",
+                    icon: "info",
+                    buttons: true,
+                  }).then((sure) => {
+                    if (sure) {
+                      axios
+                        .post(
+                          `http://localhost:1234/api/v1/transactions/create`,
+                          {
+                            customer: infoShow.customer.id,
+                            pharmacy: parseInt(
+                              window.localStorage.getItem("thisBranch")
+                            ),
+                            medicines: resell,
+                          },
+                          config
+                        )
+                        .then((res) => {
+                          setPutRequest(res);
+                          handleCloseShow();
+
+                          swal("The Invoice Reselled Successfully!", {
+                            icon: "success",
+                          });
+                        })
+                        .catch((err) => {
+                          setPutRequest(err);
+                          swal(
+                            "",
+                            "The Invoice hasn't been Reselled completed!",
+                            "error"
+                          );
+                          return err;
+                        });
+                      return true;
+                    } else {
+                      swal(
+                        "",
+                        "the delete operation hasn't been completed!",
+                        "error"
+                      );
+                    }
+                  });
+                }}
+              >
+                Resell the Invoice
+              </button>
+              <button
+                className="get"
+                onClick={() => {
+                  window.open(
+                    `http://localhost:1234/api/v1/transactions/load-file?file=${invoice}`
+                  );
+                }}
+              >
+                Get the Invoice
+              </button>
+            </div>
           </div>
         </div>
       </PopUp>
