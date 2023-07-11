@@ -119,6 +119,7 @@ const Bills = () => {
       .get(`http://localhost:1234/api/v1/transactions/${id}`, config)
       .then((res) => res)
       .catch((err) => {
+        console.log(err.response.data.payload);
         setOpenShow(true);
         setinfoShow(err.response.data.payload);
         setMedicines(err.response.data.payload.medicines);

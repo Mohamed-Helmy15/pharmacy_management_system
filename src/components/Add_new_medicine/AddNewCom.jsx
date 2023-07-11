@@ -15,6 +15,7 @@ const AddNewCom = (props) => {
   const [supplierValue, setSupplierValue] = useState(null);
   const [typeValue, settypeValue] = useState(null);
   const [error, setError] = useState(false);
+  const [expiration, setExpiration] = useState("");
 
   const handleClose = () => {
     props.setOpen(false);
@@ -42,6 +43,12 @@ const AddNewCom = (props) => {
       if (!values.price) {
         errors.price = "Price is required";
       }
+      if (!values.description) {
+        errors.description = "description is required";
+      }
+      if (expiration === "") {
+        errors.expiration = "expiration date is required";
+      }
       if (supplierValue === null) {
         errors.supplier = "supplier is required";
       }
@@ -60,6 +67,7 @@ const AddNewCom = (props) => {
     medicineFormik.values.scientificName = "";
     medicineFormik.values.price = "";
     medicineFormik.values.description = "";
+    setExpiration("");
     setSupplierValue(null);
     setcategoryValue(null);
     settypeValue(null);
@@ -70,15 +78,15 @@ const AddNewCom = (props) => {
   const onSubmit = (values) => {
     if (props.decide === "create") {
       const formData = new FormData();
+
       formData.append("marketName", values.marketName);
       formData.append("scientificName", values.scientificName);
       formData.append("supplier", supplierValue.id);
       formData.append("price", values.price);
+      formData.append("expiration", expiration);
       formData.append("category", categoryValue.id);
       formData.append("type", typeValue);
-      if (values.description !== "") {
-        formData.append("description", values.description);
-      }
+      formData.append("description", values.description);
       if (image !== null) {
         formData.append("img", image, image.name);
       }
@@ -106,6 +114,7 @@ const AddNewCom = (props) => {
         });
     } else {
       const formData = new FormData();
+      formData.append("pharmacy", window.localStorage.getItem("thisBranch"));
       if (values.marketName !== "") {
         formData.append("marketName", values.marketName);
       }
@@ -123,6 +132,9 @@ const AddNewCom = (props) => {
       }
       if (values.price !== "") {
         formData.append("price", values.price);
+      }
+      if (expiration !== "") {
+        formData.append("expiration", expiration);
       }
       if (typeValue !== null) {
         formData.append("pharmacy", typeValue);
@@ -211,6 +223,26 @@ const AddNewCom = (props) => {
                   }
                 />
                 <TextField
+                  type="description"
+                  name="description"
+                  id="description"
+                  variant="standard"
+                  {...medicineFormik.getFieldProps("description")}
+                  label="Effective Material"
+                  style={{ width: "100%" }}
+                  error={
+                    medicineFormik.touched.description &&
+                    medicineFormik.errors.description
+                      ? true
+                      : false
+                  }
+                  helperText={
+                    medicineFormik.touched.description &&
+                    medicineFormik.errors.description &&
+                    medicineFormik.errors.description
+                  }
+                />
+                <TextField
                   type="text"
                   name="price"
                   id="price"
@@ -228,6 +260,27 @@ const AddNewCom = (props) => {
                     medicineFormik.errors.price &&
                     medicineFormik.errors.price
                   }
+                />
+                <TextField
+                  type="date"
+                  name="expiration"
+                  id="expiration"
+                  value={expiration}
+                  onChange={(e) => {
+                    setExpiration(e.target.value);
+                  }}
+                  style={{
+                    width: "100%",
+                  }}
+                  onBlur={() => {
+                    if (expiration === "") {
+                      setError(true);
+                    } else {
+                      setError(false);
+                    }
+                  }}
+                  error={error && true}
+                  helperText={error && "expiration date is Required"}
                 />
                 <Autocomplete
                   options={props.supplires.map((supplier) => ({
@@ -257,15 +310,6 @@ const AddNewCom = (props) => {
                       label="Supplier"
                     />
                   )}
-                />
-                <TextField
-                  type="description"
-                  name="description"
-                  id="description"
-                  variant="standard"
-                  {...medicineFormik.getFieldProps("description")}
-                  label="Description"
-                  style={{ width: "100%" }}
                 />
                 <Autocomplete
                   options={props.categories.map((category) => ({
@@ -368,12 +412,33 @@ const AddNewCom = (props) => {
             />
             <TextField
               type="text"
+              name="description"
+              id="description"
+              variant="standard"
+              {...medicineFormik.getFieldProps("description")}
+              label="Effective Material"
+              style={{ width: "100%" }}
+            />
+            <TextField
+              type="text"
               name="price"
               id="price"
               variant="standard"
               {...medicineFormik.getFieldProps("price")}
               label="Price"
               style={{ width: "100%" }}
+            />
+            <TextField
+              type="date"
+              name="expiration"
+              id="expiration"
+              value={expiration}
+              onChange={(e) => {
+                setExpiration(e.target.value);
+              }}
+              style={{
+                width: "100%",
+              }}
             />
             <Autocomplete
               options={props.supplires.map((supplier) => ({
@@ -389,15 +454,6 @@ const AddNewCom = (props) => {
               renderInput={(params) => (
                 <TextField {...params} label="Suppliers" />
               )}
-            />
-            <TextField
-              type="text"
-              name="description"
-              id="description"
-              variant="standard"
-              {...medicineFormik.getFieldProps("description")}
-              label="Description"
-              style={{ width: "100%" }}
             />
 
             <Autocomplete

@@ -19,6 +19,7 @@ const columns = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "marketName", headerName: "market name", width: 190 },
   { field: "scientificName", headerName: "scientific name", width: 190 },
+  { field: "description", headerName: "Effective material", width: 190 },
   {
     field: "count",
     headerName: "Count",
@@ -113,6 +114,7 @@ const AddNewM = () => {
 
   const handleCloseShow = () => {
     setOpenShow(false);
+    setImg(null);
   };
 
   const handleOpenEdit = () => setOpenEdit(true);
@@ -237,7 +239,7 @@ const AddNewM = () => {
             row.marketName.toLowerCase().includes(marketSeatch.toLowerCase())
           )
           .filter((row) =>
-            row.scientificName
+            row.description
               .toLowerCase()
               .includes(effectiveSearch.toLowerCase())
           )
@@ -245,6 +247,7 @@ const AddNewM = () => {
             id: row.id,
             marketName: row.marketName,
             scientificName: row.scientificName,
+            description: row.description,
             count: row.count,
             price: FormatCurrency(row.price),
             expiration: row.expiration,
@@ -420,7 +423,7 @@ const AddNewM = () => {
           <Avatar
             sx={{
               bgcolor: "#aaa",
-              width: "200px",
+              width: "100%",
               height: "200px",
               fontSize: "50px",
               margin: "0 auto",
@@ -430,7 +433,7 @@ const AddNewM = () => {
             src={
               img !== null
                 ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
-                : "null"
+                : null
             }
           >
             {infoShow.marketName && Array.from(infoShow.marketName)[0]}
@@ -444,7 +447,7 @@ const AddNewM = () => {
               supplier: <b>{supplier === null ? "Not Available" : supplier}</b>
             </p>
             <p>
-              Description:{" "}
+              Effective Material:{" "}
               <b>
                 {infoShow.description === null
                   ? "Not Available"
