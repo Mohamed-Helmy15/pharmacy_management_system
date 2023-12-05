@@ -59,45 +59,48 @@ const BranchCom = (props) => {
       if (values.street !== "") {
         address.street = values.street;
       }
-      axios
-        .post("http://localhost:1234/api/v1/addresses/create/", address, config)
-        .then((res) => {
-          if (res.data.success === true) {
-            axios
-              .get(
-                "http://localhost:1234/api/v1/addresses?page=0&size=100&sort=id",
-                config
-              )
-              .then((res) => {
-                branch.address = res.data.payload.slice(-1)[0].id;
-                axios
-                  .post(
-                    "http://localhost:1234/api/v1/pharmacies/create",
-                    branch,
-                    config
-                  )
-                  .then((res) => {
-                    props.setPutRequest(res);
+      swal("The Branch has been created wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .post("http://localhost:1234/api/v1/addresses/create/", address, config)
+      //   .then((res) => {
+      //     if (res.data.success === true) {
+      //       axios
+      //         .get(
+      //           "http://localhost:1234/api/v1/addresses?page=0&size=100&sort=id",
+      //           config
+      //         )
+      //         .then((res) => {
+      //           branch.address = res.data.payload.slice(-1)[0].id;
+      //           axios
+      //             .post(
+      //               "http://localhost:1234/api/v1/pharmacies/create",
+      //               branch,
+      //               config
+      //             )
+      //             .then((res) => {
+      //               props.setPutRequest(res);
 
-                    handleClose();
-                    swal("The New Branch has been created Successfully!", {
-                      icon: "success",
-                    });
-                  })
-                  .catch((err) => {
-                    if (err.response.data.success === false) {
-                      props.setPutRequest(err);
-                      handleClose();
-                      swal("The Branch has been created wrongly!", {
-                        icon: "error",
-                      });
-                    }
-                  });
-              })
-              .catch((err) => err);
-          }
-        })
-        .catch((err) => err);
+      //               handleClose();
+      //               swal("The New Branch has been created Successfully!", {
+      //                 icon: "success",
+      //               });
+      //             })
+      //             .catch((err) => {
+      //               if (err.response.data.success === false) {
+      //                 props.setPutRequest(err);
+      //                 handleClose();
+      //                 swal("The Branch has been created wrongly!", {
+      //                   icon: "error",
+      //                 });
+      //               }
+      //             });
+      //         })
+      //         .catch((err) => err);
+      //     }
+      //   })
+      //   .catch((err) => err);
     } else {
       let branch = {};
       let address = {};
@@ -120,44 +123,47 @@ const BranchCom = (props) => {
       if (managerValue !== null) {
         branch.manager = managerValue.id;
       }
-      if (usersValue !== []) {
+      if (usersValue.length > 0) {
         branch.users = usersValue;
       }
-      axios
-        .get(`http://localhost:1234/api/v1/pharmacies/${props.id}`, config)
-        .then((res) => {
-          return res;
-        })
-        .catch((err) => {
-          axios
-            .put(
-              `http://localhost:1234/api/v1/addresses/${err.response.data.payload.address.id}`,
-              address,
-              config
-            )
-            .then((res) => {
-              axios
-                .put(
-                  `http://localhost:1234/api/v1/pharmacies/${props.id}`,
-                  branch,
-                  config
-                )
-                .then((res) => {
-                  props.setPutRequest(res);
-                  handleClose();
-                  swal("The Branch has been edited Successfully!", {
-                    icon: "success",
-                  });
-                })
-                .catch((err) => {
-                  swal("The Branch has been edited wrongly!", {
-                    icon: "error",
-                  });
-                  return err;
-                });
-            })
-            .catch((err) => err);
-        });
+      swal("The Branch has been edited wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .get(`http://localhost:1234/api/v1/pharmacies/${props.id}`, config)
+      //   .then((res) => {
+      //     return res;
+      //   })
+      //   .catch((err) => {
+      //     axios
+      //       .put(
+      //         `http://localhost:1234/api/v1/addresses/${err.response.data.payload.address.id}`,
+      //         address,
+      //         config
+      //       )
+      //       .then((res) => {
+      //         axios
+      //           .put(
+      //             `http://localhost:1234/api/v1/pharmacies/${props.id}`,
+      //             branch,
+      //             config
+      //           )
+      //           .then((res) => {
+      //             props.setPutRequest(res);
+      //             handleClose();
+      //             swal("The Branch has been edited Successfully!", {
+      //               icon: "success",
+      //             });
+      //           })
+      //           .catch((err) => {
+      //             swal("The Branch has been edited wrongly!", {
+      //               icon: "error",
+      //             });
+      //             return err;
+      //           });
+      //       })
+      //       .catch((err) => err);
+      //   });
     }
   };
   const addressFormik = useFormik({

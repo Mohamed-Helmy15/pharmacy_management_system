@@ -14,7 +14,14 @@ const Users = () => {
   const [postRequest, setPostRequest] = useState("");
   const [putRequest, setPutRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState(0);
-  const [dataRow, setDataRow] = useState([]);
+  const [dataRow, setDataRow] = useState([
+    {
+      id: 1,
+      name: "Mohamed Helmy",
+      phone: "+201150870355",
+      email: "mohamedhelmy1531@gmail.com",
+    },
+  ]);
   const [roles, setRoles] = useState([]);
   const [pharmacies, setPharmacies] = useState([]);
   const [search, setSearch] = useState("");
@@ -62,40 +69,40 @@ const Users = () => {
     //   .catch((err) => console.log("err", err));
 
     setAuth(localStorage.getItem("role"));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/users?page=${page}&size=${rowsPerPage}&sort=username`,
-        config
-      )
-      .then((res) => {
-        setDataRow(
-          res.data.payload
-            .filter((user) => {
-              return user.username !== window.localStorage.getItem("user");
-            })
-            .filter((user) => user.role !== "super")
-        );
-      })
-      .catch((err) => err);
-    axios
-      .get(
-        "http://localhost:1234/api/v1/roles?page=0&size=100&sort=priority",
-        config
-      )
-      .then((res) => {
-        setRoles(res.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get(
-        "http://localhost:1234/api/v1/pharmacies?page=0&size=100&sort=name",
-        config
-      )
-      .then((res) => {
-        setPharmacies(res.data.payload);
-      })
-      .catch((err) => err);
-  }, [deleteRequest, putRequest, postRequest]);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/users?page=${page}&size=${rowsPerPage}&sort=username`,
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setDataRow(
+    //       res.data.payload
+    //         .filter((user) => {
+    //           return user.username !== window.localStorage.getItem("user");
+    //         })
+    //         .filter((user) => user.role !== "super")
+    //     );
+    //   })
+    //   .catch((err) => err);
+    // axios
+    //   .get(
+    //     "http://localhost:1234/api/v1/roles?page=0&size=100&sort=priority",
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setRoles(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+    // axios
+    //   .get(
+    //     "http://localhost:1234/api/v1/pharmacies?page=0&size=100&sort=name",
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setPharmacies(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+  }, []);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);

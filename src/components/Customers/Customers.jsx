@@ -23,7 +23,12 @@ const Customers = () => {
       align: "center",
     },
   ];
-  const [dataRow, setDataRow] = useState([]);
+  const [dataRow, setDataRow] = useState([
+    {
+      id: 1,
+      name: "Mohamed Helmy",
+    },
+  ]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -51,26 +56,26 @@ const Customers = () => {
     setOpen(true);
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:1234/api/v1/customers?page=${page}&size=${rowsPerPage}&sort=lname`,
-        config
-      )
-      .then((res) => {
-        setDataRow(res.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get(
-        `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
-        config
-      )
-      .then((res) => {
-        setAddress(res.data.payload);
-      })
-      .catch((err) => err);
-  }, [deleteRequest, putRequest, postRequest, addressRequest]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://localhost:1234/api/v1/customers?page=${page}&size=${rowsPerPage}&sort=lname`,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       setDataRow(res.data.payload);
+  //     })
+  //     .catch((err) => err);
+  //   axios
+  //     .get(
+  //       `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       setAddress(res.data.payload);
+  //     })
+  //     .catch((err) => err);
+  // }, [deleteRequest, putRequest, postRequest, addressRequest]);
   return (
     <>
       <App>

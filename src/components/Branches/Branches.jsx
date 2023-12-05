@@ -40,7 +40,13 @@ const Branches = () => {
   };
 
   const [open, setOpen] = useState(false);
-  const [branches, setBranches] = useState([]);
+  const [branches, setBranches] = useState([
+    {
+      id: 1,
+      name: "Cairo",
+      address: "Egypt - Cairo - Heliopolis",
+    },
+  ]);
   const [putRequest, setPutRequest] = useState(0);
   const [deleteRequest, setdeleteRequest] = useState("");
   const [search, setSearch] = useState("");
@@ -52,25 +58,25 @@ const Branches = () => {
 
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/pharmacies?page=${page}&size=${rowsPerPage}&sort=name`,
-        config
-      )
-      .then((response) => {
-        setBranches(response.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get(
-        "http://localhost:1234/api/v1/users?page=0&size=100&sort=username",
-        config
-      )
-      .then((res) => {
-        setManager(res.data.payload);
-      })
-      .catch((err) => err);
-  }, [deleteRequest, putRequest]);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/pharmacies?page=${page}&size=${rowsPerPage}&sort=name`,
+    //     config
+    //   )
+    //   .then((response) => {
+    //     setBranches(response.data.payload);
+    //   })
+    //   .catch((err) => err);
+    // axios
+    //   .get(
+    //     "http://localhost:1234/api/v1/users?page=0&size=100&sort=username",
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setManager(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+  }, []);
 
   return (
     <>

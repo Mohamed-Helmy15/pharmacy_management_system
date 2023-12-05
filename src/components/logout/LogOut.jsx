@@ -40,6 +40,7 @@ const LogOut = () => {
 
   const onSubmit = (values) => {
     window.localStorage.setItem("token", Math.random() * 100000);
+    window.localStorage.setItem("role", "super");
     setTimeout(() => {
       setloading(true);
     }, 2000);

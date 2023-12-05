@@ -21,7 +21,13 @@ const Roles = () => {
   const [auth, setAuth] = useState("");
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState([
+    {
+      id: 1,
+      name: "Admin",
+      createdAt: "2023-01-01",
+    },
+  ]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [id, setId] = useState("");
   const [putRequest, setPutRequest] = useState("");
@@ -57,22 +63,22 @@ const Roles = () => {
 
   const handleOpenShow = (id) => {
     setOpenShow(true);
-    axios
-      .get(`http://localhost:1234/api/v1/roles/${id}`, config)
-      .then((res) => res)
-      .catch((err) => {
-        setinfoShow(err.response.data.payload);
-        setUsers(err.response.data.payload.users);
-        // console.log(err.response.data.payload.authorities.sort());
-        setAuthorities(err.response.data.payload.authorities);
-        setCreateTime(
-          err.response.data.payload.createdAt.split("T").join(" At ")
-        );
-        setUpdateTime(
-          err.response.data.payload.updatedAt.split("T").join(" At ")
-        );
-        return err;
-      });
+    // axios
+    //   .get(`http://localhost:1234/api/v1/roles/${id}`, config)
+    //   .then((res) => res)
+    //   .catch((err) => {
+    //     setinfoShow(err.response.data.payload);
+    //     setUsers(err.response.data.payload.users);
+    //     // console.log(err.response.data.payload.authorities.sort());
+    //     setAuthorities(err.response.data.payload.authorities);
+    //     setCreateTime(
+    //       err.response.data.payload.createdAt.split("T").join(" At ")
+    //     );
+    //     setUpdateTime(
+    //       err.response.data.payload.updatedAt.split("T").join(" At ")
+    //     );
+    //     return err;
+    //   });
   };
 
   const handleOpenEdit = () => {
@@ -81,16 +87,16 @@ const Roles = () => {
 
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/roles?page=0&&size=10&&sort=priority`,
-        config
-      )
-      .then((res) => {
-        setRoles(res.data.payload);
-      })
-      .catch((err) => err);
-  }, [postRequest, putRequest, deleteRequest]);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/roles?page=0&&size=10&&sort=priority`,
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setRoles(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+  }, []);
 
   return (
     <App>
@@ -131,7 +137,7 @@ const Roles = () => {
           .map((row) => ({
             id: row.id,
             name: row.name,
-            createdAt: row.createdAt.split("T").join(" AT "),
+            createdAt: row.createdAt,
           }))}
         columns={columns}
         initialState={{
@@ -188,7 +194,7 @@ const Roles = () => {
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }}>
-          <h3>{infoShow.name}</h3>
+          <h3>Admin</h3>
           <div className="cat-info pop">
             <Accordion>
               <AccordionSummary
@@ -199,7 +205,10 @@ const Roles = () => {
                 <h3>Users</h3>
               </AccordionSummary>
               <AccordionDetails>
-                {users.length > 0 ? (
+                <p className="med" style={{ fontWeight: "bold" }}>
+                  <span>1 : Mohamed Helmy</span>
+                </p>
+                {/* {users.length > 0 ? (
                   users.map((user, i) => {
                     return (
                       <p
@@ -218,46 +227,17 @@ const Roles = () => {
                     {" "}
                     No users for this Role{" "}
                   </p>
-                )}
+                )} */}
               </AccordionDetails>
             </Accordion>
 
             <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
+              Created At: <b>2023-01-01</b>
             </p>
             <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
+              Created By: <b>Mohamed Helmy</b>
             </p>
-            <p>
-              Last Update at:{" "}
-              <b>
-                {infoShow.updatedAt === null ? "Not Available" : updateTime}
-              </b>
-            </p>
-            <p>
-              Updated By:{" "}
-              <b>
-                {infoShow.updatedBy === null
-                  ? "Not Available"
-                  : infoShow.updatedBy}
-              </b>
-            </p>
-            <p>
-              Priority:{" "}
-              <b>
-                {infoShow.priority === null
-                  ? "Not Available"
-                  : infoShow.priority}
-              </b>
-            </p>
+
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -267,7 +247,10 @@ const Roles = () => {
                 <h3>Authorities</h3>
               </AccordionSummary>
               <AccordionDetails>
-                {authorities.length > 0 ? (
+                <p className="med" style={{ fontWeight: "bold" }}>
+                  <span>1 : Edit The System</span>
+                </p>
+                {/* {authorities.length > 0 ? (
                   authorities.map((authorities, i) => {
                     return (
                       <p key={i} className="med" style={{ fontWeight: "bold" }}>
@@ -282,7 +265,7 @@ const Roles = () => {
                     {" "}
                     No authorities for this Role{" "}
                   </p>
-                )}
+                )} */}
               </AccordionDetails>
             </Accordion>
           </div>

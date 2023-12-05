@@ -55,30 +55,30 @@ const Tables = (props) => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const handleEditOpen = () => {
     setOpenEditModal(true);
-    if (props.section === "users") {
-      axios
-        .get("http://localhost:1234/api/v1/roles", config)
-        .then((res) => {
-          setRoles(res.data.payload);
-        })
-        .catch((err) => err);
-      axios
-        .get("http://localhost:1234/api/v1/pharmacies", config)
-        .then((res) => {
-          setPharmacies(res.data.payload);
-        })
-        .catch((err) => err);
-    } else if (props.section === "customers") {
-      axios
-        .get(
-          `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
-          config
-        )
-        .then((res) => {
-          setAddress(res.data.payload);
-        })
-        .catch((err) => err);
-    }
+    // if (props.section === "users") {
+    //   axios
+    //     .get("http://localhost:1234/api/v1/roles", config)
+    //     .then((res) => {
+    //       setRoles(res.data.payload);
+    //     })
+    //     .catch((err) => err);
+    //   axios
+    //     .get("http://localhost:1234/api/v1/pharmacies", config)
+    //     .then((res) => {
+    //       setPharmacies(res.data.payload);
+    //     })
+    //     .catch((err) => err);
+    // } else if (props.section === "customers") {
+    //   axios
+    //     .get(
+    //       `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
+    //       config
+    //     )
+    //     .then((res) => {
+    //       setAddress(res.data.payload);
+    //     })
+    //     .catch((err) => err);
+    // }
   };
 
   const handleCloseModal = () => {
@@ -89,102 +89,103 @@ const Tables = (props) => {
 
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
-        config
-      )
-      .then((res) => {
-        setAddress(res.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get(
-        "http://localhost:1234/api/v1/users?page=0&size=100&sort=username",
-        config
-      )
-      .then((res) => {
-        setManager(res.data.payload);
-      })
-      .catch((err) => err);
-    if (window.localStorage.getItem("branch")) {
-      axios
-        .get(
-          `http://localhost:1234/api/v1/medicines/?pharmacy=${window.localStorage.getItem(
-            "branch"
-          )}`,
-          config
-        )
-        .then((res) => {
-          setMedicines(res.data.payload);
-        })
-        .catch((err) => err);
-    }
-  }, [addressRequest, count, window.localStorage.getItem("branch")]);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/addresses?page=0&size=100&sort=governorate`,
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setAddress(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+    // axios
+    //   .get(
+    //     "http://localhost:1234/api/v1/users?page=0&size=100&sort=username",
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setManager(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+    // if (window.localStorage.getItem("branch")) {
+    //   axios
+    //     .get(
+    //       `http://localhost:1234/api/v1/medicines/?pharmacy=${window.localStorage.getItem(
+    //         "branch"
+    //       )}`,
+    //       config
+    //     )
+    //     .then((res) => {
+    //       setMedicines(res.data.payload);
+    //     })
+    //     .catch((err) => err);
+    // }
+  }, []);
 
   const handleShow = (row) => {
+    setOpenShowModal(true);
     setMedId(row);
     medicines.filter((m) => (m.category.id === row ? m : null));
 
-    axios
-      .get(`http://localhost:1234/api/v1/${props.section}/${row}`, config)
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        setOpenShowModal(true);
-        if (
-          err.response.data.payload.img !== null &&
-          err.response.data.payload.img !== undefined
-        ) {
-          setimg(err.response.data.payload.img.split("\\").join("/"));
-        }
-        if (
-          err.response.data.payload.pharmacy !== null &&
-          err.response.data.payload.pharmacy !== undefined
-        ) {
-          setPharmacy(err.response.data.payload.pharmacy.name);
-        }
-        if (
-          err.response.data.payload.role !== null &&
-          err.response.data.payload.role !== undefined
-        ) {
-          setRole(err.response.data.payload.role.name);
-        }
-        if (
-          err.response.data.payload.address !== null &&
-          err.response.data.payload.address !== undefined
-        ) {
-          setInfoAddress(
-            `${err.response.data.payload.address.governorate} - ${
-              err.response.data.payload.address.city
-            } - ${err.response.data.payload.address.town} ${
-              err.response.data.payload.address.street !== null
-                ? "- " + err.response.data.payload.address.street
-                : ""
-            }`
-          );
-        }
-        if (
-          err.response.data.payload.manager !== null &&
-          err.response.data.payload.manager !== undefined
-        ) {
-          setBranchManager(err.response.data.payload.manager.name);
-        }
-        if (
-          err.response.data.payload.createdAt ||
-          err.response.data.payload.updatedAt
-        ) {
-          setCreateTime(
-            err.response.data.payload.createdAt.split("T").join("At ")
-          );
-          setUpdateTime(
-            err.response.data.payload.updatedAt.split("T").join("At ")
-          );
-        }
-        setInfoShow(err.response.data.payload);
-        return err;
-      });
+    // axios
+    //   .get(`http://localhost:1234/api/v1/${props.section}/${row}`, config)
+    //   .then((res) => {
+    //     return res;
+    //   })
+    //   .catch((err) => {
+    //     setOpenShowModal(true);
+    //     if (
+    //       err.response.data.payload.img !== null &&
+    //       err.response.data.payload.img !== undefined
+    //     ) {
+    //       setimg(err.response.data.payload.img.split("\\").join("/"));
+    //     }
+    //     if (
+    //       err.response.data.payload.pharmacy !== null &&
+    //       err.response.data.payload.pharmacy !== undefined
+    //     ) {
+    //       setPharmacy(err.response.data.payload.pharmacy.name);
+    //     }
+    //     if (
+    //       err.response.data.payload.role !== null &&
+    //       err.response.data.payload.role !== undefined
+    //     ) {
+    //       setRole(err.response.data.payload.role.name);
+    //     }
+    //     if (
+    //       err.response.data.payload.address !== null &&
+    //       err.response.data.payload.address !== undefined
+    //     ) {
+    //       setInfoAddress(
+    //         `${err.response.data.payload.address.governorate} - ${
+    //           err.response.data.payload.address.city
+    //         } - ${err.response.data.payload.address.town} ${
+    //           err.response.data.payload.address.street !== null
+    //             ? "- " + err.response.data.payload.address.street
+    //             : ""
+    //         }`
+    //       );
+    //     }
+    //     if (
+    //       err.response.data.payload.manager !== null &&
+    //       err.response.data.payload.manager !== undefined
+    //     ) {
+    //       setBranchManager(err.response.data.payload.manager.name);
+    //     }
+    //     if (
+    //       err.response.data.payload.createdAt ||
+    //       err.response.data.payload.updatedAt
+    //     ) {
+    //       setCreateTime(
+    //         err.response.data.payload.createdAt.split("T").join("At ")
+    //       );
+    //       setUpdateTime(
+    //         err.response.data.payload.updatedAt.split("T").join("At ")
+    //       );
+    //     }
+    //     setInfoShow(err.response.data.payload);
+    //     return err;
+    //   });
   };
 
   const handleDelete = (row) => {
@@ -196,23 +197,24 @@ const Tables = (props) => {
       dangerMode: true,
     }).then((willDelete) => {
       if (willDelete) {
-        axios
-          .delete(
-            `http://localhost:1234/api/v1/${props.section}/${row}`,
-            config
-          )
-          .then((res) => {
-            props.setdeleteRequest(row);
-            swal("Deleted Successfully!", {
-              icon: "success",
-            });
-          })
-          .catch((err) => {
-            console.log(err);
-            swal("", "the delete operation hasn't been completed!", "info");
-          });
-      } else {
-        swal("", "the delete operation hasn't been completed!", "info");
+        swal("", "the delete operation hasn't been completed!", "error");
+        //     axios
+        //       .delete(
+        //         `http://localhost:1234/api/v1/${props.section}/${row}`,
+        //         config
+        //       )
+        //       .then((res) => {
+        //         props.setdeleteRequest(row);
+        //         swal("Deleted Successfully!", {
+        //           icon: "success",
+        //         });
+        //       })
+        //       .catch((err) => {
+        //         console.log(err);
+        //         swal("", "the delete operation hasn't been completed!", "info");
+        //       });
+        //   } else {
+        //     swal("", "the delete operation hasn't been completed!", "info");
       }
     });
   };
@@ -331,26 +333,29 @@ const Tables = (props) => {
           <div
             style={{ textAlign: "center", overflow: "auto", maxHeight: "80vh" }}
           >
-            <h3>{infoShow.name}</h3>
+            <h3>Capsules</h3>
             <div className="cat-info">
               <p>
-                Created By: <b>{infoShow.createdBy}</b>
+                Created By: <b>Mohamed Helmy</b>
               </p>
               <p>
-                Created At: <b>{createTime}</b>
-              </p>
-              <p>
-                Updated By: <b>{infoShow.updatedBy}</b>
-              </p>
-              <p>
-                Last Update at: <b>{updateTime}</b>
+                Created At: <b>2022-10-10</b>
               </p>
             </div>
             <CategoryDetails
               setCount={setCount}
-              medicines={medicines.filter((m) =>
-                m.category.id === medId ? m : null
-              )}
+              medicines={[
+                {
+                  id: 1,
+                  marketName: "congestal",
+                  scientificName: "scientific",
+                  description: "parastamol",
+                  count: "50",
+                  price: "20",
+                  expiration: "2024-8-01",
+                  type: "cold",
+                },
+              ]}
             />
           </div>
         ) : props.section === "users" ? (
@@ -360,52 +365,33 @@ const Tables = (props) => {
               sx={{ width: 70, height: 70 }}
               alt="mohamed helmy"
               src={
-                img !== null
-                  ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
-                  : "null"
+                "https://th.bing.com/th/id/R.7ea4af7d8401d2b43ee841bfa2abe89d?rik=bpf8Qf%2bY5vRCQA&pid=ImgRaw&r=0"
               }
             >
-              {infoShow.name}
+              Mohamed Helmy
             </Avatar>
 
-            <h3>
-              {infoShow.username === null ? "Not Available" : infoShow.username}
-            </h3>
+            <h3>MohamedHelmy15</h3>
             <div className="cat-info">
               <p>
-                Position: <b>{role}</b>
+                Position: <b>Admin</b>
               </p>
               <p>
-                Email:{" "}
-                <b>
-                  {infoShow.email === null ? "Not Available" : infoShow.email}
-                </b>
+                Email: <b>mohamedhelmy1531@gmail.com</b>
               </p>
               <p>
-                Phone:{" "}
-                <b>
-                  {infoShow.phone === null ? "Not Available" : infoShow.phone}
-                </b>
+                Phone: <b>+201150870355</b>
               </p>
               <p>
-                Pharmacy:{" "}
-                <b>{infoShow.pharmacy === null ? "Not Available" : pharmacy}</b>
+                Pharmacy: <b>Cairo pharmacy</b>
               </p>
               <p>
-                Created At:{" "}
-                <b>
-                  {infoShow.createdAt === null ? "Not Available" : createTime}
-                </b>
+                Created At: <b>2022-10-10</b>
               </p>
               <p>
-                Created By:{" "}
-                <b>
-                  {infoShow.createdBy === null
-                    ? "Not Available"
-                    : infoShow.createdBy}
-                </b>
+                Created By: <b>Mohamed Helmy</b>
               </p>
-              <p>
+              {/* <p>
                 Last Update at:{" "}
                 <b>
                   {infoShow.updatedAt === null ? "Not Available" : updateTime}
@@ -418,82 +404,46 @@ const Tables = (props) => {
                     ? "Not Available"
                     : infoShow.updatedBy}
                 </b>
-              </p>
+              </p> */}
             </div>
           </div>
         ) : props.section === "customers" ? (
           <div style={{ textAlign: "center" }}>
-            <h3>
-              {infoShow.fname} {infoShow.lname}
-            </h3>
+            <h3>Mohamed Helmy</h3>
             <div className="cat-info">
               <p>
                 Address:
-                <b>{infoAddress}</b>
+                <b>Egypt - Cairo</b>
               </p>
               <p>
-                Email:{" "}
-                <b>
-                  {infoShow.email === null ? "Not Available" : infoShow.email}
-                </b>
+                Email: <b>mohamedhelmy1531@gmail.com</b>
               </p>
               <p>
-                Phone:{" "}
-                <b>
-                  {infoShow.phone === null ? "Not Available" : infoShow.phone}
-                </b>
+                Phone: <b>+201150870355</b>
               </p>
               <p>
-                Created At:{" "}
-                <b>
-                  {infoShow.createdAt === null ? "Not Available" : createTime}
-                </b>
+                Created At: <b>2023-05-04</b>
               </p>
               <p>
-                Created By:{" "}
-                <b>
-                  {infoShow.createdBy === null
-                    ? "Not Available"
-                    : infoShow.createdBy}
-                </b>
-              </p>
-              <p>
-                Last Update at:{" "}
-                <b>
-                  {infoShow.updatedAt === null ? "Not Available" : updateTime}
-                </b>
-              </p>
-              <p>
-                Updated By:{" "}
-                <b>
-                  {infoShow.updatedBy === null
-                    ? "Not Available"
-                    : infoShow.updatedBy}
-                </b>
+                Created By: <b>Mohamed Helmy</b>
               </p>
             </div>
           </div>
         ) : props.section === "pharmacies" ? (
           <div style={{ textAlign: "center" }}>
-            <h3>{infoShow.name}</h3>
+            <h3>Cairo</h3>
             <div className="cat-info">
               <p>
-                Manager : <b>{branchManager}</b>
+                Manager : <b>Mohamed Helmy</b>
               </p>
               <p>
-                Address : <b>{infoAddress}</b>
+                Address : <b>Cairo</b>
               </p>
               <p>
-                Created By: <b>{infoShow.createdBy}</b>
+                Created By: <b>Mohamed Helmy</b>
               </p>
               <p>
-                Created At: <b>{createTime}</b>
-              </p>
-              <p>
-                Updated By: <b>{infoShow.updatedBy}</b>
-              </p>
-              <p>
-                Last Update at: <b>{updateTime}</b>
+                Created At: <b>2023-01-01</b>
               </p>
             </div>
           </div>

@@ -17,7 +17,12 @@ const Address = () => {
   const [open, setOpen] = useState(false);
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [dataRow, setDataRow] = useState([]);
+  const [dataRow, setDataRow] = useState([
+    {
+      id: 1,
+      Address: `Cairo - Nasr city - Al Nasr street`,
+    },
+  ]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [id, setId] = useState("");
   const [postRequest, setPostRequest] = useState("");
@@ -34,19 +39,19 @@ const Address = () => {
   };
 
   const handleOpenShow = (id) => {
-    axios
-      .get(`http://localhost:1234/api/v1/addresses/${id}`, config)
-      .then((res) => res)
-      .catch((err) => {
-        setOpenShow(true);
-        setinfoShow(err.response.data.payload);
-        setCreateTime(
-          err.response.data.payload.createdAt.split("T").join(" At ")
-        );
-        setUpdateTime(
-          err.response.data.payload.updatedAt.split("T").join(" At ")
-        );
-      });
+    setOpenShow(true);
+    // axios
+    //   .get(`http://localhost:1234/api/v1/addresses/${id}`, config)
+    //   .then((res) => res)
+    //   .catch((err) => {
+    //     setinfoShow(err.response.data.payload);
+    //     setCreateTime(
+    //       err.response.data.payload.createdAt.split("T").join(" At ")
+    //     );
+    //     setUpdateTime(
+    //       err.response.data.payload.updatedAt.split("T").join(" At ")
+    //     );
+    //   });
   };
 
   const handleCloseShow = () => {
@@ -67,14 +72,14 @@ const Address = () => {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:1234/api/v1/addresses", config)
-      .then((res) => {
-        setDataRow(res.data.payload);
-      })
-      .catch((err) => err);
-  }, [postRequest, putRequest, deleteRequest]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:1234/api/v1/addresses", config)
+  //     .then((res) => {
+  //       setDataRow(res.data.payload);
+  //     })
+  //     .catch((err) => err);
+  // }, [postRequest, putRequest, deleteRequest]);
 
   return (
     <App>
@@ -102,13 +107,11 @@ const Address = () => {
       <DataGrid
         rows={dataRow
           .filter((row) =>
-            row.town.toLowerCase().includes(search.toLowerCase())
+            row.Address.toLowerCase().includes(search.toLowerCase())
           )
           .map((row) => ({
             id: row.id,
-            Address: `${row.governorate} - ${row.city} - ${row.town} ${
-              row.street !== null ? "- " + row.street : ""
-            }`,
+            Address: row.Address,
           }))}
         columns={columns}
         initialState={{
@@ -163,38 +166,13 @@ const Address = () => {
           <div className="cat-info">
             <p>
               Address:
-              <b>
-                {infoShow.governorate} - {infoShow.city} - {infoShow.town}
-                {` ${infoShow.street !== null ? `-${infoShow.street}` : ""}`}
-              </b>
+              <b>Cairo - Nasr city - Al Nasr street</b>
             </p>
             <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
+              Created At: <b>2023-01-01</b>
             </p>
             <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
-            </p>
-            <p>
-              Last Update at:{" "}
-              <b>
-                {infoShow.updatedAt === null ? "Not Available" : updateTime}
-              </b>
-            </p>
-            <p>
-              Updated By:{" "}
-              <b>
-                {infoShow.updatedBy === null
-                  ? "Not Available"
-                  : infoShow.updatedBy}
-              </b>
+              Created By: <b>Mohamed Helmy</b>
             </p>
           </div>
         </div>

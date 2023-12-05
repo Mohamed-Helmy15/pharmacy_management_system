@@ -29,27 +29,30 @@ const CatCom = (props) => {
   };
 
   const postRequestData = () => {
-    axios
-      .post(
-        "http://localhost:1234/api/v1/categories/create",
-        {
-          name: inputAdd,
-        },
-        config
-      )
-      .then((res) => {
-        props.setpostRequest(res.status);
-        handleClose();
-        swal("The Category has been created Successfully!", {
-          icon: "success",
-        });
-      })
-      .catch((err) => {
-        swal("The Category has been created wrongly!", {
-          icon: "error",
-        });
-        return err;
-      });
+    swal("The Category has been created wrongly!", {
+      icon: "error",
+    });
+    // axios
+    //   .post(
+    //     "http://localhost:1234/api/v1/categories/create",
+    //     {
+    //       name: inputAdd,
+    //     },
+    //     config
+    //   )
+    //   .then((res) => {
+    //     props.setpostRequest(res.status);
+    //     handleClose();
+    //     swal("The Category has been created Successfully!", {
+    //       icon: "success",
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     swal("The Category has been created wrongly!", {
+    //       icon: "error",
+    //     });
+    //     return err;
+    //   });
   };
   // ****************************************************
   // *****************edit*******************************
@@ -68,26 +71,29 @@ const CatCom = (props) => {
     return errors;
   };
   const onSubmit = (values) => {
-    axios
-      .put(
-        `http://localhost:1234/api/v1/categories/${props.id}`,
-        values,
-        config
-      )
-      .then((res) => {
-        props.setPutRequest(res);
-        emptyCategory();
-        handleClose();
-        swal("The Category has been edited Successfully!", {
-          icon: "success",
-        });
-      })
-      .catch((err) => {
-        swal("The Category has been edited wrongly!", {
-          icon: "error",
-        });
-        return err;
-      });
+    swal("The Category has been edited wrongly!", {
+      icon: "error",
+    });
+    // axios
+    //   .put(
+    //     `http://localhost:1234/api/v1/categories/${props.id}`,
+    //     values,
+    //     config
+    //   )
+    //   .then((res) => {
+    //     props.setPutRequest(res);
+    //     emptyCategory();
+    //     handleClose();
+    //     swal("The Category has been edited Successfully!", {
+    //       icon: "success",
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     swal("The Category has been edited wrongly!", {
+    //       icon: "error",
+    //     });
+    //     return err;
+    //   });
   };
   const categoryFormik = useFormik({
     initialValues: categoryInitialValue,

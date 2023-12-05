@@ -46,41 +46,47 @@ const RolesCom = (props) => {
       authorities: authorityValues,
     };
     if (props.decide === "create") {
-      axios
-        .post("http://localhost:1234/api/v1/roles/create", reqValues, config)
-        .then((res) => {
-          props.setPostRequest(res);
-          handleClose();
-          swal("The Role has been created Successfully!", {
-            icon: "success",
-          });
-        })
-        .catch((err) => {
-          swal("The Role creation has been Failed!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Role creation has been Failed!", {
+        icon: "error",
+      });
+      // axios
+      //   .post("http://localhost:1234/api/v1/roles/create", reqValues, config)
+      //   .then((res) => {
+      //     props.setPostRequest(res);
+      //     handleClose();
+      //     swal("The Role has been created Successfully!", {
+      //       icon: "success",
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     swal("The Role creation has been Failed!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else {
-      axios
-        .put(
-          `http://localhost:1234/api/v1/roles/${props.id}`,
-          reqValues,
-          config
-        )
-        .then((res) => {
-          props.setPutRequest(res);
-          handleClose();
-          swal("The Role has been edited Successfully!", {
-            icon: "success",
-          });
-        })
-        .catch((err) => {
-          swal("The Role Editing has been Failed!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Role Editing has been Failed!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/roles/${props.id}`,
+      //     reqValues,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     props.setPutRequest(res);
+      //     handleClose();
+      //     swal("The Role has been edited Successfully!", {
+      //       icon: "success",
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     swal("The Role Editing has been Failed!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
 
@@ -90,17 +96,17 @@ const RolesCom = (props) => {
     validate: roleValidate,
   });
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:1234/api/v1/authorities?page=0&&size=100&&sort=name`,
-        config
-      )
-      .then((res) => {
-        setAuthority(res.data.payload);
-      })
-      .catch((err) => err);
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://localhost:1234/api/v1/authorities?page=0&&size=100&&sort=name`,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       setAuthority(res.data.payload);
+  //     })
+  //     .catch((err) => err);
+  // }, []);
 
   return (
     <PopUp openModal={props.open} handleCloseModal={handleClose}>

@@ -29,41 +29,47 @@ const AuthorityCom = (props) => {
   };
   const onSubmit = (values) => {
     if (props.decide === "create") {
-      axios
-        .post(`http://localhost:1234/api/v1/authorities/create`, values, config)
-        .then((res) => {
-          props.setPostRequest(res);
-          handleClose();
-          swal("The Authority has been created Successfully!", {
-            icon: "success",
-          });
-        })
-        .catch((err) => {
-          swal("The Authority creation has been Failed!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Authority creation has been Failed!", {
+        icon: "error",
+      });
+      // axios
+      //   .post(`http://localhost:1234/api/v1/authorities/create`, values, config)
+      //   .then((res) => {
+      //     props.setPostRequest(res);
+      //     handleClose();
+      //     swal("The Authority has been created Successfully!", {
+      //       icon: "success",
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     swal("The Authority creation has been Failed!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else {
-      axios
-        .put(
-          `http://localhost:1234/api/v1/authorities/${props.id}`,
-          values,
-          config
-        )
-        .then((res) => {
-          handleClose();
-          props.setPutRequest(res);
-          swal("The Authority has been edited Successfully!", {
-            icon: "success",
-          });
-        })
-        .catch((err) => {
-          swal("The Authority editing has been Failed!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Authority editing has been Failed!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/authorities/${props.id}`,
+      //     values,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     handleClose();
+      //     props.setPutRequest(res);
+      //     swal("The Authority has been edited Successfully!", {
+      //       icon: "success",
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     swal("The Authority editing has been Failed!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
 

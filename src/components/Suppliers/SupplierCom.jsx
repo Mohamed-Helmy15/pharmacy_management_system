@@ -72,26 +72,29 @@ const SupplierCom = (props) => {
         address: addressValue.id,
         phones: values.phones.split("\n"),
       };
-      axios
-        .post(
-          `http://localhost:1234/api/v1/suppliers/create`,
-          suppliers,
-          config
-        )
-        .then((res) => {
-          props.setPutRequest(res);
-          handleClose();
-          swal("The Supplier has been created Successfully!", {
-            icon: "success",
-          });
-          emptyFields();
-        })
-        .catch((err) => {
-          swal("The Supplier has been created wrongly!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Supplier has been created wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .post(
+      //     `http://localhost:1234/api/v1/suppliers/create`,
+      //     suppliers,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     props.setPutRequest(res);
+      //     handleClose();
+      //     swal("The Supplier has been created Successfully!", {
+      //       icon: "success",
+      //     });
+      //     emptyFields();
+      //   })
+      //   .catch((err) => {
+      //     swal("The Supplier has been created wrongly!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else {
       let suppliers = {};
       if (values.name !== "") {
@@ -106,26 +109,29 @@ const SupplierCom = (props) => {
       if (addressValue !== null) {
         suppliers.address = addressValue;
       }
-      axios
-        .put(
-          `http://localhost:1234/api/v1/suppliers/${props.id}`,
-          suppliers,
-          config
-        )
-        .then((res) => {
-          props.setPutRequest(res);
-          handleClose();
-          swal("The Supplier has been edited Successfully!", {
-            icon: "success",
-          });
-          emptyFields();
-        })
-        .catch((err) => {
-          swal("The Supplier has been edited wrongly!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Supplier has been edited wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/suppliers/${props.id}`,
+      //     suppliers,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     props.setPutRequest(res);
+      //     handleClose();
+      //     swal("The Supplier has been edited Successfully!", {
+      //       icon: "success",
+      //     });
+      //     emptyFields();
+      //   })
+      //   .catch((err) => {
+      //     swal("The Supplier has been edited wrongly!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
 

@@ -84,25 +84,28 @@ const Profile = () => {
     if (image !== null) {
       formData.append("img", image, image.name);
     }
-    axios
-      .put(
-        `http://localhost:1234/api/v1/users/${id}`,
-        formData,
-        configMultiPart
-      )
-      .then((res) => {
-        if (res.data.success === true) {
-          setPutRequest(values);
-          emptyFields();
-          setEdit(false);
-          swal("The user has been edited Successfully!", {
-            icon: "success",
-          });
-        }
-      })
-      .catch((err) => {
-        return err;
-      });
+    swal("The user has not been edited Successfully!", {
+      icon: "error",
+    });
+    // axios
+    //   .put(
+    //     `http://localhost:1234/api/v1/users/${id}`,
+    //     formData,
+    //     configMultiPart
+    //   )
+    //   .then((res) => {
+    //     if (res.data.success === true) {
+    //       setPutRequest(values);
+    //       emptyFields();
+    //       setEdit(false);
+    //       swal("The user has been edited Successfully!", {
+    //         icon: "success",
+    //       });
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     return err;
+    //   });
   };
   const userFormik = useFormik({
     initialValues: userInitialValues,
@@ -110,56 +113,56 @@ const Profile = () => {
   });
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get("http://localhost:1234/api/v1/users/", config)
-      .then((res) => {
-        return res.data.payload.filter((user) => {
-          return user.username === localStorage.getItem("user");
-        })[0].id;
-      })
-      .then((res) => {
-        setId(res);
-        axios
-          .get(`http://localhost:1234/api/v1/users/${res}`, config)
-          .then((res) => res)
-          .catch((err) => {
-            setProfileInfo(err.response.data.payload);
-            setManage(err.response.data.payload.managing);
-            setRole(err.response.data.payload.role.name);
-            setCreated(
-              err.response.data.payload.createdAt.split("T").join(" At ")
-            );
-            setUpdated(
-              err.response.data.payload.updatedAt.split("T").join(" At ")
-            );
-            if (err.response.data.payload.img !== null) {
-              setImg(err.response.data.payload.img.split("\\").join("/"));
-            }
-            if (err.response.data.payload.pharmacy !== null) {
-              setPharmacy(err.response.data.payload.pharmacy.name);
-            }
-            return err;
-          });
-        axios
-          .get(
-            "http://localhost:1234/api/v1/roles?page=0&size=100&sort=priority",
-            config
-          )
-          .then((res) => {
-            setRoles(res.data.payload);
-          })
-          .catch((err) => err);
-        axios
-          .get(
-            "http://localhost:1234/api/v1/pharmacies?page=0&size=100&sort=name",
-            config
-          )
-          .then((res) => {
-            setPharmacies(res.data.payload);
-          })
-          .catch((err) => err);
-      });
-  }, [edit, putRequest]);
+    // axios
+    //   .get("http://localhost:1234/api/v1/users/", config)
+    //   .then((res) => {
+    //     return res.data.payload.filter((user) => {
+    //       return user.username === localStorage.getItem("user");
+    //     })[0].id;
+    //   })
+    //   .then((res) => {
+    //     setId(res);
+    //     axios
+    //       .get(`http://localhost:1234/api/v1/users/${res}`, config)
+    //       .then((res) => res)
+    //       .catch((err) => {
+    //         setProfileInfo(err.response.data.payload);
+    //         setManage(err.response.data.payload.managing);
+    //         setRole(err.response.data.payload.role.name);
+    //         setCreated(
+    //           err.response.data.payload.createdAt.split("T").join(" At ")
+    //         );
+    //         setUpdated(
+    //           err.response.data.payload.updatedAt.split("T").join(" At ")
+    //         );
+    //         if (err.response.data.payload.img !== null) {
+    //           setImg(err.response.data.payload.img.split("\\").join("/"));
+    //         }
+    //         if (err.response.data.payload.pharmacy !== null) {
+    //           setPharmacy(err.response.data.payload.pharmacy.name);
+    //         }
+    //         return err;
+    //       });
+    //     axios
+    //       .get(
+    //         "http://localhost:1234/api/v1/roles?page=0&size=100&sort=priority",
+    //         config
+    //       )
+    //       .then((res) => {
+    //         setRoles(res.data.payload);
+    //       })
+    //       .catch((err) => err);
+    //     axios
+    //       .get(
+    //         "http://localhost:1234/api/v1/pharmacies?page=0&size=100&sort=name",
+    //         config
+    //       )
+    //       .then((res) => {
+    //         setPharmacies(res.data.payload);
+    //       })
+    //       .catch((err) => err);
+    //   });
+  }, []);
   return (
     <App>
       <div className={styles.profile}>
@@ -347,20 +350,12 @@ const Profile = () => {
                   {/* {Array.from(localStorage.getItem("user"))[0]} */}
                   USER
                 </Avatar>
-                <p>
-                  Name: {profileInfo.fname} {profileInfo.lname}
-                </p>
-                <p>User Name: {profileInfo.username}</p>
-                <p>
-                  E-mail:{" "}
-                  {profileInfo.email ? profileInfo.email : "Not Available"}
-                </p>
-                <p>
-                  Phone:{" "}
-                  {profileInfo.phone ? profileInfo.phone : "Not Available"}
-                </p>
-                <p>Position: {role}</p>
-                <p>Pharmacy: {pharmacy ? pharmacy : "Not Available"}</p>
+                <p>Name: Mohamed Helmy</p>
+                <p>User Name: MohamedHelmy15</p>
+                <p>E-mail: mohamedhelmy1531@gmail.com</p>
+                <p>Phone: +201150870355</p>
+                <p>Position: Admin</p>
+                <p>Pharmacy: Cairo pharmacy</p>
                 <div className="cat-info">
                   <Accordion style={{ borderRadius: "5px" }}>
                     <AccordionSummary
@@ -371,42 +366,20 @@ const Profile = () => {
                       <h3>Manging</h3>
                     </AccordionSummary>
                     <AccordionDetails>
-                      {manage.length > 0 ? (
-                        manage.map((manage, i) => {
-                          return (
-                            <p
-                              key={manage.id}
-                              className="med"
-                              style={{ fontWeight: "bold" }}
-                            >
-                              <span>
-                                {i + 1} - {manage.name}
-                              </span>
-                            </p>
-                          );
-                        })
-                      ) : (
-                        <p className="med" style={{ fontWeight: "bold" }}>
-                          <span>This User does not Manage any branch</span>
-                        </p>
-                      )}
+                      <p className="med" style={{ fontWeight: "bold" }}>
+                        <span>1 - Cairo Pharmacy</span>
+                      </p>
                     </AccordionDetails>
                   </Accordion>
                 </div>
-                <p>Created At: {created}</p>
+                <p>Created At: 2022-01-01</p>
                 <p>
                   Created By:{" "}
                   {profileInfo.createdBy
                     ? profileInfo.createdBy
                     : "Not Available"}
                 </p>
-                <p>Last updated At: {updated}</p>
-                <p>
-                  Last Updated By:{" "}
-                  {profileInfo.updatedBy
-                    ? profileInfo.updatedBy
-                    : "Not Available"}
-                </p>
+
                 <div className="cat-info">
                   <Accordion style={{ borderRadius: "5px" }}>
                     <AccordionSummary
@@ -438,7 +411,7 @@ const Profile = () => {
                           })
                       ) : ( */}
                       <p className="med" style={{ fontWeight: "bold" }}>
-                        <span>This User does not have any authorities</span>
+                        <span>1- Edit The System</span>
                       </p>
                       {/* )} */}
                     </AccordionDetails>

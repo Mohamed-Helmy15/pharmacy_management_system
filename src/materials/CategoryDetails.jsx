@@ -71,7 +71,7 @@ export default function CategoryDetails(props) {
           noRowsLabel: `${
             window.localStorage.getItem("branch") === "undefined" ||
             !window.localStorage.getItem("branch")
-              ? "Please Select The Branch"
+              ? "No Data Available"
               : "No Data Available"
           }`,
         }}

@@ -49,21 +49,24 @@ const AddressCom = (props) => {
       if (values.street !== "") {
         address.street = values.street;
       }
-      axios
-        .post("http://localhost:1234/api/v1/addresses/create/", address, config)
-        .then((res) => {
-          props.setPostRequest(res);
-          handleClose();
-          swal("The Address has been created Successfully!", {
-            icon: "success",
-          });
-        })
-        .catch((err) => {
-          swal("The Address has not been created Successfully!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Address has not been created Successfully!", {
+        icon: "error",
+      });
+      // axios
+      //   .post("http://localhost:1234/api/v1/addresses/create/", address, config)
+      //   .then((res) => {
+      //     props.setPostRequest(res);
+      //     handleClose();
+      //     swal("The Address has been created Successfully!", {
+      //       icon: "success",
+      //     });
+      //   })
+      //   .catch((err) => {
+      //     swal("The Address has not been created Successfully!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else {
       let address = {};
       if (governerate !== null) {
@@ -78,23 +81,26 @@ const AddressCom = (props) => {
       if (values.street !== "") {
         address.street = values.street;
       }
-      axios
-        .put(
-          `http://localhost:1234/api/v1/addresses/${props.id}/`,
-          address,
-          config
-        )
-        .then((res) => {
-          props.setPutRequest(res);
-          handleClose();
-          swal("", "the address has been edited successfully!", "info");
-        })
-        .catch((err) => {
-          swal("The Address has not been edited Successfully!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Address has not been edited Successfully!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/addresses/${props.id}/`,
+      //     address,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     props.setPutRequest(res);
+      //     handleClose();
+      //     swal("", "the address has been edited successfully!", "info");
+      //   })
+      //   .catch((err) => {
+      //     swal("The Address has not been edited Successfully!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
   const addressFormik = useFormik({

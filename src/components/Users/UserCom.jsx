@@ -106,29 +106,32 @@ const UserCom = (props) => {
       if (image !== null) {
         formData.append("img", image, image.name);
       }
-      axios
-        .post(
-          "http://localhost:1234/api/v1/users/create/",
-          formData,
-          configMultiPart
-        )
-        .then((res) => {
-          if (res.data.success === true) {
-            props.setPostRequest(formData);
+      swal("The User has been created wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .post(
+      //     "http://localhost:1234/api/v1/users/create/",
+      //     formData,
+      //     configMultiPart
+      //   )
+      //   .then((res) => {
+      //     if (res.data.success === true) {
+      //       props.setPostRequest(formData);
 
-            handleClose();
-            swal("The User has been created Successfully!", {
-              icon: "success",
-            });
-            emptyFields();
-          }
-        })
-        .catch((err) => {
-          swal("The User has been created wrongly!", {
-            icon: "error",
-          });
-          return err;
-        });
+      //       handleClose();
+      //       swal("The User has been created Successfully!", {
+      //         icon: "success",
+      //       });
+      //       emptyFields();
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     swal("The User has been created wrongly!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else {
       const formData = new FormData();
       if (values.fname !== "") {
@@ -159,28 +162,31 @@ const UserCom = (props) => {
       if (image !== null) {
         formData.append("img", image, image.name);
       }
-      axios
-        .put(
-          `http://localhost:1234/api/v1/users/${props.id}`,
-          formData,
-          configMultiPart
-        )
-        .then((res) => {
-          if (res.data.success === true) {
-            props.setPutRequest(values);
-            handleClose();
-            swal("The User has been edited Successfully!", {
-              icon: "success",
-            });
-            emptyFields();
-          }
-        })
-        .catch((err) => {
-          swal("The User has been edited wrongly!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The User has been edited wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/users/${props.id}`,
+      //     formData,
+      //     configMultiPart
+      //   )
+      //   .then((res) => {
+      //     if (res.data.success === true) {
+      //       props.setPutRequest(values);
+      //       handleClose();
+      //       swal("The User has been edited Successfully!", {
+      //         icon: "success",
+      //       });
+      //       emptyFields();
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     swal("The User has been edited wrongly!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
   const userFormik = useFormik({

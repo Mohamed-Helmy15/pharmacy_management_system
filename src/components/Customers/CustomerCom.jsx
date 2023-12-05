@@ -94,27 +94,30 @@ const CustomerCom = (props) => {
       } else {
         customer.phone = null;
       }
-      axios
-        .post(
-          "http://localhost:1234/api/v1/customers/create/",
-          customer,
-          config
-        )
-        .then((res) => {
-          props.setPutRequest(customer);
+      swal("The Customer has been created Wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .post(
+      //     "http://localhost:1234/api/v1/customers/create/",
+      //     customer,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     props.setPutRequest(customer);
 
-          handleCloseModal();
-          swal("The Customer has been created Successfully!", {
-            icon: "success",
-          });
-          emptyFields();
-        })
-        .catch((err) => {
-          swal("The Customer has been created Wrongly!", {
-            icon: "error",
-          });
-          return err;
-        });
+      //     handleCloseModal();
+      //     swal("The Customer has been created Successfully!", {
+      //       icon: "success",
+      //     });
+      //     emptyFields();
+      //   })
+      //   .catch((err) => {
+      //     swal("The Customer has been created Wrongly!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else if (props.decide === "edit") {
       let customer = {};
       if (values.fname !== "") {
@@ -132,29 +135,31 @@ const CustomerCom = (props) => {
       if (values.phone !== "") {
         customer.phone = values.phone;
       }
-
-      axios
-        .put(
-          `http://localhost:1234/api/v1/customers/${props.id}`,
-          customer,
-          config
-        )
-        .then((res) => {
-          if (res.data.success === true) {
-            props.setPutRequest(values);
-            handleCloseModal();
-            swal("The Customer has been edited Successfully!", {
-              icon: "success",
-            });
-            emptyFields();
-          }
-        })
-        .catch((err) => {
-          swal("The Customer has been edited wrongly!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Customer has been edited wrongly!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/customers/${props.id}`,
+      //     customer,
+      //     config
+      //   )
+      //   .then((res) => {
+      //     if (res.data.success === true) {
+      //       props.setPutRequest(values);
+      //       handleCloseModal();
+      //       swal("The Customer has been edited Successfully!", {
+      //         icon: "success",
+      //       });
+      //       emptyFields();
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     swal("The Customer has been edited wrongly!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
   const customerFormik = useFormik({
@@ -188,16 +193,16 @@ const CustomerCom = (props) => {
     if (values.street !== "") {
       address.street = values.street;
     }
-    axios
-      .post("http://localhost:1234/api/v1/addresses/create/", address, config)
-      .then((res) => {
-        if (res.data.success === true) {
-          props.setAddressRequest(!props.addressRequest);
+    // axios
+    //   .post("http://localhost:1234/api/v1/addresses/create/", address, config)
+    //   .then((res) => {
+    //     if (res.data.success === true) {
+    //       props.setAddressRequest(!props.addressRequest);
 
-          setAddressCustomer(false);
-        }
-      })
-      .catch((err) => err);
+    //       setAddressCustomer(false);
+    //     }
+    //   })
+    //   .catch((err) => err);
   };
   const addressFormik = useFormik({
     initialValues: addressInitialValues,

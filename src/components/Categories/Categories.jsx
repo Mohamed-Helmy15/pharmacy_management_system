@@ -23,7 +23,12 @@ const Categories = () => {
   const [auth, setAuth] = useState("");
   const [pharmacySelected, setPharmacySelected] = useState(null);
   const [open, setOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([
+    {
+      id: 1,
+      name: "Capsules",
+    },
+  ]);
   const [postRequest, setpostRequest] = useState("");
   const [putRequest, setPutRequest] = useState(0);
   const [deleteRequest, setdeleteRequest] = useState(0);
@@ -59,16 +64,16 @@ const Categories = () => {
 
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/categories?page=${page}&size=${rowsPerPage}&sort=name`,
-        config
-      )
-      .then((response) => {
-        setCategories(response.data.payload);
-      })
-      .catch((err) => err);
-  }, [postRequest, deleteRequest, putRequest]);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/categories?page=${page}&size=${rowsPerPage}&sort=name`,
+    //     config
+    //   )
+    //   .then((response) => {
+    //     setCategories(response.data.payload);
+    //   })
+    //   .catch((err) => err);
+  }, []);
 
   return (
     <App>

@@ -73,8 +73,8 @@ const data = [
 ];
 
 const Dashboard = () => {
-  const [customerCount, setCustomerCount] = useState("");
-  const [transactionCount, setTransactionCount] = useState("");
+  const [customerCount, setCustomerCount] = useState("10050");
+  const [transactionCount, setTransactionCount] = useState("5023");
   const [customers, set5Customers] = useState([]);
   const [transactions, set5Transactions] = useState([]);
   const [statistics, setStatistics] = useState([]);
@@ -206,19 +206,13 @@ const Dashboard = () => {
                       <span>Date of Creating</span>
                       <span>Address</span>
                     </p>
-                    {customers.map((customer, i) => {
-                      return (
-                        <p key={customer.id} className="med">
-                          <span>
-                            {i + 1}: {customer.name}
-                          </span>
-                          <span>
-                            {customer.createdAt.split("T").join(" AT ")}
-                          </span>
-                          <span>{customer.address}</span>
-                        </p>
-                      );
-                    })}
+                    <p className="med">
+                      <span>1: Mohamed Helmy</span>
+                      <span>
+                        {"2023-01-06T12:05:06".split("T").join(" AT ")}
+                      </span>
+                      <span>Egypt, Cairo</span>
+                    </p>
                   </div>
                 </AccordionDetails>
               </Accordion>
@@ -248,19 +242,13 @@ const Dashboard = () => {
                       <span>Date of Transaction</span>
                     </p>
 
-                    {transactions.map((transaction, i) => {
-                      return (
-                        <p key={transaction.id} className="med">
-                          <span>
-                            {i + 1}: {transaction.customer.name}
-                          </span>
-                          <span>{FormatCurrency(transaction.price)}</span>
-                          <span>
-                            {transaction.createdAt.split("T").join(" AT ")}
-                          </span>
-                        </p>
-                      );
-                    })}
+                    <p className="med">
+                      <span>1: Mohamed Helmy</span>
+                      <span>{FormatCurrency(265)}</span>
+                      <span>
+                        {"2023-01-06T12:05:06".split("T").join(" AT ")}
+                      </span>
+                    </p>
                   </div>
                 </AccordionDetails>
               </Accordion>

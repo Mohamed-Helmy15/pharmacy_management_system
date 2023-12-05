@@ -64,7 +64,18 @@ const AddNewM = () => {
   const [category, setCategory] = useState("");
   const [openEdit, setOpenEdit] = useState(false);
   const [putRequest, setPutRequest] = useState("");
-  const [dataRow, setDataRow] = useState([]);
+  const [dataRow, setDataRow] = useState([
+    {
+      id: 1,
+      marketName: "congestal",
+      scientificName: "scientific",
+      description: "parastamol",
+      count: "50",
+      price: "20",
+      expiration: "2024-8-01",
+      type: "cold",
+    },
+  ]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [postRequest, setPostRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState("");
@@ -85,31 +96,32 @@ const AddNewM = () => {
   const handleOpen = () => setOpen(true);
 
   const handleOpenShow = (id) => {
-    axios
-      .get(
-        `http://localhost:1234/api/v1/medicines/${id}?pharmacy=${window.localStorage.getItem(
-          "thisBranch"
-        )}`,
-        config
-      )
-      .then((res) => {
-        return res;
-      })
-      .catch((err) => {
-        setOpenShow(true);
-        setinfoShow(err.response.data.payload);
-        if (err.response.data.payload.img !== null) {
-          setImg(err.response.data.payload.img.split("\\").join("/"));
-        }
-        setCategory(err.response.data.payload.category.name);
-        setSupplier(err.response.data.payload.supplier.name);
-        setCreateTime(
-          err.response.data.payload.createdAt.split("T").join(" At ")
-        );
-        setUpdateTime(
-          err.response.data.payload.updatedAt.split("T").join(" At ")
-        );
-      });
+    setOpenShow(true);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/medicines/${id}?pharmacy=${window.localStorage.getItem(
+    //       "thisBranch"
+    //     )}`,
+    //     config
+    //   )
+    //   .then((res) => {
+    //     return res;
+    //   })
+    //   .catch((err) => {
+    //     setOpenShow(true);
+    //     setinfoShow(err.response.data.payload);
+    //     if (err.response.data.payload.img !== null) {
+    //       setImg(err.response.data.payload.img.split("\\").join("/"));
+    //     }
+    //     setCategory(err.response.data.payload.category.name);
+    //     setSupplier(err.response.data.payload.supplier.name);
+    //     setCreateTime(
+    //       err.response.data.payload.createdAt.split("T").join(" At ")
+    //     );
+    //     setUpdateTime(
+    //       err.response.data.payload.updatedAt.split("T").join(" At ")
+    //     );
+    //   });
   };
 
   const handleCloseShow = () => {
@@ -131,45 +143,45 @@ const AddNewM = () => {
 
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get("http://localhost:1234/api/v1/categories", config)
-      .then((res) => {
-        setCategories(res.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get("http://localhost:1234/api/v1/medicines/types", config)
-      .then((res) => {
-        setTypes(res.data.payload);
-      })
-      .catch((err) => err);
-    axios
-      .get("http://localhost:1234/api/v1/suppliers", config)
-      .then((res) => {
-        setSuppliers(res.data.payload);
-      })
-      .catch((err) => err);
+    // axios
+    //   .get("http://localhost:1234/api/v1/categories", config)
+    //   .then((res) => {
+    //     setCategories(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+    // axios
+    //   .get("http://localhost:1234/api/v1/medicines/types", config)
+    //   .then((res) => {
+    //     setTypes(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+    // axios
+    //   .get("http://localhost:1234/api/v1/suppliers", config)
+    //   .then((res) => {
+    //     setSuppliers(res.data.payload);
+    //   })
+    //   .catch((err) => err);
 
-    axios
-      .get("http://localhost:1234/api/v1/customers", config)
-      .then((res) => {
-        setCustomers(res.data.payload);
-      })
-      .catch((err) => err);
+    // axios
+    //   .get("http://localhost:1234/api/v1/customers", config)
+    //   .then((res) => {
+    //     setCustomers(res.data.payload);
+    //   })
+    //   .catch((err) => err);
 
-    if (window.localStorage.getItem("thisBranch")) {
-      axios
-        .get(
-          `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
-            "thisBranch"
-          )}`,
-          config
-        )
-        .then((res) => {
-          setDataRow(res.data.payload);
-        })
-        .catch((err) => err);
-    }
+    // if (window.localStorage.getItem("thisBranch")) {
+    //   axios
+    //     .get(
+    //       `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
+    //         "thisBranch"
+    //       )}`,
+    //       config
+    //     )
+    //     .then((res) => {
+    //       setDataRow(res.data.payload);
+    //     })
+    //     .catch((err) => err);
+    // }
   }, [deleteRequest, putRequest, postRequest, pharmacySelected]);
 
   return (
@@ -184,10 +196,12 @@ const AddNewM = () => {
 
       <div>
         <Autocomplete
-          options={customers.map((customer) => ({
-            id: customer.id,
-            label: customer.name,
-          }))}
+          options={[
+            {
+              id: 1,
+              label: "Mohamed Helmy",
+            },
+          ]}
           renderInput={(params) => <TextField {...params} label="Customers" />}
           value={customerValue}
           onChange={(e, value) => {
@@ -277,21 +291,21 @@ const AddNewM = () => {
             setCount(params.editRows[`${id}`].count.value);
           }
         }}
-        onCellEditStop={(params) => {
-          let updatedCount = {
-            pharmacy: window.localStorage.getItem("thisBranch"),
-            medicine: id,
-            count,
-          };
-          axios
-            .post(
-              "http://localhost:1234/api/v1/medicines/update-count",
-              updatedCount,
-              config
-            )
-            .then((res) => setPutRequest(res))
-            .catch((err) => err);
-        }}
+        // onCellEditStop={(params) => {
+        //   let updatedCount = {
+        //     pharmacy: window.localStorage.getItem("thisBranch"),
+        //     medicine: id,
+        //     count,
+        //   };
+        //   axios
+        //     .post(
+        //       "http://localhost:1234/api/v1/medicines/update-count",
+        //       updatedCount,
+        //       config
+        //     )
+        //     .then((res) => setPutRequest(res))
+        //     .catch((err) => err);
+        // }}
       />
       {selectedRows.length === 1 ? (
         <div
@@ -380,38 +394,41 @@ const AddNewM = () => {
           <button
             className="get"
             onClick={() => {
-              axios
-                .post(
-                  "http://localhost:1234/api/v1/transactions/create",
-                  {
-                    customer: customerValue && customerValue.id,
-                    pharmacy: parseInt(
-                      window.localStorage.getItem("thisBranch")
-                    ),
-                    medicines: obj,
-                  },
-                  config
-                )
-                .then((res) => {
-                  setPostRequest(res);
-                  console.log(res);
-                  setObj([]);
-                  swal("The bill has been completed successfully!", {
-                    icon: "success",
-                  });
-                })
-                .catch((err) => {
-                  if (!customerValue) {
-                    swal("Please choose the Customer", {
-                      icon: "error",
-                    });
-                  } else {
-                    swal("Please choose the quantity of medicine", {
-                      icon: "error",
-                    });
-                  }
-                  return err;
-                });
+              swal("The bill has not been completed successfully!", {
+                icon: "error",
+              });
+              // axios
+              //   .post(
+              //     "http://localhost:1234/api/v1/transactions/create",
+              //     {
+              //       customer: customerValue && customerValue.id,
+              //       pharmacy: parseInt(
+              //         window.localStorage.getItem("thisBranch")
+              //       ),
+              //       medicines: obj,
+              //     },
+              //     config
+              //   )
+              //   .then((res) => {
+              //     setPostRequest(res);
+              //     console.log(res);
+              //     setObj([]);
+              //     swal("The bill has been completed successfully!", {
+              //       icon: "success",
+              //     });
+              //   })
+              //   .catch((err) => {
+              //     if (!customerValue) {
+              //       swal("Please choose the Customer", {
+              //         icon: "error",
+              //       });
+              //     } else {
+              //       swal("Please choose the quantity of medicine", {
+              //         icon: "error",
+              //       });
+              //     }
+              //     return err;
+              //   });
             }}
           >
             Confirm
@@ -420,7 +437,7 @@ const AddNewM = () => {
       ) : null}
       <PopUp openModal={openShow} handleCloseModal={handleCloseShow}>
         <div style={{ textAlign: "center" }} className="pop">
-          <h3>{infoShow.marketName}</h3>
+          <h3>congestal</h3>
           <Avatar
             sx={{
               bgcolor: "#aaa",
@@ -442,46 +459,19 @@ const AddNewM = () => {
 
           <div className="cat-info">
             <p>
-              category: <b>{category === null ? "Not Available" : category}</b>
+              category: <b>capsules</b>
             </p>
             <p>
-              supplier: <b>{supplier === null ? "Not Available" : supplier}</b>
+              supplier: <b>cairo supplier</b>
             </p>
             <p>
-              Effective Material:{" "}
-              <b>
-                {infoShow.description === null
-                  ? "Not Available"
-                  : infoShow.description}
-              </b>
+              Effective Material: <b>parastamol</b>
             </p>
             <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
+              Created At: <b>2023-06-25</b>
             </p>
             <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
-            </p>
-            <p>
-              Last Update at:{" "}
-              <b>
-                {infoShow.updatedAt === null ? "Not Available" : updateTime}
-              </b>
-            </p>
-            <p>
-              Updated By:{" "}
-              <b>
-                {infoShow.updatedBy === null
-                  ? "Not Available"
-                  : infoShow.updatedBy}
-              </b>
+              Created By: <b>Mohamed Helmy</b>
             </p>
           </div>
         </div>

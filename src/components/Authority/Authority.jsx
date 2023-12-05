@@ -20,7 +20,13 @@ const Authority = () => {
   const [putRequest, setPutRequest] = useState("");
   const [postRequest, setPostRequest] = useState("");
   const [deleteRequest, setdeleteRequest] = useState("");
-  const [authority, setAuthority] = useState([]);
+  const [authority, setAuthority] = useState([
+    {
+      id: 1,
+      name: "Edit The System",
+      createdAt: "2023-01-01",
+    },
+  ]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [id, setId] = useState("");
   const [openShow, setOpenShow] = useState(false);
@@ -51,19 +57,19 @@ const Authority = () => {
 
   const handleOpenShow = (id) => {
     setOpenShow(true);
-    axios
-      .get(`http://localhost:1234/api/v1/authorities/${id}`, config)
-      .then((res) => res)
-      .catch((err) => {
-        setinfoShow(err.response.data.payload);
-        setCreateTime(
-          err.response.data.payload.createdAt.split("T").join(" At ")
-        );
-        setUpdateTime(
-          err.response.data.payload.updatedAt.split("T").join(" At ")
-        );
-        return err;
-      });
+    // axios
+    //   .get(`http://localhost:1234/api/v1/authorities/${id}`, config)
+    //   .then((res) => res)
+    //   .catch((err) => {
+    //     setinfoShow(err.response.data.payload);
+    //     setCreateTime(
+    //       err.response.data.payload.createdAt.split("T").join(" At ")
+    //     );
+    //     setUpdateTime(
+    //       err.response.data.payload.updatedAt.split("T").join(" At ")
+    //     );
+    //     return err;
+    //   });
   };
 
   const handleOpenEdit = () => {
@@ -72,16 +78,16 @@ const Authority = () => {
 
   useEffect(() => {
     setAuth(localStorage.getItem("role"));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/authorities?page=0&&size=100&&sort=name`,
-        config
-      )
-      .then((res) => {
-        setAuthority(res.data.payload);
-      })
-      .catch((err) => err);
-  }, [putRequest, postRequest, deleteRequest]);
+    // axios
+    //   .get(
+    //     `http://localhost:1234/api/v1/authorities?page=0&&size=100&&sort=name`,
+    //     config
+    //   )
+    //   .then((res) => {
+    //     setAuthority(res.data.payload);
+    //   })
+    //   .catch((err) => err);
+  }, []);
   return (
     <App>
       <div className="header">
@@ -114,7 +120,7 @@ const Authority = () => {
           .map((row) => ({
             id: row.id,
             name: row.name,
-            createdAt: row.createdAt.split("T").join(" AT "),
+            createdAt: row.createdAt,
           }))}
         columns={columns}
         initialState={{
@@ -174,32 +180,10 @@ const Authority = () => {
           <h3>{infoShow.name}</h3>
           <div className="cat-info">
             <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
+              Created At: <b>2023-01-01</b>
             </p>
             <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
-            </p>
-            <p>
-              Last Update at:{" "}
-              <b>
-                {infoShow.updatedAt === null ? "Not Available" : updateTime}
-              </b>
-            </p>
-            <p>
-              Updated By:{" "}
-              <b>
-                {infoShow.updatedBy === null
-                  ? "Not Available"
-                  : infoShow.updatedBy}
-              </b>
+              Created By: <b>Mohamed Helmy</b>
             </p>
           </div>
         </div>

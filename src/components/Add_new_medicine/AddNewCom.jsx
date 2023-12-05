@@ -90,28 +90,31 @@ const AddNewCom = (props) => {
       if (image !== null) {
         formData.append("img", image, image.name);
       }
-      axios
-        .post(
-          "http://localhost:1234/api/v1/medicines/create/",
-          formData,
-          configMultiPart
-        )
-        .then((res) => {
-          if (res.data.success === true) {
-            props.setPostRequest(formData);
-            handleClose();
-            swal("The Medicine has been created Successfully!", {
-              icon: "success",
-            });
-            emptyFields();
-          }
-        })
-        .catch((err) => {
-          swal("The Medicine has not been created Successfully!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Medicine has not been created Successfully!", {
+        icon: "error",
+      });
+      // axios
+      //   .post(
+      //     "http://localhost:1234/api/v1/medicines/create/",
+      //     formData,
+      //     configMultiPart
+      //   )
+      //   .then((res) => {
+      //     if (res.data.success === true) {
+      //       props.setPostRequest(formData);
+      //       handleClose();
+      //       swal("The Medicine has been created Successfully!", {
+      //         icon: "success",
+      //       });
+      //       emptyFields();
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     swal("The Medicine has not been created Successfully!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     } else {
       const formData = new FormData();
       formData.append("pharmacy", window.localStorage.getItem("thisBranch"));
@@ -142,28 +145,31 @@ const AddNewCom = (props) => {
       if (image !== null) {
         formData.append("img", image, image.name);
       }
-      axios
-        .put(
-          `http://localhost:1234/api/v1/medicines/${props.id}`,
-          formData,
-          configMultiPart
-        )
-        .then((res) => {
-          if (res.data.success === true) {
-            props.setPutRequest(values);
-            handleClose();
-            emptyFields();
-            swal("The Medicine has been edited Successfully!", {
-              icon: "success",
-            });
-          }
-        })
-        .catch((err) => {
-          swal("The Medicine has not been edited Successfully!", {
-            icon: "error",
-          });
-          return err;
-        });
+      swal("The Medicine has not been edited Successfully!", {
+        icon: "error",
+      });
+      // axios
+      //   .put(
+      //     `http://localhost:1234/api/v1/medicines/${props.id}`,
+      //     formData,
+      //     configMultiPart
+      //   )
+      //   .then((res) => {
+      //     if (res.data.success === true) {
+      //       props.setPutRequest(values);
+      //       handleClose();
+      //       emptyFields();
+      //       swal("The Medicine has been edited Successfully!", {
+      //         icon: "success",
+      //       });
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     swal("The Medicine has not been edited Successfully!", {
+      //       icon: "error",
+      //     });
+      //     return err;
+      //   });
     }
   };
   const medicineFormik = useFormik({

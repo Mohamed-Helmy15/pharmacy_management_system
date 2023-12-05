@@ -27,7 +27,16 @@ const Bills = () => {
   const [search, setSearch] = useState("");
   const [openShow, setOpenShow] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
-  const [dataRow, setDataRow] = useState([]);
+  const [dataRow, setDataRow] = useState([
+    {
+      id: 1,
+      customer: {
+        name: "Mohamed Helmy",
+      },
+      createdAt: "2023-01-01",
+      price: "360",
+    },
+  ]);
   const [customers, setCustomers] = useState([]);
   const [customersVal, setCustomersVal] = useState(null);
   const [pharmacies, setPharmacies] = useState([]);
@@ -90,23 +99,25 @@ const Bills = () => {
     if (medsVal !== null) {
       data.medicines = obj;
     }
+    swal("The bill editing has been Failed!", {
+      icon: "error",
+    });
+    // axios
+    //   .put(`http://localhost:1234/api/v1/transactions/${id}`, data, config)
+    //   .then((res) => {
+    //     setPutRequest(res);
+    //     handleClose();
 
-    axios
-      .put(`http://localhost:1234/api/v1/transactions/${id}`, data, config)
-      .then((res) => {
-        setPutRequest(res);
-        handleClose();
-
-        swal("The bill has been edited successfully!", {
-          icon: "success",
-        });
-      })
-      .catch((err) => {
-        swal("The bill editing has been Failed!", {
-          icon: "success",
-        });
-        return err;
-      });
+    //     swal("The bill has been edited successfully!", {
+    //       icon: "success",
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     swal("The bill editing has been Failed!", {
+    //       icon: "error",
+    //     });
+    //     return err;
+    //   });
   };
 
   const billFormik = useFormik({
@@ -116,29 +127,36 @@ const Bills = () => {
   });
 
   const handleOpenShow = (id) => {
-    axios
-      .get(`http://localhost:1234/api/v1/transactions/${id}`, config)
-      .then((res) => res)
-      .catch((err) => {
-        setInvoice(err.response.data.payload.invoice.split("\\").join("/"));
-        setOpenShow(true);
-        setinfoShow(err.response.data.payload);
-        setMedicines(err.response.data.payload.medicines);
-        setCustomer(err.response.data.payload.customer.name);
-        setPharmacy(err.response.data.payload.pharmacy.name);
-        setCreateTime(
-          err.response.data.payload.createdAt.split("T").join(" At ")
-        );
-        setUpdateTime(
-          err.response.data.payload.updatedAt.split("T").join(" At ")
-        );
-        medicines.map((med) => {
-          return setResell((prevObj) => [
-            ...prevObj,
-            { medicine: med.medicine.id, count: med.count },
-          ]);
-        });
-      });
+    setOpenShow(true);
+    medicines.map((med) => {
+      return setResell((prevObj) => [
+        ...prevObj,
+        { medicine: med.medicine.id, count: med.count },
+      ]);
+    });
+    // axios
+    //   .get(`http://localhost:1234/api/v1/transactions/${id}`, config)
+    //   .then((res) => res)
+    //   .catch((err) => {
+    //     setInvoice(err.response.data.payload.invoice.split("\\").join("/"));
+    //     setOpenShow(true);
+    //     setinfoShow(err.response.data.payload);
+    //     setMedicines(err.response.data.payload.medicines);
+    //     setCustomer(err.response.data.payload.customer.name);
+    //     setPharmacy(err.response.data.payload.pharmacy.name);
+    //     setCreateTime(
+    //       err.response.data.payload.createdAt.split("T").join(" At ")
+    //     );
+    //     setUpdateTime(
+    //       err.response.data.payload.updatedAt.split("T").join(" At ")
+    //     );
+    //     medicines.map((med) => {
+    //       return setResell((prevObj) => [
+    //         ...prevObj,
+    //         { medicine: med.medicine.id, count: med.count },
+    //       ]);
+    //     });
+    //   });
   };
   const handleCloseShow = () => {
     setOpenShow(false);
@@ -159,34 +177,34 @@ const Bills = () => {
     }
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        `http://localhost:1234/api/v1/transactions?page=0&&size=100&&sort=id`,
-        config
-      )
-      .then((res) => setDataRow(res.data.payload))
-      .catch((err) => err);
-    axios
-      .get("http://localhost:1234/api/v1/customers/", config)
-      .then((res) => setCustomers(res.data.payload))
-      .catch((err) => err);
-    axios
-      .get("http://localhost:1234/api/v1/pharmacies/", config)
-      .then((res) => setPharmacies(res.data.payload))
-      .catch((err) => err);
-    if (window.localStorage.getItem("thisBranch")) {
-      axios
-        .get(
-          `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
-            "thisBranch"
-          )}`,
-          config
-        )
-        .then((res) => setMeds(res.data.payload))
-        .catch((err) => err);
-    }
-  }, [deleteRequest, putRequest]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `http://localhost:1234/api/v1/transactions?page=0&&size=100&&sort=id`,
+  //       config
+  //     )
+  //     .then((res) => setDataRow(res.data.payload))
+  //     .catch((err) => err);
+  //   axios
+  //     .get("http://localhost:1234/api/v1/customers/", config)
+  //     .then((res) => setCustomers(res.data.payload))
+  //     .catch((err) => err);
+  //   axios
+  //     .get("http://localhost:1234/api/v1/pharmacies/", config)
+  //     .then((res) => setPharmacies(res.data.payload))
+  //     .catch((err) => err);
+  //   if (window.localStorage.getItem("thisBranch")) {
+  //     axios
+  //       .get(
+  //         `http://localhost:1234/api/v1/medicines?&sort=marketName&pharmacy=${window.localStorage.getItem(
+  //           "thisBranch"
+  //         )}`,
+  //         config
+  //       )
+  //       .then((res) => setMeds(res.data.payload))
+  //       .catch((err) => err);
+  //   }
+  // }, [deleteRequest, putRequest]);
 
   return (
     <App>
@@ -270,7 +288,13 @@ const Bills = () => {
                 <h3>Medicines</h3>
               </AccordionSummary>
               <AccordionDetails>
-                {medicines.map((medicine, i) => {
+                <p className="med" style={{ fontWeight: "bold" }}>
+                  <span>1 : congestal</span>{" "}
+                  <span>Price : {FormatCurrency(20)}</span>
+                  <span>Count : 3</span>
+                  <span>Total Price : {FormatCurrency(3 * 20)}</span>
+                </p>
+                {/* {medicines.map((medicine, i) => {
                   return (
                     <p
                       key={medicine.medicine.id}
@@ -292,40 +316,27 @@ const Bills = () => {
                       </span>
                     </p>
                   );
-                })}
+                })} */}
               </AccordionDetails>
             </Accordion>
 
             <p>
-              customer: <b>{customer === null ? "Not Available" : customer}</b>
+              customer: <b>Mohamed Helmy</b>
             </p>
             <p>
-              Branch: <b>{pharmacy === null ? "Not Available" : pharmacy}</b>
+              Branch: <b>Cairo</b>
             </p>
 
             <p>
-              Total Price:{" "}
-              <b>
-                {infoShow.price === null
-                  ? "Not Available"
-                  : FormatCurrency(infoShow.price)}
-              </b>
+              Total Price: <b>{FormatCurrency(60)}</b>
             </p>
             <p>
-              Created At:{" "}
-              <b>
-                {infoShow.createdAt === null ? "Not Available" : createTime}
-              </b>
+              Created At: <b>2023-01-01</b>
             </p>
             <p>
-              Created By:{" "}
-              <b>
-                {infoShow.createdBy === null
-                  ? "Not Available"
-                  : infoShow.createdBy}
-              </b>
+              Created By: <b>Mohamed Helmy</b>
             </p>
-            <p>
+            {/* <p>
               Last Update at:{" "}
               <b>
                 {infoShow.updatedAt === null ? "Not Available" : updateTime}
@@ -338,7 +349,7 @@ const Bills = () => {
                   ? "Not Available"
                   : infoShow.updatedBy}
               </b>
-            </p>
+            </p> */}
             <div
               style={{
                 display: "flex",
@@ -357,43 +368,49 @@ const Bills = () => {
                     buttons: true,
                   }).then((sure) => {
                     if (sure) {
-                      axios
-                        .post(
-                          `http://localhost:1234/api/v1/transactions/create`,
-                          {
-                            customer: infoShow.customer.id,
-                            pharmacy: parseInt(
-                              window.localStorage.getItem("thisBranch")
-                            ),
-                            medicines: resell,
-                          },
-                          config
-                        )
-                        .then((res) => {
-                          setPutRequest(res);
-                          handleCloseShow();
-
-                          swal("The Invoice Reselled Successfully!", {
-                            icon: "success",
-                          });
-                        })
-                        .catch((err) => {
-                          setPutRequest(err);
-                          swal(
-                            "",
-                            "The Invoice hasn't been Reselled completed!",
-                            "error"
-                          );
-                          return err;
-                        });
-                      return true;
-                    } else {
                       swal(
                         "",
-                        "the delete operation hasn't been completed!",
+                        "The Invoice hasn't been Reselled completed!",
                         "error"
                       );
+                      // axios
+                      //   .post(
+                      //     `http://localhost:1234/api/v1/transactions/create`,
+                      //     {
+                      //       customer: infoShow.customer.id,
+                      //       pharmacy: parseInt(
+                      //         window.localStorage.getItem("thisBranch")
+                      //       ),
+                      //       medicines: resell,
+                      //     },
+                      //     config
+                      //   )
+                      //   .then((res) => {
+                      //     setPutRequest(res);
+                      //     handleCloseShow();
+
+                      //     swal("The Invoice Reselled Successfully!", {
+                      //       icon: "success",
+                      //     });
+                      //   })
+                      //   .catch((err) => {
+                      //     setPutRequest(err);
+                      //     swal(
+                      //       "",
+                      //       "The Invoice hasn't been Reselled completed!",
+                      //       "error"
+                      //     );
+                      //     return err;
+                      //   });
+                      return true;
                     }
+                    // else {
+                    //   swal(
+                    //     "",
+                    //     "the delete operation hasn't been completed!",
+                    //     "error"
+                    //   );
+                    // }
                   });
                 }}
               >
@@ -402,9 +419,7 @@ const Bills = () => {
               <button
                 className="get"
                 onClick={() => {
-                  window.open(
-                    `http://localhost:1234/api/v1/transactions/load-file?file=${invoice}`
-                  );
+                  window.open(`/bills`);
                 }}
               >
                 Get the Invoice
@@ -427,10 +442,12 @@ const Bills = () => {
         <div>
           <form onSubmit={billFormik.handleSubmit}>
             <Autocomplete
-              options={customers.map((customer) => ({
-                id: customer.id,
-                label: customer.name,
-              }))}
+              options={[
+                {
+                  id: 1,
+                  label: "Mohamed Helmy",
+                },
+              ]}
               {...billFormik.getFieldProps("customer")}
               renderInput={(params) => (
                 <TextField
