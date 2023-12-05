@@ -39,33 +39,36 @@ const LogOut = () => {
   };
 
   const onSubmit = (values) => {
-    setloading(true);
-
-    axios
-      .post("http://localhost:1234/api/v1/auth/login", values)
-      .then((response) => {
-        window.localStorage.setItem("user", values.username);
-        window.localStorage.setItem("tokens", response.data.payload.jwt.token);
-        window.localStorage.setItem(
-          "authorities",
-          response.data.payload.authorities
-        );
-        const sign = signIn({
-          authState: { username: values.username },
-          token: response.data.payload.jwt.token,
-          expiresIn: 3600,
-          tokenType: response.data.payload.jwt.tokenType,
-        });
-        if (sign) {
-          setSuccess(true);
-          setloading(true);
-        }
-      })
-      .catch((err) => {
-        setloading(false);
-        setSuccess(false);
-        navigate("/");
-      });
+    window.localStorage.setItem("token", Math.random() * 100000);
+    setTimeout(() => {
+      setloading(true);
+    }, 2000);
+    navigate("/dashboard");
+    window.location.reload();
+    // axios
+    //   .post("http://localhost:1234/api/v1/auth/login", values)
+    //   .then((response) => {
+    //     window.localStorage.setItem("user", values.username);
+    //     window.localStorage.setItem(
+    //       "authorities",
+    //       response.data.payload.authorities
+    //     );
+    //     const sign = signIn({
+    //       authState: { username: values.username },
+    //       token: response.data.payload.jwt.token,
+    //       expiresIn: 3600,
+    //       tokenType: response.data.payload.jwt.tokenType,
+    //     });
+    //     if (sign) {
+    //       setSuccess(true);
+    //       setloading(true);
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     setloading(false);
+    //     setSuccess(false);
+    //     navigate("/");
+    //   });
   };
 
   const formik = useFormik({
@@ -74,12 +77,12 @@ const LogOut = () => {
     validate,
   });
 
-  useEffect(() => {
-    if (isAuthenticated()) {
-      navigate("/dashboard");
-      window.location.reload();
-    }
-  }, [isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated()) {
+  //     navigate("/dashboard");
+  //     window.location.reload();
+  //   }
+  // }, [isAuthenticated, navigate]);
 
   return loading ? (
     <Loading />

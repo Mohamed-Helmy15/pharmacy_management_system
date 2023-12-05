@@ -335,15 +335,17 @@ const Profile = () => {
                     fontSize: "50px",
                     margin: "0 auto",
                   }}
-                  variant="rounded"
+                  // variant="rounded"
                   alt={localStorage.getItem("user")}
                   src={
-                    img !== null
-                      ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
-                      : null
+                    // img !== null
+                    //   ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
+                    //   : null
+                    "https://th.bing.com/th/id/R.7ea4af7d8401d2b43ee841bfa2abe89d?rik=bpf8Qf%2bY5vRCQA&pid=ImgRaw&r=0"
                   }
                 >
-                  {Array.from(localStorage.getItem("user"))[0]}
+                  {/* {Array.from(localStorage.getItem("user"))[0]} */}
+                  USER
                 </Avatar>
                 <p>
                   Name: {profileInfo.fname} {profileInfo.lname}
@@ -415,7 +417,8 @@ const Profile = () => {
                       <h3>Authorities</h3>
                     </AccordionSummary>
                     <AccordionDetails>
-                      {localStorage.getItem("authorities").split(",").length >
+                      {/* {
+                      localStorage.getItem("authorities").split(",").length >
                       0 ? (
                         localStorage
                           .getItem("authorities")
@@ -433,11 +436,11 @@ const Profile = () => {
                               </p>
                             );
                           })
-                      ) : (
-                        <p className="med" style={{ fontWeight: "bold" }}>
-                          <span>This User does not Manage any branch</span>
-                        </p>
-                      )}
+                      ) : ( */}
+                      <p className="med" style={{ fontWeight: "bold" }}>
+                        <span>This User does not have any authorities</span>
+                      </p>
+                      {/* )} */}
                     </AccordionDetails>
                   </Accordion>
                 </div>

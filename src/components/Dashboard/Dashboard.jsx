@@ -126,47 +126,47 @@ const Dashboard = () => {
     event.target.classList.add("clicked");
   };
 
-  useEffect(() => {
-    axios
-      .get(
-        "http://localhost:1234/api/v1/dashboard/count-customers-added-by-current-user",
-        config
-      )
-      .then((res) => setCustomerCount(res.data.payload))
-      .catch((err) => console.error(err));
-    axios
-      .get(
-        "http://localhost:1234/api/v1/dashboard/latest-5customers-added-by-current-user",
-        config
-      )
-      .then((res) => set5Customers(res.data.payload))
-      .catch((err) => console.error(err));
-    axios
-      .get(
-        "http://localhost:1234/api/v1/dashboard/count-transactions-added-by-current-user",
-        config
-      )
-      .then((res) => setTransactionCount(res.data.payload))
-      .catch((err) => console.error(err));
-    axios
-      .get(
-        "http://localhost:1234/api/v1/dashboard/latest-5transactions-added-by-current-user",
-        config
-      )
-      .then((res) => {
-        set5Transactions(res.data.payload);
-      })
-      .catch((err) => console.error(err));
-    axios
-      .get(
-        `http://localhost:1234/api/v1/dashboard/latest-n-months-transaction-prices/${monthCount}`,
-        config
-      )
-      .then((res) => {
-        setStatistics(res.data.payload.sort((a, b) => a.month - b.month));
-      })
-      .catch((err) => console.error(err));
-  }, [monthCount]);
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       "http://localhost:1234/api/v1/dashboard/count-customers-added-by-current-user",
+  //       config
+  //     )
+  //     .then((res) => setCustomerCount(res.data.payload))
+  //     .catch((err) => console.error(err));
+  //   axios
+  //     .get(
+  //       "http://localhost:1234/api/v1/dashboard/latest-5customers-added-by-current-user",
+  //       config
+  //     )
+  //     .then((res) => set5Customers(res.data.payload))
+  //     .catch((err) => console.error(err));
+  //   axios
+  //     .get(
+  //       "http://localhost:1234/api/v1/dashboard/count-transactions-added-by-current-user",
+  //       config
+  //     )
+  //     .then((res) => setTransactionCount(res.data.payload))
+  //     .catch((err) => console.error(err));
+  //   axios
+  //     .get(
+  //       "http://localhost:1234/api/v1/dashboard/latest-5transactions-added-by-current-user",
+  //       config
+  //     )
+  //     .then((res) => {
+  //       set5Transactions(res.data.payload);
+  //     })
+  //     .catch((err) => console.error(err));
+  //   axios
+  //     .get(
+  //       `http://localhost:1234/api/v1/dashboard/latest-n-months-transaction-prices/${monthCount}`,
+  //       config
+  //     )
+  //     .then((res) => {
+  //       setStatistics(res.data.payload.sort((a, b) => a.month - b.month));
+  //     })
+  //     .catch((err) => console.error(err));
+  // }, [monthCount]);
   return (
     <App>
       <div className="header">

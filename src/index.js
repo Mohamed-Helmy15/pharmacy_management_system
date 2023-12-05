@@ -30,99 +30,87 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: (
-      <RequireAuth loginPath="/">
-        <Dashboard />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAuth loginPath="/">
+      localStorage.getItem("token") ? <Dashboard /> : <LogOut />,
+    // </RequireAuth>
   },
   {
     path: "/categories",
-    element: (
-      <RequireAuth loginPath="/">
-        <Categories />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAuth loginPath="/">
+      localStorage.getItem("token") ? <Categories /> : <LogOut />,
+    // </RequireAuth>
   },
   {
     path: "/users",
-    element: (
-      <RequireAuth loginPath="/">
-        <Users />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAuth loginPath="/">
+      localStorage.getItem("token") ? <Users /> : <LogOut />,
+    // </RequireAuth>
   },
   {
     path: "/Medicines",
-    element: (
-      <RequireAuth loginPath="/">
-        <AddNewM />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAuth loginPath="/">
+      localStorage.getItem("token") ? <AddNewM /> : <LogOut />,
+    // </RequireAuth>
   },
   {
     path: "/branches",
-    element: (
-      <RequireAuth loginPath="/">
-        <Branches />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Branches /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/addresses",
-    element: (
-      <RequireAuth loginPath="/">
-        <Address />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Address /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/customers",
-    element: (
-      <RequireAuth loginPath="/">
-        <Customers />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Customers /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/bills",
-    element: (
-      <RequireAuth loginPath="/">
-        <Bills />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Bills /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/profile",
-    element: (
-      <RequireAuth loginPath="/">
-        <Profile />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Profile /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/suppliers",
-    element: (
-      <RequireAuth loginPath="/">
-        <Suppliers />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Suppliers /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/roles",
-    element: (
-      <RequireAuth loginPath="/">
-        <Roles />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Roles /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/authority",
-    element: (
-      <RequireAuth loginPath="/">
-        <Authority />
-      </RequireAuth>
-    ),
+    element:
+      // <RequireAth loginPath="/">
+      localStorage.getItem("token") ? <Authority /> : <LogOut />,
+    /* </RequireAth> */
   },
   {
     path: "/forgot",

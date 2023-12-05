@@ -64,30 +64,30 @@ const Appbar = () => {
     setAnchorElUser(null);
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:1234/api/v1/users/`, config)
-      .then((res) => {
-        res.data.payload.map((user) => {
-          if (user.username === window.localStorage.getItem("user")) {
-            axios
-              .get(`http://localhost:1234/api/v1/users/${user.id}`, config)
-              .then((res) => {
-                return res;
-              })
-              .catch((err) => {
-                if (err.response.data.payload.img !== null) {
-                  setImg(err.response.data.payload.img.split("\\").join("/"));
-                } else {
-                  return err;
-                }
-              });
-          }
-          return user.id;
-        });
-      })
-      .catch((err) => err);
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:1234/api/v1/users/`, config)
+  //     .then((res) => {
+  //       res.data.payload.map((user) => {
+  //         if (user.username === window.localStorage.getItem("user")) {
+  //           axios
+  //             .get(`http://localhost:1234/api/v1/users/${user.id}`, config)
+  //             .then((res) => {
+  //               return res;
+  //             })
+  //             .catch((err) => {
+  //               if (err.response.data.payload.img !== null) {
+  //                 setImg(err.response.data.payload.img.split("\\").join("/"));
+  //               } else {
+  //                 return err;
+  //               }
+  //             });
+  //         }
+  //         return user.id;
+  //       });
+  //     })
+  //     .catch((err) => err);
+  // }, []);
 
   return (
     <div>
@@ -176,12 +176,13 @@ const Appbar = () => {
                   <Avatar
                     alt={window.localStorage.getItem("user")}
                     src={
-                      img !== ""
-                        ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
-                        : "null"
+                      // img !== ""
+                      //   ? `http://localhost:1234/api/v1/users/load-file?file=${img}`
+                      //   : "null"
+                      "https://th.bing.com/th/id/R.7ea4af7d8401d2b43ee841bfa2abe89d?rik=bpf8Qf%2bY5vRCQA&pid=ImgRaw&r=0"
                     }
                   >
-                    {window.localStorage.getItem("user").split("")[0]}
+                    user
                   </Avatar>
 
                   <Typography
