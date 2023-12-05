@@ -166,12 +166,11 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
   background-color: #0f467e;
 }
 
-.MuiDataGrid-root.MuiDataGrid-root--densityStandard.MuiDataGrid-withBorderColor.css-1usso8h-MuiDataGrid-root {
-  height: 430px;
+.MuiDataGrid-root {
+  height: 430px !important;
 }
 
-.MuiDataGrid-columnHeadersInner.MuiDataGrid-columnHeadersInner--scrollable.css-gl260s-MuiDataGrid-columnHeadersInner,
-.MuiDataGrid-columnHeaders.MuiDataGrid-withBorderColor.css-1iyq7zh-MuiDataGrid-columnHeaders {
+.MuiDataGrid-columnHeadersInner {
   background-color: #0f467e;
   color: white;
 }

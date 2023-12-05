@@ -94,25 +94,28 @@ const Dashboard = () => {
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
       // console.log(payload[0].payload);
-      if (statistics.length !== 0) {
-        const { month, price, year } = payload[0].payload;
-        return (
-          <div
-            className="custom-tooltip"
-            style={{
-              backgroundColor: "#eee",
-              padding: "8px 4px",
-              border: "1px solid #aaa",
-              borderRadius: "5px",
-              textAlign: "center",
-            }}
-          >
-            <p className="label">{month}</p>
-            <p className="value">Price: {FormatCurrency(price)}</p>
-            <p className="year">Year: {year}</p>
-          </div>
-        );
-      }
+
+      const { month, price, year } = {
+        month: "May",
+        price: "20",
+        year: "2023",
+      };
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "#eee",
+            padding: "8px 4px",
+            border: "1px solid #aaa",
+            borderRadius: "5px",
+            textAlign: "center",
+          }}
+        >
+          <p className="label">{month}</p>
+          <p className="value">Price: {FormatCurrency(price)}</p>
+          <p className="year">Year: {year}</p>
+        </div>
+      );
     }
     return null;
   };
