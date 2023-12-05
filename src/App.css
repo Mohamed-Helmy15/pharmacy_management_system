@@ -173,6 +173,7 @@ ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-lis
 .MuiDataGrid-columnHeadersInner {
   background-color: #0f467e;
   color: white;
+  width: 100%;
 }
 
 .MuiDataGrid-columnHeadersInner.MuiDataGrid-columnHeadersInner--scrollable.css-gl260s-MuiDataGrid-columnHeadersInner
